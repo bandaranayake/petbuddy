@@ -14,7 +14,39 @@ import * as ROUTES from '../../constants/routes';
 
 import 'font-awesome/css/font-awesome.min.css';
 
+const INITIAL_STATE = {
+  activeTag: -1,
+  pathName: window.location.pathname
+}
+
 export class Sidebar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = INITIAL_STATE;
+  }
+
+  componentWillMount() {
+    let pathName = this.props.location.pathname;
+
+    if (pathName === ROUTES.HOME) {
+      this.setState({ activeTag: 1 })
+    } else if (pathName === ROUTES.DASHBOARD) {
+      this.setState({ activeTag: 2 })
+    } else if (pathName === ROUTES.CUSTOMERS) {
+      this.setState({ activeTag: 3 })
+    } else if (pathName === ROUTES.PETSITTERS) {
+      this.setState({ activeTag: 4 })
+    } else if (pathName === ROUTES.SERVICES) {
+      this.setState({ activeTag: 5 })
+    } else if (pathName === ROUTES.BOOKINGS) {
+      this.setState({ activeTag: 6 })
+    } else if (pathName === ROUTES.SETTINGS) {
+      this.setState({ activeTag: 7 })
+    } else {
+      this.setState({ activeTag: -1 })
+    }
+  }
+
   render() {
     return (
       <ProSidebar>
