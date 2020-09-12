@@ -6,17 +6,18 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "bootstrap": "^4.5.0",
     "font-awesome": "^4.7.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-dropdown-select": "^4.5.2",
     "react-icons": "^3.11.0",
-    "react-intl": "^5.8.3",
     "react-pro-sidebar": "^0.4.4",
     "react-router-dom": "^5.2.0",
-    "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "reactstrap": "^8.5.1",
-    "bootstrap": "^4.5.0"
+    "react-user-avatar": "^1.10.0",
+    "reactstrap": "^8.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
