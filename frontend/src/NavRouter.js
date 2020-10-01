@@ -15,16 +15,24 @@ import BookingsView from './components/BookingsView';
 import SettingsView from './components/SettingsView';
 import ErrorPage from './components/ErrorPage';
 import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
 
 import * as ROUTES from './constants/routes';
 
 export class NavRouter extends Component {
-    wrapWithSidebar = (View, props) => {
+    wrapWithHeader = (View, props) => {
         return (
-            <div className='app'>
-                <Sidebar {...props} />
-                <View {...props} />
-            </div>
+            (window.innerWidth < 768) ? (
+                <div>
+                    <Navbar {...props} />
+                    <View {...props} />
+                </div>
+            ) : (
+                    <div className='app'>
+                        <Sidebar {...props} />
+                        <View {...props} />
+                    </div>
+                )
         );
     }
 
@@ -34,13 +42,13 @@ export class NavRouter extends Component {
                 <Switch>
                     <Route exact path={ROUTES.HOME} component={LoginView} />
                     <Route exact path={ROUTES.RESET} component={ResetView} />
-                    <Route exact path={ROUTES.DASHBOARD} render={(props) => this.wrapWithSidebar(DashboardView, props)} />
-                    <Route exact path={ROUTES.CUSTOMERS} render={(props) => this.wrapWithSidebar(CustomersView, props)} />
-                    <Route exact path={ROUTES.PETSITTERS} render={(props) => this.wrapWithSidebar(PetSittersView, props)} />
-                    <Route exact path={ROUTES.SERVICES} render={(props) => this.wrapWithSidebar(ServicesView, props)} />
-                    <Route exact path={ROUTES.BOOKINGS} render={(props) => this.wrapWithSidebar(BookingsView, props)} />
-                    <Route exact path={ROUTES.SETTINGS} render={(props) => this.wrapWithSidebar(SettingsView, props)} />
-                    <Route exact path={ROUTES.LOGOUT} render={(props) => this.wrapWithSidebar(PetSittersView, props)} />
+                    <Route exact path={ROUTES.DASHBOARD} render={(props) => this.wrapWithHeader(DashboardView, props)} />
+                    <Route exact path={ROUTES.CUSTOMERS} render={(props) => this.wrapWithHeader(CustomersView, props)} />
+                    <Route exact path={ROUTES.PETSITTERS} render={(props) => this.wrapWithHeader(PetSittersView, props)} />
+                    <Route exact path={ROUTES.SERVICES} render={(props) => this.wrapWithHeader(ServicesView, props)} />
+                    <Route exact path={ROUTES.BOOKINGS} render={(props) => this.wrapWithHeader(BookingsView, props)} />
+                    <Route exact path={ROUTES.SETTINGS} render={(props) => this.wrapWithHeader(SettingsView, props)} />
+                    <Route exact path={ROUTES.LOGOUT} render={(props) => this.wrapWithHeader(PetSittersView, props)} />
                     <Route exact path="*" component={ErrorPage} />
                 </Switch>
             </Router>
