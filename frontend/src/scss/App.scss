@@ -169,7 +169,13 @@ body {
   }
 }
 
+.outer-wrapper{
+  padding: 10px;
+}
+
 .center-container{
+  min-width: 350px;
+  max-width: 465px;
   width: 35%;
   margin: auto;
 }

@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
+import { Link } from 'react-router-dom';
+import { Form, FormGroup, Label, Input } from 'reactstrap'
+
+import * as ROUTES from '../../constants/routes';
 
 export class LoginView extends Component {
     render() {
         return (
-            <div className='app'>
+            <div className='app outer-wrapper'>
                 <div className="center-container">
                     <Form className="bg-light p-5">
                         <h3 className="text-center">Login</h3>
@@ -21,11 +24,11 @@ export class LoginView extends Component {
                         </FormGroup>
 
                         <FormGroup className="mt-5">
-                            <Button className="btn-block">Login</Button>
+                            <Link className="btn btn-block btn-secondary" to={ROUTES.DASHBOARD}>Login</Link>
                         </FormGroup>
 
                         <FormGroup className="text-center">
-                            <Label><a href="/reset">Forgotten Password?</a></Label>
+                            <Label><Link to={ROUTES.RESET}>Forgotten Password?</Link></Label>
                         </FormGroup>
                     </Form>
                 </div>

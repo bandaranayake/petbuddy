@@ -12,8 +12,6 @@ import { FaTachometerAlt, FaBone, FaRegCalendarAlt, FaCog, FaUser, FaUserNurse }
 import { FiLogOut } from "react-icons/fi";
 import * as ROUTES from '../../constants/routes';
 
-import 'font-awesome/css/font-awesome.min.css';
-
 const INITIAL_STATE = {
   activeTag: -1,
   pathName: window.location.pathname

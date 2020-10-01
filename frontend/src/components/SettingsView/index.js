@@ -5,7 +5,7 @@ export class index extends Component {
     render() {
         return (
             <div className="center-container">
-                <Form className="bg-light p-5">
+                <Form className="bg-light p-5 mt-sm-5 mt-md-0">
                     <h3 className="text-center">Account Settings</h3>
                     <hr className="mb-5" />
 
