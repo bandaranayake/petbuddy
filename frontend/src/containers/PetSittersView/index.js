@@ -1,66 +1,54 @@
 import React, { Component } from 'react'
-import { Col, Row, Container, Form, FormGroup, Label, Input, Button } from 'reactstrap'
-import Select from 'react-dropdown-select';
-import UserAvatar from 'react-user-avatar';
-
-import 'font-awesome/css/font-awesome.min.css';
+import { Link } from 'react-router-dom';
+import { Row, Table, Input } from 'reactstrap'
+import { FaPencilAlt, FaBan } from 'react-icons/fa';
 
 export class PetSittersView extends Component {
     render() {
         return (
             <main className="px-5">
-                <Row>
-                    <Container className="py-4">
-                        <Select
-                            placeholder="Search by Name or Email"
-                            onChange={(values) => this.onChange(values)}
-                        />
-                    </Container>
+                <Row className="py-4">
+                    <Input
+                        type="search"
+                        name="search"
+                        id="search"
+                        placeholder="Search Pet Sitters"
+                    />
                 </Row>
                 <Row>
-                    <Container className="bg-light p-4">
-                        <div className="p-2">
-                            <Row>
-                                <div className="col-md-3 container-md text-center" style={{ 'min-width': '160px', 'max-width': '200px' }}>
-                                    <img src="https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg" className="img-fluid rounded-circle border" alt="Responsive" />
-                                    <h5>Test User</h5>
-                                </div>
-                                <div className="col-md-9 container-md">
-                                    <Form>
-                                        <FormGroup>
-                                            <Label for="email">Account</Label>
-                                            <Input type="email" name="email" id="email" placeholder="Account Email Address" />
-                                        </FormGroup>
-
-                                        <Row>
-                                            <Col md="6">
-                                                <FormGroup>
-                                                    <Label for="firstname">First Name</Label>
-                                                    <Input type="text" name="firstname" id="firstname" placeholder="First Name" />
-                                                </FormGroup>
-                                            </Col>
-                                            <Col md="6">
-                                                <FormGroup>
-                                                    <Label for="lastname">Last Name</Label>
-                                                    <Input type="text" name="lastname" id="lastname" placeholder="Last Name" />
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-
-                                        <FormGroup>
-                                            <Label for="phone">Phone Number</Label>
-                                            <Input type="tel" name="phone" id="phone" placeholder="Phone Number" />
-                                        </FormGroup>
-
-                                        <FormGroup className="mt-3 text-center text-lg-left">
-                                            <Button className="m-2">Update Account</Button>
-                                            <Button className="m-2">Delete Account</Button>
-                                        </FormGroup>
-                                    </Form>
-                                </div>
-                            </Row>
-                        </div>
-                    </Container>
+                    <Table responsive striped hover bordered>
+                        <thead>
+                            <tr>
+                                <th width="20%">Email</th>
+                                <th width="20%">First Name</th>
+                                <th width="20%">Second Name</th>
+                                <th width="15%">Phone</th>
+                                <th width="10%">Pets</th>
+                                <th width="15%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>mark.thornton@gmail.com</td>
+                                <td>Mark</td>
+                                <td>Thornton</td>
+                                <td>+94771234567</td>
+                                <td>
+                                    <Link>1</Link>
+                                </td>
+                                <td>
+                                    <div style={{ textAlign: 'center' }}>
+                                        <Link className="btn btn-primary btn-md table-actions-btn">
+                                            <FaPencilAlt />
+                                        </Link>
+                                        <Link className="btn btn-danger btn-md table-actions-btn">
+                                            <FaBan />
+                                        </Link>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </Table>
                 </Row>
             </main>
         )
