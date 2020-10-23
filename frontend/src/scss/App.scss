@@ -161,7 +161,9 @@ body {
   margin: auto;
 }
 
-table .table-actions-btn{
-  color: #fff !important;
-  margin: 2px;
+table {
+  .table-actions-btn{
+    color: #fff !important;
+    margin: 2px;
+  }
 }
