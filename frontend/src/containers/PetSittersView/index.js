@@ -20,8 +20,8 @@ export class PetSittersView extends Component {
                         <thead>
                             <tr>
                                 <th width="20%">Email</th>
-                                <th width="20%">First Name</th>
-                                <th width="20%">Second Name</th>
+                                <th width="20%">Username</th>
+                                <th width="20%">Name</th>
                                 <th width="15%">Phone</th>
                                 <th width="10%">Pets</th>
                                 <th width="15%">Actions</th>
@@ -30,8 +30,8 @@ export class PetSittersView extends Component {
                         <tbody>
                             <tr>
                                 <td>mark.thornton@gmail.com</td>
-                                <td>Mark</td>
-                                <td>Thornton</td>
+                                <td>markthornton</td>
+                                <td>Mark Thornton</td>
                                 <td>+94771234567</td>
                                 <td>
                                     <Link>1</Link>
