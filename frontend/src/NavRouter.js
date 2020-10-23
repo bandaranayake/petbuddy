@@ -5,15 +5,15 @@ import {
     Switch,
 } from 'react-router-dom';
 
-import LoginView from './components/LoginView';
-import ResetView from './components/ResetView';
-import DashboardView from './components/DashboardView';
-import CustomersView from './components/CustomersView';
-import PetSittersView from './components/PetSittersView';
-import ServicesView from './components/ServicesView';
-import BookingsView from './components/BookingsView';
-import SettingsView from './components/SettingsView';
-import ErrorPage from './components/ErrorPage';
+import LoginView from './containers/LoginView';
+import ResetView from './containers/ResetView';
+import DashboardView from './containers/DashboardView';
+import CustomersView from './containers/CustomersView';
+import PetSittersView from './containers/PetSittersView';
+import ServicesView from './containers/ServicesView';
+import BookingsView from './containers/BookingsView';
+import SettingsView from './containers/SettingsView';
+import ErrorPage from './containers/ErrorPage';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 
