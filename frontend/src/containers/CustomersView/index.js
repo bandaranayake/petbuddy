@@ -23,7 +23,7 @@ export class CustomersView extends Component {
                                 <th width="20%">Username</th>
                                 <th width="20%">Name</th>
                                 <th width="15%">Phone</th>
-                                <th width="10%">Services</th>
+                                <th width="10%">Pets</th>
                                 <th width="15%">Actions</th>
                             </tr>
                         </thead>
@@ -51,7 +51,7 @@ export class CustomersView extends Component {
                     </Table>
                 </Row>
             </main>
-        );
+        )
     }
 }
 
