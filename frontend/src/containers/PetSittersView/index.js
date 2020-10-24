@@ -23,7 +23,7 @@ export class PetSittersView extends Component {
                                 <th width="20%">Username</th>
                                 <th width="20%">Name</th>
                                 <th width="15%">Phone</th>
-                                <th width="10%">Pets</th>
+                                <th width="10%">Services</th>
                                 <th width="15%">Actions</th>
                             </tr>
                         </thead>
@@ -33,9 +33,7 @@ export class PetSittersView extends Component {
                                 <td>markthornton</td>
                                 <td>Mark Thornton</td>
                                 <td>+94771234567</td>
-                                <td>
-                                    <Link>1</Link>
-                                </td>
+                                <td>1</td>
                                 <td>
                                     <div style={{ textAlign: 'center' }}>
                                         <Link className="btn btn-primary btn-md table-actions-btn">
@@ -51,7 +49,7 @@ export class PetSittersView extends Component {
                     </Table>
                 </Row>
             </main>
-        )
+        );
     }
 }
 
