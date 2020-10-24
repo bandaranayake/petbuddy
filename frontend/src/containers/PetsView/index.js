@@ -1,39 +1,29 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-import { Row, Table, Input } from 'reactstrap'
+import { Table, Row } from 'reactstrap'
 import { FaPencilAlt, FaBan } from 'react-icons/fa';
 
-export class PetSittersView extends Component {
+export class PetsView extends Component {
     render() {
         return (
             <main className="px-5">
                 <Row className="py-4">
-                    <Input
-                        type="search"
-                        name="search"
-                        id="search"
-                        placeholder="Search Pet Sitters"
-                    />
-                </Row>
-                <Row>
                     <Table responsive striped hover bordered>
                         <thead>
                             <tr>
-                                <th width="20%">Email</th>
-                                <th width="20%">Username</th>
-                                <th width="20%">Name</th>
-                                <th width="15%">Phone</th>
-                                <th width="10%">Services</th>
+                                <th width="25%">Name</th>
+                                <th width="20%">Type</th>
+                                <th width="20%">Gender</th>
+                                <th width="20%">Birthday</th>
                                 <th width="15%">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>mark.thornton@gmail.com</td>
-                                <td>markthornton</td>
-                                <td>Mark Thornton</td>
-                                <td>+94771234567</td>
-                                <td>1</td>
+                                <td>Cooper</td>
+                                <td>Dog</td>
+                                <td>Male</td>
+                                <td>05/12/2018</td>
                                 <td>
                                     <div style={{ textAlign: 'center' }}>
                                         <Link className="btn btn-primary btn-md table-actions-btn">
@@ -48,9 +38,9 @@ export class PetSittersView extends Component {
                         </tbody>
                     </Table>
                 </Row>
-            </main>
-        );
+            </main >
+        )
     }
 }
 
-export default PetSittersView
+export default PetsView
