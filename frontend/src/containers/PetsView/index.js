@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
-import { Table, Row, Container, Form, FormGroup, Label, Col, Button, Input } from 'reactstrap'
+import { Table, Row } from 'reactstrap'
 import { FaPencilAlt, FaBan } from 'react-icons/fa';
 
 export class PetsView extends Component {
     render() {
         return (
             <main className="px-5">
-                <Container className="p-4">
+                <Row className="py-4">
                     <Table responsive striped hover bordered>
                         <thead>
                             <tr>
@@ -37,7 +37,7 @@ export class PetsView extends Component {
                             </tr>
                         </tbody>
                     </Table>
-                </Container>
+                </Row>
             </main >
         )
     }
