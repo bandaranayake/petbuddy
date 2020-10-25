@@ -9278,10 +9278,10 @@ react-dom@^16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-dropdown-select@^4.5.2:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/react-dropdown-select/-/react-dropdown-select-4.5.2.tgz#7e27dd3d6488014f7dc0e7851ba1a8ee3aedbabd"
-  integrity sha512-Wf++iIzLzpLnRWNMcoZymlWTWNJoUAX9B465CK4eg0rbFp/Xp23x7Q+660tFh1cbamRsrdpy7sGy7qbUCTRcAQ==
+react-dropdown-select@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/react-dropdown-select/-/react-dropdown-select-4.6.0.tgz#d10e06991a7d1294b2a9aacb8502a450d8c01cbe"
+  integrity sha512-X8fvdVxSFZqksf2yI0V/jqgUhs1xJcsNst338t+sWr9Kc4T244jw1noPgxJdTGFhKmJrbmXeUL4UFnc/Ipe36Q==
   dependencies:
     "@emotion/core" "^10.0.27"
     "@emotion/styled" "^10.0.27"
@@ -9426,6 +9426,11 @@ react-slidedown@^2.4.5:
   integrity sha512-zFDhgqQ1ZLfRr+rQA7p+13OTT/+zUR/+3v3JnwrnXPM8R+1KHhuTNseYHU8jYN3QfxjJXtqve0rgbWCBiFkpiw==
   dependencies:
     tslib "^1.9.0"
+
+react-stars@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-stars/-/react-stars-2.2.5.tgz#911852018e1574a0f9a2c1dfa4f0bc9af071b921"
+  integrity sha1-kRhSAY4VdKD5osHfpPC8mvBxuSE=
 
 react-transition-group@^2.3.1:
   version "2.9.0"
