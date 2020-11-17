@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
-import { StyleSheet, View } from 'react-native';
 
 function LandingScreen({ navigation }) {
     return (

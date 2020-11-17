@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import Background from '../../components/Background';
-import Logo from '../../components/Logo';
-import Button from '../../components/Button';
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import { Title, TextInput } from 'react-native-paper';
 import { theme } from '../../core/theme';
+import Background from '../../components/Background';
+import Logo from '../../components/Logo';
+import Button from '../../components/Button';
 
 function SignupScreen({ navigation }) {
     return (
