@@ -2,12 +2,12 @@ import React, { memo } from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { theme } from '../../core/theme';
 
-const Logo = () => (
+function Logo() {
     <View style={styles.container}>
         <Image source={require('../../assets/logo.png')} style={styles.image} />
         <Text style={styles.logo}>Pet Buddy</Text>
     </View>
-);
+}
 
 const styles = StyleSheet.create({
     container: {

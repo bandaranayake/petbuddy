@@ -5,7 +5,7 @@ import { theme } from '../../core/theme';
 function Background({ children }) {
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
             style={styles.container}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     inner: {
         flex: 1,
         padding: 24,
-        justifyContent: "space-around",
+        justifyContent: 'space-around',
     }
 });
 

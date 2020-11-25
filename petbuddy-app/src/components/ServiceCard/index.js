@@ -12,7 +12,7 @@ function ServiceCard(props) {
                     <View style={{ flex: 1, alignItems: 'center' }}>
                         <Avatar.Text size={60} label='CW' />
                     </View>
-                    <View style={{ flex: 3, alignItems: 'flex-start', marginLeft: 5 }}>
+                    <View style={{ flex: 3, alignItems: 'flex-start', marginLeft: 15 }}>
                         <Title >Carlos, Ward</Title >
                         <Rating
                             readonly
@@ -22,7 +22,7 @@ function ServiceCard(props) {
                         />
                         <Paragraph >Job Count (0)</Paragraph >
                     </View>
-                    <View style={{ flex: 1, alignItems: 'center' }}>
+                    <View style={{ flex: 2, alignItems: 'center' }}>
                         <Title>Level 1</Title>
                     </View>
                 </View>

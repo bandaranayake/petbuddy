@@ -6,10 +6,13 @@ import { theme } from '../../core/theme';
 function Dropdown(props) {
     return (
         <RNPickerSelect
-            placeholder={{
-                label: props.label,
-                value: null,
-            }}
+            placeholder={
+                (props.label !== null) ?
+                    {
+                        label: props.label,
+                        value: null,
+                    } : {}
+            }
             onValueChange={(value) => {
 
             }}

@@ -16,7 +16,7 @@ function SignupScreen({ navigation }) {
                 <Title style={styles.title}>Sign Up</Title>
                 <TextInput mode='flat' label='Email' placeholder='Your email address' style={styles.input} />
                 <TextInput mode='flat' label='Password' placeholder='Your password' style={styles.input} secureTextEntry />
-                <Button mode='contained' style={styles.button}>Continue</Button>
+                <Button mode='contained' style={styles.button} onPress={() => navigation.navigate('Signup2')}>Continue</Button>
                 <View style={styles.footer}>
                     <Text>Have an account? </Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Login')}>

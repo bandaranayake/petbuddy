@@ -11,7 +11,7 @@ function HomeScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.searchbarContainer}>
+            <View style={styles.topRow}>
                 <View style={styles.col5}>
                     <Searchbar
                         placeholder='Search'
@@ -27,7 +27,7 @@ function HomeScreen({ navigation }) {
                     </TouchableHighlight>
                 </View>
             </View>
-            <View style={{ flex: 1, marginBottom: 10 }}>
+            <View style={{ flex: 1 }}>
                 <ScrollView style={{ paddingRight: 20 }}>
                     <View style={styles.row}>
                         <ServiceCard onPress={() => navigation.navigate('Filter')} />
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         backgroundColor: theme.colors.background,
     },
-    searchbarContainer: {
+    topRow: {
         marginTop: 15,
         marginBottom: 10,
         flexDirection: 'row',

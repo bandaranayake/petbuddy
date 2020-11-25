@@ -1,17 +1,20 @@
 import React, { memo } from 'react';
-import { Button as PaperButton } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
+import { Button as PaperButton } from 'react-native-paper';
 import { theme } from '../../core/theme';
 
-function Button({ mode, style, children, ...props }) {
+function Button({ mode, style, labelStyle, children, ...props }) {
     return (
         <PaperButton
             style={[
                 styles.button,
-                mode === 'outlined' && { backgroundColor: theme.colors.surface },
+                mode === 'outlined' && { backgroundColor: theme.colors.primary },
                 style,
             ]}
-            labelStyle={styles.text}
+            labelStyle={[
+                styles.text,
+                labelStyle,
+            ]}
             mode={mode}
             {...props}
         >
@@ -27,7 +30,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     text: {
-        color: theme.colors.background,
+        color: theme.colors.onPrimary,
         fontWeight: 'bold',
         fontSize: 15,
         lineHeight: 26,
