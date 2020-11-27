@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 function Signup2Screen({ navigation }) {
     return (
         <Background>
-            <View style={styles.form}>
+            <View>
                 <Title style={styles.title}>Sign Up</Title>
                 <TextInput mode='flat' label='First Name' placeholder='Your first name' style={styles.input} />
                 <TextInput mode='flat' label='Last Name' placeholder='Your last name' style={styles.input} secureTextEntry />
@@ -25,11 +25,6 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: theme.colors.primary,
         fontWeight: 'bold',
-    },
-    form: {
-        flex: 3,
-        width: '100%',
-        justifyContent: 'center',
     },
     input: {
         backgroundColor: theme.colors.background,

@@ -9,5 +9,6 @@ export const theme = {
         primary: '#1765f5',
         secondary: '#bbbbbb',
         onPrimary: '#ffffff',
+        highlight: '#f0f0f0',
     },
 };

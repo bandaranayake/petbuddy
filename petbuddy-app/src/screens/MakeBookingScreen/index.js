@@ -1,48 +1,21 @@
 import React, { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
+import { theme } from '../../core/theme';
 import Button from '../../components/Button';
 import Dropdown from '../../components/Dropdown';
 import DateRangeDisplay from '../../components/DateRangeDisplay';
-import { theme } from '../../core/theme';
+import PetSelector from '../../components/PetSelector';
 
-function FilterScreen({ navigation }) {
-    let items = [
-
-    ];
-
+function MakeBookingScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <View style={styles.row}>
-                <View style={styles.labelContainer}>
-                    <Text style={styles.label}>City: </Text>
-                </View>
-                <View style={styles.itemContainer}>
-                    <Dropdown label='Select a City' items={items} />
-                </View>
-            </View>
             <View style={styles.row}>
                 <View style={styles.labelContainer}>
                     <Text style={styles.label}>Service: </Text>
                 </View>
                 <View style={styles.itemContainer}>
-                    <Dropdown label='Select a Service' items={items} />
-                </View>
-            </View>
-            <View style={styles.row}>
-                <View style={styles.labelContainer}>
-                    <Text style={styles.label}>Level: </Text>
-                </View>
-                <View style={styles.itemContainer}>
-                    <Dropdown label='Select a Level' items={items} />
-                </View>
-            </View>
-            <View style={styles.row}>
-                <View style={styles.labelContainer}>
-                    <Text style={styles.label}>Pet: </Text>
-                </View>
-                <View style={styles.itemContainer}>
-                    <Dropdown label='Select a Pet type' items={items} />
+                    <Dropdown label='Select a Service' items={[]} />
                 </View>
             </View>
             <View style={styles.row}>
@@ -53,7 +26,24 @@ function FilterScreen({ navigation }) {
                     <DateRangeDisplay />
                 </View>
             </View>
-            <Button mode='contained' style={styles.button}>Filter</Button>
+            <View style={styles.row}>
+                <View style={styles.labelContainer}>
+                    <Text style={styles.label}>Pets: </Text>
+                </View>
+                <View style={styles.itemContainer}>
+                    <PetSelector items={[]} />
+                </View>
+            </View>
+            <Divider style={styles.divider} />
+            <View style={styles.row}>
+                <View style={styles.labelContainer}>
+                    <Text style={styles.label}>Total Price: </Text>
+                </View>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.label}>0 LKR</Text>
+                </View>
+            </View>
+            <Button mode='contained' style={styles.button}>Book</Button>
         </View>
     );
 }
@@ -69,7 +59,10 @@ const styles = StyleSheet.create({
     row: {
         marginTop: 16,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    divider: {
+        marginTop: 16,
     },
     labelContainer: {
         flex: 2,
@@ -86,4 +79,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default memo(FilterScreen);
+export default memo(MakeBookingScreen);
