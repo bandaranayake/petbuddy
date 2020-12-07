@@ -1,20 +1,20 @@
-/**
- * @format
- */
-
+import 'react-native-gesture-handler';
 import * as React from 'react';
 import { AppRegistry } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as ReduxProvider } from 'react-redux';
 import { name as appName } from './app.json';
-import App from './App';
 import { theme } from './src/core/theme';
-import 'react-native-gesture-handler';
+import store from './store';
+import App from './App';
 
 export default function Main() {
     return (
-        <PaperProvider theme={theme}>
-            <App />
-        </PaperProvider>
+        <ReduxProvider store={store}>
+            <PaperProvider theme={theme}>
+                <App />
+            </PaperProvider>
+        </ReduxProvider>
     );
 }
 
