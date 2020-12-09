@@ -4,5 +4,6 @@ export const ValidateEmail = email => {
 }
 
 export const ValidatePhone = phone => {
-    return phone.match(/\d/g).length === 10;
+    const result = phone.match(/\d/g);
+    return result !== null && result.length === 10;
 }
