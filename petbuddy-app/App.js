@@ -1,9 +1,9 @@
 import * as React from 'react';
-import NavRouter from './NavRouter';
+import AuthNavigator from './src/navigation/AuthNavigator';
 
 function App() {
   return (
-    <NavRouter />
+    <AuthNavigator />
   );
 }
 
