@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
 import { theme } from '../../core/theme';
@@ -24,8 +24,8 @@ function renderMessage(side) {
     return (
         <View style={{ flex: 1, alignItems: (side == 'left') ? 'flex-start' : 'flex-end' }} >
             <View style={styles.chatBubble}>
-                <Text>Hello</Text>
-                <Text style={styles.text}>2020-09-10 9:00 am</Text>
+                <Text>{props.message}</Text>
+                <Text style={styles.text}>{props.timestamp}</Text>
             </View>
         </View>
     )
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default memo(ChatBubble);
+export default ChatBubble;

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { theme } from '../../core/theme';
@@ -37,4 +37,4 @@ const pickerSelectStyles = StyleSheet.create({
     },
 });
 
-export default memo(Dropdown);
+export default Dropdown;

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { View, KeyboardAvoidingView, StyleSheet, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { theme } from '../../core/theme';
 
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default memo(Background);
+export default Background;
