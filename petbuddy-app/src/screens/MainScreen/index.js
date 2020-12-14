@@ -6,11 +6,6 @@ import ProfileScreen from '../ProfileScreen';
 import BlockScreen from '../BlockScreen';
 
 function MainScreen(props) {
-    const HomeRoute = () => <HomeScreen navigation={props.navigation} />;
-    const BookingsRoute = () => <BookingScreen navigation={props.navigation} />;
-    const ProfileRoute = () => <ProfileScreen navigation={props.navigation} />;
-    const BlockRoute = () => <BlockScreen navigation={props.navigation} />;
-
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
         { key: 'home', title: 'Home', icon: 'home' },
@@ -21,15 +16,15 @@ function MainScreen(props) {
     const renderScene = BottomNavigation.SceneMap(
         (props.auth) ?
             {
-                home: HomeRoute,
-                bookings: BookingsRoute,
-                profile: ProfileRoute,
+                home: HomeScreen,
+                bookings: BookingScreen,
+                profile: ProfileScreen,
             }
             :
             {
-                home: HomeRoute,
-                bookings: BlockRoute,
-                profile: BlockRoute,
+                home: HomeScreen,
+                bookings: BlockScreen,
+                profile: BlockScreen,
             }
     );
 
