@@ -16,7 +16,7 @@ function ServiceCard(props) {
                         <Text style={{ marginBottom: 2, fontSize: 15, fontWeight: 'bold' }}>{props.name}</Text >
                         <Rating
                             readonly
-                            ratingCount={5}
+                            ratingCount={props.rating}
                             imageSize={16}
                             showRating={false}
                             style={{ marginBottom: 6 }}

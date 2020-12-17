@@ -14,12 +14,16 @@ function Dropdown(props) {
                     } : {}
             }
             onValueChange={(value) => {
-
+                props.onValueChange(value);
             }}
             style={{ ...pickerSelectStyles }}
             useNativeAndroidPickerStyle={false}
             hideIcon={true}
-            items={props.items}
+            items={
+                props.items.map((item) => {
+                    return { label: item, value: item }
+                })
+            }
         />
     );
 }
@@ -33,7 +37,7 @@ const pickerSelectStyles = StyleSheet.create({
         borderRadius: 4,
         borderColor: theme.colors.secondary,
         backgroundColor: theme.colors.background,
-        color: theme.colors.onBackground,
+        color: theme.colors.placeholder,
     },
 });
 

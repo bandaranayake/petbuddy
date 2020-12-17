@@ -1,10 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import * as ROUTES from '../../constants/routes'
 import Background from '../../components/Background';
 import Button from '../../components/Button';
 
-function BlockScreen({ navigation }) {
+function BlockScreen() {
+    const navigation = useNavigation();
+
     return (
         <Background>
             <View>
