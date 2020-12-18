@@ -24,6 +24,8 @@ function Dropdown(props) {
                     return { label: item, value: item }
                 })
             }
+            key={props.value}
+            value={props.value}
         />
     );
 }

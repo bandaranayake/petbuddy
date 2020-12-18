@@ -13,18 +13,19 @@ function ServiceCard(props) {
                         <Avatar.Text size={60} label='CW' />
                     </View>
                     <View style={{ flex: 3, alignItems: 'flex-start', marginLeft: 15 }}>
-                        <Text style={{ marginBottom: 2, fontSize: 15, fontWeight: 'bold' }}>{props.name}</Text >
+                        <Text style={{ marginBottom: 2, fontSize: 15, fontWeight: 'bold' }}>{props.firstname + ' ' + props.lastname}</Text >
                         <Rating
                             readonly
-                            ratingCount={props.rating}
+                            ratingCount={5}
                             imageSize={16}
+                            startingValue={props.rating}
                             showRating={false}
                             style={{ marginBottom: 6 }}
                         />
                         <Text style={{ marginBottom: 2, fontSize: 12, }}>Job Count ({props.jobs})</Text >
                     </View>
                     <View style={{ flex: 2, alignItems: 'center' }}>
-                        <Text style={{ fontWeight: 'bold' }}>Level {props.level}</Text>
+                        <Text style={{ fontWeight: 'bold' }}>{props.level}</Text>
                     </View>
                 </View>
             </TouchableHighlight>
