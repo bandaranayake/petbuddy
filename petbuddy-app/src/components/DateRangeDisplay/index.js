@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import moment from 'moment';
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default memo(DateRangeDisplay);
+export default DateRangeDisplay;

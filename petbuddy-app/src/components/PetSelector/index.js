@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Checkbox, Dialog, Portal, Text } from 'react-native-paper';
 import { theme } from '../../core/theme';
@@ -56,6 +56,8 @@ function PetSelector(props) {
                                         label={cb.title}
                                         key={index}
                                         status={cb.checked}
+                                        color={theme.colors.primary}
+                                        labelStyle={{ color: theme.colors.text }}
                                         onPress={() => toggleCheckbox(cb.id, index)} />
                                 );
                             })
@@ -81,4 +83,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default memo(PetSelector);
+export default PetSelector;

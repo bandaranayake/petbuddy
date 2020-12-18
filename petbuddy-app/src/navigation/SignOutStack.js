@@ -18,11 +18,13 @@ const Stack = createStackNavigator()
 function SignOutStack() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={ROUTES.LOGIN} headerMode="none">
+            <Stack.Navigator initialRouteName={ROUTES.LANDING} headerMode='none'>
                 <Stack.Screen name={ROUTES.FILTER} component={FilterScreen} />
                 <Stack.Screen name={ROUTES.LANDING} component={LandingScreen} />
                 <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
-                <Stack.Screen name={ROUTES.MAIN} component={MainScreen} />
+                <Stack.Screen name={ROUTES.MAIN}>
+                    {props => (<MainScreen {...props} auth={false} />)}
+                </Stack.Screen>
                 <Stack.Screen name={ROUTES.RESET} component={ResetScreen} />
                 <Stack.Screen name={ROUTES.SERVICE} component={ServiceScreen} />
                 <Stack.Screen name={ROUTES.SIGNUP} component={SignupScreen} />

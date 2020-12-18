@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { theme } from '../../core/theme';
@@ -14,12 +14,18 @@ function Dropdown(props) {
                     } : {}
             }
             onValueChange={(value) => {
-
+                props.onValueChange(value);
             }}
             style={{ ...pickerSelectStyles }}
             useNativeAndroidPickerStyle={false}
             hideIcon={true}
-            items={props.items}
+            items={
+                props.items.map((item) => {
+                    return { label: item, value: item }
+                })
+            }
+            key={props.value}
+            value={props.value}
         />
     );
 }
@@ -33,8 +39,8 @@ const pickerSelectStyles = StyleSheet.create({
         borderRadius: 4,
         borderColor: theme.colors.secondary,
         backgroundColor: theme.colors.background,
-        color: theme.colors.onBackground,
+        color: theme.colors.placeholder,
     },
 });
 
-export default memo(Dropdown);
+export default Dropdown;

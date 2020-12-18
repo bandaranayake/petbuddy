@@ -1,0 +1,5 @@
+export const LOADING = 'LOADING';
+export const REFRESHING = 'REFRESHING';
+export const FETCH_SERVICES = 'FETCH_SERVICE';
+export const FETCH_MORE_SERVICES = 'FETCH_MORE_SERVICES';
+export const SET_FILTERS = 'SET_FILTERS';

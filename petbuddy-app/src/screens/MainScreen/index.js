@@ -1,14 +1,11 @@
 import React, { memo } from 'react';
-import { BottomNavigation, Text } from 'react-native-paper';
+import { BottomNavigation } from 'react-native-paper';
 import HomeScreen from '../HomeScreen';
 import BookingScreen from '../BookingScreen';
 import ProfileScreen from '../ProfileScreen';
+import BlockScreen from '../BlockScreen';
 
 function MainScreen(props) {
-    const HomeRoute = () => <HomeScreen navigation={props.navigation} />;
-    const BookingsRoute = () => <BookingScreen navigation={props.navigation} />;
-    const ProfileRoute = () => <ProfileScreen navigation={props.navigation} />;
-
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
         { key: 'home', title: 'Home', icon: 'home' },
@@ -16,11 +13,20 @@ function MainScreen(props) {
         { key: 'profile', title: 'Profile', icon: 'account' },
     ]);
 
-    const renderScene = BottomNavigation.SceneMap({
-        home: HomeRoute,
-        bookings: BookingsRoute,
-        profile: ProfileRoute,
-    });
+    const renderScene = BottomNavigation.SceneMap(
+        (props.auth) ?
+            {
+                home: HomeScreen,
+                bookings: BookingScreen,
+                profile: ProfileScreen,
+            }
+            :
+            {
+                home: HomeScreen,
+                bookings: BlockScreen,
+                profile: BlockScreen,
+            }
+    );
 
     return (
         <BottomNavigation
