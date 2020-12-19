@@ -14,7 +14,7 @@ function ServiceCard(props) {
                     </View>
                     <View style={{ flex: 3, alignItems: 'flex-start', marginLeft: 15 }}>
                         <Text style={{ marginBottom: 2, fontSize: 15, fontWeight: 'bold' }}>{props.firstname + ' ' + props.lastname}</Text >
-                        <Rating style={{ marginBottom: 6 }} count={5} rating={props.rating} size={16} />
+                        <Rating style={{ marginBottom: 2 }} count={5} rating={props.rating} size={16} />
                         <Text style={{ marginBottom: 2, fontSize: 12, }}>Job Count ({props.jobs})</Text >
                     </View>
                     <View style={{ flex: 2, alignItems: 'center' }}>

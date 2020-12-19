@@ -7,9 +7,14 @@ function Rating(props) {
     let rating = props.rating;
 
     for (let i = 0; i < props.count; i++) {
-        stars.push(<Image key={i} source={IMAGE_STAR} style={{ width: props.size, height: props.size, backgroundColor: (rating-- > 0) ? '#f1c40f' : '#fff' }} />);
+        stars.push(
+            <Image
+                key={i}
+                source={IMAGE_STAR}
+                style={{ ...props.style, width: props.size, height: props.size, backgroundColor: (rating-- > 0) ? '#f1c40f' : '#fff' }}
+            />
+        );
     }
-
     return <View style={{ flexDirection: 'row', alignItems: 'center' }}>{stars}</View>
 }
 
