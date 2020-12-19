@@ -3,10 +3,11 @@ import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import * as ROUTES from '../../constants/routes'
 import Button from '../../components/Button';
 import { theme } from '../../core/theme';
+import { IMAGE_BG } from '../../assets/images';
 
 function LandingScreen({ navigation }) {
     return (
-        <ImageBackground source={require('../../assets/background.png')} style={styles.container}>
+        <ImageBackground source={IMAGE_BG} style={styles.container}>
             <View style={styles.inner}>
                 <Text style={styles.title}>PET BUDDY</Text>
                 <Button mode='contained' onPress={() => navigation.navigate(ROUTES.MAIN)}>Find Pet Sitter</Button>
