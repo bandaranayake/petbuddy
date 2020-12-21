@@ -3,6 +3,7 @@ import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import { Avatar, Divider, Text } from 'react-native-paper';
 import Rating from '../Rating';
 import { theme } from '../../core/theme';
+import * as GLOBAL from '../../constants/global';
 
 function ServiceCard(props) {
     return (
@@ -18,7 +19,7 @@ function ServiceCard(props) {
                         <Text style={{ marginBottom: 2, fontSize: 12, }}>Job Count ({props.jobs})</Text >
                     </View>
                     <View style={{ flex: 2, alignItems: 'center' }}>
-                        <Text style={{ fontWeight: 'bold' }}>{props.level}</Text>
+                        <Text style={{ fontWeight: 'bold' }}>{GLOBAL.FindLabel(props.level, GLOBAL.LEVELS)}</Text>
                     </View>
                 </View>
             </TouchableHighlight>

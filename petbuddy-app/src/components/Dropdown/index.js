@@ -19,11 +19,7 @@ function Dropdown(props) {
             style={{ ...pickerSelectStyles }}
             useNativeAndroidPickerStyle={false}
             hideIcon={true}
-            items={
-                props.items.map((item) => {
-                    return { label: item, value: item }
-                })
-            }
+            items={props.items}
             key={props.value}
             value={props.value}
         />
