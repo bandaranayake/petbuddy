@@ -46,7 +46,7 @@ function FilterScreen(props) {
         }
         else {
             props.setFilters(filters);
-            props.navigation.goBack();
+            props.navigation.goBack(null);
         }
     }
 
