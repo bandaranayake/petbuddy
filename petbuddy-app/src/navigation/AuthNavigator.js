@@ -4,25 +4,32 @@ import SignInStack from './SignInStack';
 import SignOutStack from './SignOutStack';
 import LoadingScreen from '../screens/LoadingScreen';
 
-function AuthNavigator() {
+import { connect } from 'react-redux';
+import { clearProfile, fetchProfile } from "../actions/profileActions";
+
+function AuthNavigator(props) {
     const [initializing, setInitializing] = useState(true)
-    const [user, setUser] = useState(null)
 
     function onAuthStateChanged(result) {
-        setUser(result)
+        if (result != null) {
+            props.fetchProfile(result.uid);
+        }
+        else {
+            props.clearProfile();
+        }
+
         if (initializing) setInitializing(false)
     }
 
     useEffect(() => {
         const authSubscriber = auth().onAuthStateChanged(onAuthStateChanged);
-
         return authSubscriber;
     }, [])
 
-    if (initializing) {
+    if (initializing || props.isLoading) {
         return (<LoadingScreen />);
     }
-    else if (user) {
+    else if (props.profile != null) {
         return (<SignInStack />);
     }
     else {
@@ -30,4 +37,9 @@ function AuthNavigator() {
     }
 }
 
-export default AuthNavigator;
+const mapStateToProps = state => ({
+    profile: state.profile.details,
+    isLoading: state.profile.isLoading,
+});
+
+export default connect(mapStateToProps, { clearProfile, fetchProfile })(AuthNavigator);

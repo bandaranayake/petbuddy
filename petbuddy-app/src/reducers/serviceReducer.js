@@ -1,4 +1,4 @@
-import { LOADING, REFRESHING, FETCH_SERVICES, FETCH_MORE_SERVICES, SET_FILTERS } from '../actions/types';
+import { LOADING_SERVICES, REFRESHING_SERVICES, FETCH_SERVICES, FETCH_MORE_SERVICES, SET_FILTERS } from '../actions/types';
 
 const initailState = {
     items: [],
@@ -10,13 +10,13 @@ const initailState = {
 
 export default function (state = initailState, action) {
     switch (action.type) {
-        case LOADING:
+        case LOADING_SERVICES:
             return {
                 ...state,
                 items: [],
                 isLoading: true,
             };
-        case REFRESHING:
+        case REFRESHING_SERVICES:
             return {
                 ...state,
                 isRefreshing: true,
