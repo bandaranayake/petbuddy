@@ -1,8 +1,8 @@
-export const PETS = [{ value: 0, label: 'Dogs' }, { value: 1, label: 'Cats' }, { value: 2, label: 'Rabbits' },
-{ value: 3, label: 'Birds', value: 4, label: 'Other' }];
+export const PETS = [{ value: 0, label: 'Dogs', icon: 'dog' }, { value: 1, label: 'Cats', icon: 'cat' },
+{ value: 2, label: 'Rabbits', icon: 'rabbit' }, { value: 3, label: 'Birds', icon: 'owl' }, { value: 4, label: 'Other', icon: 'paw' }];
 
-export const SERVICES = [{ value: 0, label: 'House sitting' }, { value: 1, label: 'Pet boarding' },
-{ value: 2, label: 'Dog walking' }, { value: 3, label: 'Pet grooming' }];
+export const SERVICES = [{ value: 0, label: 'House sitting', icon: 'home-outline' }, { value: 1, label: 'Pet boarding', icon: 'home-city-outline' },
+{ value: 2, label: 'Dog walking', icon: 'dog-service' }, { value: 3, label: 'Pet grooming', icon: 'shower' }];
 
 export const PREFERENCES = [{ value: 0, label: 'Lives in an apartment' }, { value: 1, label: 'Have kids' },
 { value: 2, label: 'Own a cat' }, { value: 3, label: 'Own a dog' }];
@@ -18,12 +18,11 @@ export const DISTRICTS = [{ value: 0, label: 'Ampara' }, { value: 1, label: 'Anu
 { value: 19, label: 'Nuwara Eliya' }, { value: 20, label: 'Polonnaruwa' }, { value: 21, label: 'Puttalam' }, { value: 22, label: 'Ratnapura' },
 { value: 23, label: 'Trincomalee' }, { value: 24, label: 'Vavuniya' }]
 
+export const FindElement = (value, array) => {
+    return array.find(e => e.value === value);
+}
+
 export const FindLabel = (value, array) => {
-    let element = array.find(level => level.value === value);
-    if (element != undefined && element != null) {
-        return element.label;
-    }
-    else {
-        return null;
-    }
+    let element = FindElement(value, array);
+    return (element != undefined && element != null) ? element.label : null;
 }
