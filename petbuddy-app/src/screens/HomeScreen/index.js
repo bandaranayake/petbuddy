@@ -55,7 +55,7 @@ function HomeScreen(props) {
                     data={filteredData}
                     keyExtractor={(item) => item.key}
                     renderItem={
-                        ({ item }) => <ServiceCard onPress={() => navigation.navigate(ROUTES.SERVICE)} firstname={item.firstname} lastname={item.lastname} jobs={item.jobcount} level={item.level} rating={item.rating} />
+                        ({ item }) => <ServiceCard onPress={() => navigation.navigate(ROUTES.SERVICE, { details: item })} firstname={item.firstname} lastname={item.lastname} jobs={item.jobcount} level={item.level} rating={item.rating} />
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
