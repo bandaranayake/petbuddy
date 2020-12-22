@@ -14,6 +14,7 @@ function LoginScreen({ navigation }) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [visible, setVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
@@ -28,9 +29,10 @@ function LoginScreen({ navigation }) {
             showDialog();
         }
         else {
+            setIsLoading(true);
+
             auth()
                 .signInWithEmailAndPassword(email, password)
-                .then(() => navigation.navigate(ROUTES.MAIN))
                 .catch(error => {
                     if (error.code === 'auth/invalid-email') {
                         setError('The provided email address is not valid. Please enter a valid email address.');
@@ -48,6 +50,7 @@ function LoginScreen({ navigation }) {
                         setError('Something went wrong. Please try again later.');
                     }
 
+                    setIsLoading(false);
                     showDialog();
                 })
         }
@@ -60,9 +63,9 @@ function LoginScreen({ navigation }) {
             </View>
             <View style={styles.form}>
                 <Title style={styles.title}>Sign In</Title>
-                <TextInput mode='flat' label='Email' placeholder='Your email address' style={styles.input} onChangeText={(text) => setEmail(text)} />
-                <TextInput mode='flat' label='Password' placeholder='Your password' style={styles.input} secureTextEntry onChangeText={(text) => setPassword(text)} />
-                <Button mode='contained' style={styles.button} onPress={() => handleLogin()}>Sign In</Button>
+                <TextInput mode='flat' label='Email' placeholder='Your email address' style={styles.input} onChangeText={(text) => setEmail(text.trim())} />
+                <TextInput mode='flat' label='Password' placeholder='Your password' style={styles.input} secureTextEntry onChangeText={(text) => setPassword(text.trim())} />
+                <Button mode='contained' style={styles.button} loading={isLoading} onPress={() => { if (!isLoading) handleLogin() }}>Sign In</Button>
                 <View style={styles.row}>
                     <TouchableOpacity onPress={() => navigation.navigate(ROUTES.RESET)}>
                         <Text>Forgot Password?</Text>
