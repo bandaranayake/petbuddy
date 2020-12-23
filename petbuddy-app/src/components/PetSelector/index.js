@@ -1,34 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Checkbox, Dialog, Portal, Text } from 'react-native-paper';
 import { theme } from '../../core/theme';
 
 function PetSelector(props) {
     const [visible, setVisible] = useState(false);
+    const [checkboxes, setCheckboxes] = useState([]);
     const [textColor, setTextColor] = useState(theme.colors.secondary);
     const [displayText, setDisplayText] = useState('Select the Pets');
+
+    useEffect(() => {
+        setCheckboxes(props.items);
+    }, [props.items])
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
 
-    const [checkboxes, setCheckboxes] = useState(props.items);
-
     const onPressOk = () => {
         hideDialog();
 
-        let c = checkboxes.filter((cb) => cb.checked === 'checked').length;
+        let c = checkboxes.filter(cb => cb.checked === 'checked').length;
 
         if (c !== 0) {
-            setDisplayText(c);
-            setTextColor(theme.colors.onBackground);
+            setDisplayText('Selected ' + c + ' pets');
+            setTextColor(theme.colors.placeholder);
         }
         else {
             setDisplayText('Select the Pets');
             setTextColor(theme.colors.secondary);
         }
+
+        props.onSelect(checkboxes);
     };
 
-    const toggleCheckbox = (id, index) => {
+    const toggleCheckbox = index => {
         const checkboxData = [...checkboxes];
 
         if (checkboxData[index].checked === 'checked') {
@@ -53,12 +58,12 @@ function PetSelector(props) {
                             checkboxes.map((cb, index) => {
                                 return (
                                     <Checkbox.Item
-                                        label={cb.title}
+                                        label={cb.name}
                                         key={index}
                                         status={cb.checked}
                                         color={theme.colors.primary}
                                         labelStyle={{ color: theme.colors.text }}
-                                        onPress={() => toggleCheckbox(cb.id, index)} />
+                                        onPress={() => toggleCheckbox(index)} />
                                 );
                             })
                         }

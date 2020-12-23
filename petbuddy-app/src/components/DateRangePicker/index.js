@@ -17,7 +17,7 @@ export default class DateRangePicker extends Component {
             let [mMarkedDates, range] = this.setupMarkedDates(this.state.fromDate, day.dateString, markedDates)
             if (range >= 0) {
                 this.setState({ isFromDatePicked: true, isToDatePicked: true, markedDates: mMarkedDates })
-                this.props.onSuccess(this.state.fromDate, day.dateString)
+                this.props.onSuccess(this.state.fromDate, day.dateString, range)
             } else {
                 this.setupStartMarker(day)
             }

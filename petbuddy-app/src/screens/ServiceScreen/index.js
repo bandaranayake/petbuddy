@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { ActivityIndicator, Avatar, Checkbox, Divider, List, Text, Title, Subheading, Paragraph } from 'react-native-paper';
+import { ActivityIndicator, Avatar, Checkbox, Divider, List, Text, Title, Paragraph } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
 import { theme } from '../../core/theme';
 import * as GLOBAL from '../../constants/global';
@@ -106,7 +106,7 @@ function ServiceScreen(props) {
                             {renderPetTypes()}
                         </View>
                         <View style={{ paddingHorizontal: 44, paddingTop: 10 }}>
-                            <Button mode='contained' style={styles.button} onPress={() => props.navigation.navigate(ROUTES.MAKE_BOOKING)}>Book</Button>
+                            <Button mode='contained' style={styles.button} onPress={() => props.navigation.navigate(ROUTES.MAKE_BOOKING, { services: services })}>Book</Button>
                         </View>
                     </View>
             }
