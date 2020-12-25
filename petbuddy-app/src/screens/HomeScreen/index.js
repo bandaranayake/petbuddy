@@ -53,13 +53,13 @@ function HomeScreen(props) {
                 <FlatList
                     style={{ marginTop: 10 }}
                     data={filteredData}
-                    keyExtractor={(item) => item.key}
+                    keyExtractor={(item) => item.uid}
                     renderItem={
                         ({ item }) => <ServiceCard onPress={() => navigation.navigate(ROUTES.SERVICE, { details: item })} firstname={item.firstname} lastname={item.lastname} jobs={item.jobcount} level={item.level} rating={item.rating} />
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
-                        if (props.isRefreshing == false) props.fetchMoreServices(props.filters, props.services[props.services.length - 1].key)
+                        if (props.isRefreshing == false) props.fetchMoreServices(props.filters, props.services[props.services.length - 1].uid)
                     }}
                     onEndReachedThreshold={0.5}
                     refreshing={props.isRefreshing}

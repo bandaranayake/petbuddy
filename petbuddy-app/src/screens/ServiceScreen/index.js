@@ -20,7 +20,7 @@ function ServiceScreen(props) {
 
         firestore()
             .collection('services')
-            .doc(basicDetails.key)
+            .doc(basicDetails.uid)
             .get()
             .then(doc => {
                 if (doc.exists) {
@@ -106,7 +106,7 @@ function ServiceScreen(props) {
                             {renderPetTypes()}
                         </View>
                         <View style={{ paddingHorizontal: 44, paddingTop: 10 }}>
-                            <Button mode='contained' style={styles.button} onPress={() => props.navigation.navigate(ROUTES.MAKE_BOOKING, { services: services })}>Book</Button>
+                            <Button mode='contained' style={styles.button} onPress={() => props.navigation.navigate(ROUTES.MAKE_BOOKING, { services: services, uid: basicDetails.uid })}>Book</Button>
                         </View>
                     </View>
             }

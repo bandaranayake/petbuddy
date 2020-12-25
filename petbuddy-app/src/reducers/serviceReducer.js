@@ -2,7 +2,6 @@ import { LOADING_SERVICES, REFRESHING_SERVICES, FETCH_SERVICES, FETCH_MORE_SERVI
 
 const initailState = {
     items: [],
-    lastVisible: null,
     filters: null,
     isLoading: false,
     isRefreshing: false,

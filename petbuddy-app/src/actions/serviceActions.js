@@ -20,7 +20,7 @@ export const fetchServices = (filters) => dispatch => {
         .get()
         .then(querySnapshot => {
             let data = querySnapshot.docs.map(document => {
-                document.data().key = document.id;
+                document.data().uid = document.id;
                 return document.data();
             })
 
@@ -50,7 +50,7 @@ export const fetchMoreServices = (filters, lastVisible) => dispatch => {
         .get()
         .then(querySnapshot => {
             let data = querySnapshot.docs.map(document => {
-                document.data().key = document.id;
+                document.data().uid = document.id;
                 return document.data();
             })
 

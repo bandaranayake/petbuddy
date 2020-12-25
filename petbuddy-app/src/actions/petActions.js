@@ -13,7 +13,7 @@ export const fetchPets = (uid) => dispatch => {
             let pets = [];
 
             snapshot.forEach(doc => {
-                doc.data().key = doc.id;
+                doc.data().id = doc.id;
                 pets.push(doc.data());
             });
 
