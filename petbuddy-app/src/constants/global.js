@@ -18,6 +18,9 @@ export const DISTRICTS = [{ value: 0, label: 'Ampara' }, { value: 1, label: 'Anu
 { value: 19, label: 'Nuwara Eliya' }, { value: 20, label: 'Polonnaruwa' }, { value: 21, label: 'Puttalam' }, { value: 22, label: 'Ratnapura' },
 { value: 23, label: 'Trincomalee' }, { value: 24, label: 'Vavuniya' }]
 
+export const STATUS = [{ label: 'Upcoming', value: 0, bg: '#7768AE' }, { label: 'Approved', value: 1, bg: '#4D9DE0' },
+{ label: 'Rejected', value: 2, bg: '#E15554' }, { label: 'Cancelled', value: 3, bg: '#E1BC29' }, { label: 'Completed', value: 4, bg: '#3BB273' }];
+
 export const FindElement = (value, array) => {
     return array.find(e => e.value === value);
 }
