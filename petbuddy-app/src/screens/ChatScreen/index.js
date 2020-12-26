@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { IconButton, Text, TextInput } from 'react-native-paper';
+import { Button, IconButton, Text, TextInput } from 'react-native-paper';
 import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
+import { updateStatus } from '../../actions/bookingActions';
 import firestore from '@react-native-firebase/firestore';
 import { theme } from '../../core/theme';
 import * as ROLES from '../../constants/roles';
@@ -11,15 +12,16 @@ import * as GLOBAL from '../../constants/global';
 import ChatBubble from '../../components/ChatBubble';
 
 function ChatScreen(props) {
-    const details = props.route.params.details;
+    const bookingid = props.route.params.bookingid;
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState('');
+    const [details, setDetails] = useState({ status: 0, service: 0 });
     const scrollViewRef = useRef();
 
     useEffect(() => {
         const messagesListener = firestore()
             .collection('bookings')
-            .doc(details.id)
+            .doc(bookingid)
             .collection('messages')
             .orderBy('timestamp')
             .onSnapshot(snapshot => {
@@ -34,10 +36,33 @@ function ChatScreen(props) {
         return () => messagesListener();
     }, [])
 
+    useEffect(() => {
+        let i = props.bookings.findIndex(item => item.id === bookingid);
+        if (i !== null) {
+            setDetails(props.bookings[i]);
+        }
+    }, [props.bookings])
+
     const renderMessages = () => {
         return messages.map((item, i) =>
             <ChatBubble key={i} timestamp={item.timestamp} message={item.message} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
         )
+    }
+
+    const renderActionButtons = () => {
+        if (props.profile.role === ROLES.PETOWNER && details.status === 1) {
+            return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
+                <Button mode="contained" color='#3BB273' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(4)}>Complete Order</Button>
+                <Button mode="contained" color='#E1BC29' dark={true} style={{ marginLeft: 2 }} onPress={() => updateStatus(3)}>Cancel Order</Button>
+            </View>
+        }
+        else if (props.profile.role === ROLES.PETSITTER && details.status === 0) {
+            return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
+                <Button mode="contained" color='#4D9DE0' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(1)}>Accept Order</Button>
+                <Button mode="contained" color='#E15554' style={{ marginLeft: 2 }} onPress={() => updateStatus(2)}>Reject Order</Button>
+            </View>
+        }
+        return null;
     }
 
     const sendMessage = () => {
@@ -50,11 +75,18 @@ function ChatScreen(props) {
 
             firestore()
                 .collection('bookings')
-                .doc(details.id)
+                .doc(bookingid)
                 .collection('messages')
                 .add(message)
                 .then(setMessageText(''));
         }
+    }
+
+    const updateStatus = (newStatus) => {
+        firestore()
+            .collection('bookings')
+            .doc(bookingid)
+            .update({ status: newStatus });
     }
 
     return (
@@ -106,32 +138,37 @@ function ChatScreen(props) {
                     </View>
                 </View>
             </View>
+            {renderActionButtons()}
             <ScrollView
                 ref={scrollViewRef}
                 onContentSizeChange={() => { scrollViewRef.current.scrollToEnd({ animated: true }) }}>
                 {renderMessages()}
             </ScrollView>
-            <View style={styles.footerContainer}>
-                <View style={styles.subContainer}>
-                    <View style={{ flex: 1, marginRight: 5, }}>
-                        <TextInput placeholder='Type your message' style={{ height: 30, backgroundColor: theme.colors.background }} value={messageText} onChangeText={value => setMessageText(value)} />
+            {
+                (details.status === 2 || details.status === 3 || details.status === 4) ? null :
+                    <View style={styles.footerContainer}>
+                        <View style={styles.subContainer}>
+                            <View style={{ flex: 1, marginRight: 5, }}>
+                                <TextInput placeholder='Type your message' style={{ height: 30, backgroundColor: theme.colors.background }} value={messageText} onChangeText={value => setMessageText(value)} />
+                            </View>
+                            <View style={{ width: 40 }}>
+                                <IconButton
+                                    icon='send'
+                                    size={25}
+                                    color={theme.colors.primary}
+                                    onPress={sendMessage}
+                                />
+                            </View>
+                        </View>
                     </View>
-                    <View style={{ width: 40 }}>
-                        <IconButton
-                            icon='send'
-                            size={25}
-                            color={theme.colors.primary}
-                            onPress={sendMessage}
-                        />
-                    </View>
-                </View>
-            </View>
+            }
         </View >
     );
 }
 
 const mapStateToProps = state => ({
     profile: state.profile.details,
+    bookings: state.bookings.items,
 });
 
 const styles = StyleSheet.create({
@@ -181,4 +218,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps)(ChatScreen);
+export default connect(mapStateToProps, { updateStatus })(ChatScreen);

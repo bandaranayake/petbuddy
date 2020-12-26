@@ -1,4 +1,4 @@
-import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS } from '../actions/types';
+import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS, FETCH_UPDATED_BOOKINGS } from '../actions/types';
 
 const initailState = {
     items: [],
@@ -30,6 +30,11 @@ export default function (state = initailState, action) {
                 ...state,
                 items: [...state.items, ...action.payload],
                 isRefreshing: false,
+            };
+        case FETCH_UPDATED_BOOKINGS:
+            return {
+                ...state,
+                items: action.payload,
             };
         default:
             return state;

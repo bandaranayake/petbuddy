@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS } from './types';
+import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS, FETCH_UPDATED_BOOKINGS } from './types';
 
 export const fetchBookings = (filter, details) => dispatch => {
     dispatch({ type: LOADING_BOOKINGS });
@@ -54,4 +54,11 @@ export const fetchMoreBookings = (filter, details, lastVisible) => dispatch => {
                 payload: data
             })
         });
+}
+
+export const updateBookings = (data) => dispatch => {
+    dispatch({
+        type: FETCH_UPDATED_BOOKINGS,
+        payload: data
+    });
 }
