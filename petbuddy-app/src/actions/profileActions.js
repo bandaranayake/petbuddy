@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { LOADING_PROFILE, CLEAR_PROFILE, FETCH_PROFILE } from './types';
+import { LOADING_PROFILE, CLEAR_PROFILE, FETCH_PROFILE, SWITCH_PROFILE } from './types';
 
 export const fetchProfile = (uid) => dispatch => {
     dispatch({ type: LOADING_PROFILE });
@@ -20,4 +20,11 @@ export const fetchProfile = (uid) => dispatch => {
 
 export const clearProfile = () => dispatch => {
     dispatch({ type: CLEAR_PROFILE });
+}
+
+export const switchProfile = (profile) => dispatch => {
+    dispatch({
+        type: SWITCH_PROFILE,
+        payload: profile,
+    });
 }

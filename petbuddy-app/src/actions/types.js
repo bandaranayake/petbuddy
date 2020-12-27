@@ -6,6 +6,7 @@ export const SET_FILTERS = 'SET_FILTERS';
 export const LOADING_PROFILE = 'LOADING_PROFILE';
 export const FETCH_PROFILE = 'FETCH_PROFILE';
 export const CLEAR_PROFILE = 'CLEAR_PROFILE';
+export const SWITCH_PROFILE = 'SWITCH_PROFILE';
 export const LOADING_PETS = 'LOADING_PETS';
 export const FETCH_PETS = 'FETCH_PETS';
 export const CLEAR_PETS = 'CLEAR_PETS';
