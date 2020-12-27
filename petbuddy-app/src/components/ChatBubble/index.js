@@ -1,35 +1,37 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
+import moment from 'moment';
 import { theme } from '../../core/theme';
 
 function ChatBubble(props) {
+    const renderAvatar = (side) => {
+        return (
+            <View style={{ width: 50, marginRight: (side == 'left') ? 5 : 0, marginLeft: (side == 'left') ? 0 : 5 }} >
+                <Avatar.Text size={50} label='CW' />
+            </View>
+        );
+    }
+
+    const renderMessage = (side, message, timestamp) => {
+        return (
+            <View style={{ flex: 1, alignItems: (side == 'left') ? 'flex-start' : 'flex-end' }} >
+                <View style={styles.chatBubble}>
+                    <Text>{message}</Text>
+                    <Text style={styles.text}>{moment(timestamp.toDate()).format('YYYY-DD-MM h:mm A')}</Text>
+                </View>
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
-            {props.side == 'left' ? renderAvartar('left') : renderMessage('right')}
-            {props.side == 'left' ? renderMessage('left') : renderAvartar('right')}
+            {props.side == 'left' ? renderAvatar('left') : renderMessage('right', props.message, props.timestamp)}
+            {props.side == 'left' ? renderMessage('left', props.message, props.timestamp) : renderAvatar('right')}
         </View>
     );
 }
 
-function renderAvartar(side) {
-    return (
-        <View style={{ width: 50, marginRight: (side == 'left') ? 5 : 0, marginLeft: (side == 'left') ? 0 : 5 }} >
-            <Avatar.Text size={50} label='CW' />
-        </View>
-    );
-}
-
-function renderMessage(side) {
-    return (
-        <View style={{ flex: 1, alignItems: (side == 'left') ? 'flex-start' : 'flex-end' }} >
-            <View style={styles.chatBubble}>
-                <Text>{props.message}</Text>
-                <Text style={styles.text}>{props.timestamp}</Text>
-            </View>
-        </View>
-    )
-}
 
 const styles = StyleSheet.create({
     container: {

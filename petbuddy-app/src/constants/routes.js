@@ -10,3 +10,5 @@ export const BOOKING = 'Booking';
 export const CHAT = 'Chat';
 export const MAKE_BOOKING = 'MakeBooking';
 export const SETTINGS = 'Settings';
+export const PROFILE = 'Profile';
+export const REGISTER_PETSITTER = 'RegisterPetsitter';

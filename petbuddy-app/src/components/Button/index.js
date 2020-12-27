@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
 import { theme } from '../../core/theme';
 
-function Button({ mode, style, labelStyle, children, ...props }) {
+function Button({ mode, style, labelStyle, children, loading, ...props }) {
     return (
         <PaperButton
             style={[
@@ -17,6 +17,7 @@ function Button({ mode, style, labelStyle, children, ...props }) {
             ]}
             mode={mode}
             {...props}
+            loading={loading}
         >
             {children}
         </PaperButton>

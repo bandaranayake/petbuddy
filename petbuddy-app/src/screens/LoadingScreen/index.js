@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Animated, View, StyleSheet } from 'react-native'
+import { IMAGE_LOGO } from '../../assets/images';
 
 function LoadingScreen() {
     const [startValue, setStartValue] = useState(new Animated.Value(1));
@@ -25,7 +26,7 @@ function LoadingScreen() {
     return (
         <View style={styles.container}>
             <Animated.Image
-                source={require('../../assets/logo.png')}
+                source={IMAGE_LOGO}
                 style={[
                     styles.square,
                     {

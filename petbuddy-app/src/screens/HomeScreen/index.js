@@ -12,13 +12,23 @@ import ServiceCard from '../../components/ServiceCard';
 function HomeScreen(props) {
     const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = useState('');
+    const [filteredData, setFilteredData] = useState('');
 
     useEffect(() => {
         props.fetchServices(props.filters);
     }, [props.filters])
 
+    useEffect(() => {
+        filterServices();
+    }, [props.services])
+
     const onChangeSearch = query => setSearchQuery(query);
     const renderFooter = () => (props.isLoading) ? <ActivityIndicator /> : null;
+    const filterServices = () => {
+        const formattedQuery = searchQuery.toLowerCase();
+        const services = props.services;
+        setFilteredData(services.filter(service => service.firstname.includes(formattedQuery) || service.lastname.includes(formattedQuery)));
+    }
 
     return (
         <View style={styles.container}>
@@ -26,6 +36,7 @@ function HomeScreen(props) {
                 <View style={{ flex: 5, alignItems: 'center' }}>
                     <Searchbar
                         placeholder='Search'
+                        onIconPress={filterServices}
                         onChangeText={onChangeSearch}
                         value={searchQuery}
                     />
@@ -41,14 +52,14 @@ function HomeScreen(props) {
             <View style={{ flex: 1 }}>
                 <FlatList
                     style={{ marginTop: 10 }}
-                    data={props.services}
-                    keyExtractor={(item) => item.key}
+                    data={filteredData}
+                    keyExtractor={(item) => item.uid}
                     renderItem={
-                        ({ item }) => <ServiceCard onPress={() => navigation.navigate(ROUTES.SERVICE)} firstname={item.firstname} lastname={item.lastname} jobs={item.jobcount} level={item.level} rating={item.rating} />
+                        ({ item }) => <ServiceCard onPress={() => navigation.navigate(ROUTES.SERVICE, { details: item })} firstname={item.firstname} lastname={item.lastname} jobs={item.jobcount} level={item.level} rating={item.rating} />
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
-                        if (props.isRefreshing == false) props.fetchMoreServices(props.filters, props.services[props.services.length - 1].key)
+                        if (props.isRefreshing == false) props.fetchMoreServices(props.filters, props.services[props.services.length - 1].uid)
                     }}
                     onEndReachedThreshold={0.5}
                     refreshing={props.isRefreshing}

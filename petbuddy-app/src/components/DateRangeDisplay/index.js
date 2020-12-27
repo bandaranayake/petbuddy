@@ -5,11 +5,15 @@ import moment from 'moment';
 import { theme } from '../../core/theme';
 import DateRangePicker from '../DateRangePicker';
 
-function DateRangeDisplay() {
+function DateRangeDisplay(props) {
     const [visible, setVisible] = useState(false);
     const [textColor, setTextColor] = useState(theme.colors.secondary);
     const [displayText, setDisplayText] = useState('Select the Dates');
-    const [selectedRange, setSelectedRange] = useState(null);
+    const [selectedDates, setSelectedDates] = useState({
+        from: null,
+        to: null,
+        count: 0,
+    });
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
@@ -17,9 +21,11 @@ function DateRangeDisplay() {
     const onPressOk = () => {
         hideDialog();
 
-        if (selectedRange !== null) {
-            setDisplayText(selectedRange[0] + ' to ' + selectedRange[1]);
-            setTextColor(theme.colors.onBackground);
+        if (selectedDates.count > 0) {
+            props.onPressOK(selectedDates);
+
+            setDisplayText(selectedDates.from + ' to ' + selectedDates.to);
+            setTextColor(theme.colors.placeholder);
         }
     };
 
@@ -33,9 +39,9 @@ function DateRangeDisplay() {
                     <Dialog.Title>Select the dates</Dialog.Title>
                     <Dialog.Content>
                         <DateRangePicker
-                            initialRange={selectedRange}
+                            initialRange={(selectedDates.from === null) ? null : [selectedDates.from, selectedDates.to]}
                             minDate={moment().format('YYYY-MM-DD')}
-                            onSuccess={(s, e) => setSelectedRange([s, e])}
+                            onSuccess={(from, to, count) => setSelectedDates({ from: from, to: to, count: count + 1 })}
                             theme={{ markColor: theme.colors.primary, arrowColor: theme.colors.primary, markTextColor: theme.colors.onPrimary }} />
                     </Dialog.Content>
                     <Dialog.Actions>

@@ -1,9 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
-import { LOADING, REFRESHING, FETCH_SERVICES, FETCH_MORE_SERVICES, SET_FILTERS } from './types';
+import { LOADING_SERVICES, REFRESHING_SERVICES, FETCH_SERVICES, FETCH_MORE_SERVICES, SET_FILTERS } from './types';
 import { PETSITTER } from '../constants/roles';
 
 export const fetchServices = (filters) => dispatch => {
-    dispatch({ type: LOADING });
+    dispatch({ type: LOADING_SERVICES });
 
     let profiles = firestore().collection('profiles');
 
@@ -20,7 +20,7 @@ export const fetchServices = (filters) => dispatch => {
         .get()
         .then(querySnapshot => {
             let data = querySnapshot.docs.map(document => {
-                document.data().key = document.id;
+                document.data().uid = document.id;
                 return document.data();
             })
 
@@ -32,7 +32,7 @@ export const fetchServices = (filters) => dispatch => {
 }
 
 export const fetchMoreServices = (filters, lastVisible) => dispatch => {
-    dispatch({ type: REFRESHING });
+    dispatch({ type: REFRESHING_SERVICES });
 
     let profiles = firestore().collection('profiles');
 
@@ -50,7 +50,7 @@ export const fetchMoreServices = (filters, lastVisible) => dispatch => {
         .get()
         .then(querySnapshot => {
             let data = querySnapshot.docs.map(document => {
-                document.data().key = document.id;
+                document.data().uid = document.id;
                 return document.data();
             })
 

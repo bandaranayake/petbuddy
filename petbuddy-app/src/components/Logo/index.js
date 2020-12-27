@@ -1,11 +1,12 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { theme } from '../../core/theme';
+import { IMAGE_LOGO } from '../../assets/images';
 
 function Logo() {
     return (
         <View style={styles.container}>
-            <Image source={require('../../assets/logo.png')} style={styles.image} />
+            <Image source={IMAGE_LOGO} style={styles.image} />
             <Text style={styles.logo}>Pet Buddy</Text>
         </View>
     );
