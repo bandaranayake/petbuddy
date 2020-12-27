@@ -5,8 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import FilterScreen from '../screens/FilterScreen';
 import BookingScreen from '../screens/BookingScreen';
 import ChatScreen from '../screens/ChatScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 import MainScreen from '../screens/MainScreen';
 import MakeBookingScreen from '../screens/MakeBookingScreen';
+import PetSitterScreen from '../screens/PetSitterScreen';
 import ServiceScreen from '../screens/ServiceScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -27,6 +29,8 @@ function SignInStack() {
                 <Stack.Screen name={ROUTES.MAKE_BOOKING} component={MakeBookingScreen} />
                 <Stack.Screen name={ROUTES.SERVICE} component={ServiceScreen} />
                 <Stack.Screen name={ROUTES.SETTINGS} component={SettingsScreen} />
+                <Stack.Screen name={ROUTES.PROFILE} component={EditProfileScreen} />
+                <Stack.Screen name={ROUTES.REGISTER_PETSITTER} component={PetSitterScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )
