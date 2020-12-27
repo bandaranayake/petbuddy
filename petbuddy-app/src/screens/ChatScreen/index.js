@@ -10,6 +10,7 @@ import { theme } from '../../core/theme';
 import * as ROLES from '../../constants/roles';
 import * as GLOBAL from '../../constants/global';
 import ChatBubble from '../../components/ChatBubble';
+import PetCard from '../../components/PetCard';
 
 function ChatScreen(props) {
     const bookingid = props.route.params.bookingid;
@@ -45,7 +46,10 @@ function ChatScreen(props) {
 
     const renderMessages = () => {
         return messages.map((item, i) =>
-            <ChatBubble key={i} timestamp={item.timestamp} message={item.message} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
+            (item.type === undefined) ?
+                <ChatBubble key={i} timestamp={item.timestamp} message={item.message} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
+                :
+                <PetCard key={i} type={item.type} name={item.name} gender={item.gender} birthday={item.birthday} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
         )
     }
 

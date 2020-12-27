@@ -4,14 +4,14 @@ import { Avatar, Text } from 'react-native-paper';
 import moment from 'moment';
 import { theme } from '../../core/theme';
 
-function BookingDetails(props) {
+function PetCard(props) {
     const renderDetails = (type, name, gender, birthday) => {
         return (
             <View>
                 <Text>Type: {type}</Text>
                 <Text>Name: {name}</Text>
                 <Text>Gender: {gender}</Text>
-                <Text>Age: {moment().diff(birthday, 'years')}</Text>
+                <Text>Age: {moment().diff(birthday.toDate(), 'years')}</Text>
             </View>
         );
     }
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BookingDetails;
+export default PetCard;
