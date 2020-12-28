@@ -3,14 +3,15 @@ import { StyleSheet, View } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
 import moment from 'moment';
 import { theme } from '../../core/theme';
+import * as GLOBAL from '../../constants/global';
 
 function PetCard(props) {
     const renderDetails = (type, name, gender, birthday) => {
         return (
             <View>
-                <Text>Type: {type}</Text>
+                <Text>Type: {GLOBAL.FindLabel(type, GLOBAL.PETS)}</Text>
                 <Text>Name: {name}</Text>
-                <Text>Gender: {gender}</Text>
+                <Text>Gender: {GLOBAL.FindLabel(gender, GLOBAL.GENDER)}</Text>
                 <Text>Age: {moment().diff(birthday.toDate(), 'years')}</Text>
             </View>
         );

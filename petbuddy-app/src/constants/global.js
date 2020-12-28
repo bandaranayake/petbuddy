@@ -21,6 +21,8 @@ export const DISTRICTS = [{ value: 0, label: 'Ampara' }, { value: 1, label: 'Anu
 export const STATUS = [{ label: 'Upcoming', value: 0, bg: '#7768AE' }, { label: 'Approved', value: 1, bg: '#4D9DE0' },
 { label: 'Rejected', value: 2, bg: '#E15554' }, { label: 'Cancelled', value: 3, bg: '#E1BC29' }, { label: 'Completed', value: 4, bg: '#3BB273' }];
 
+export const GENDER = [{ label: 'Not Specified', value: 0 }, { label: 'Male', value: 1 }, { label: 'Female', value: 2 }];
+
 export const FindElement = (value, array) => {
     return array.find(e => e.value === value);
 }
