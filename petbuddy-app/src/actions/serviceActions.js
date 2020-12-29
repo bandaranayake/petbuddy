@@ -9,7 +9,7 @@ export const fetchServices = (filters) => dispatch => {
 
     if (filters != null) {
         if (filters.city != null) profiles = profiles.where('city', '==', filters.city);
-        if (filters.service != null) profiles = profiles.where('services', 'array-contains', filters.service);
+        if (filters.service != null) profiles = profiles.where('services.' + filters.service, '==', true);
         if (filters.level != null) profiles = profiles.where('level', '==', filters.level);
         if (filters.pet != null) profiles = profiles.where('pets', 'array-contains', filters.pet);
     }
