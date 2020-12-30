@@ -68,7 +68,7 @@ function BookingScreen(props) {
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
-                        if (props.isRefreshing == false) props.fetchMoreBookings(filter, props.details, props.bookings[props.bookings.length - 1].id)
+                        if (props.isRefreshing == false) props.fetchMoreBookings(filter, props.details, props.bookings[props.bookings.length - 1].fromDate)
                     }}
                     onEndReachedThreshold={0.5}
                     refreshing={props.isRefreshing}

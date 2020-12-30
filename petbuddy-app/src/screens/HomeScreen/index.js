@@ -8,6 +8,7 @@ import { fetchServices, fetchMoreServices } from '../../actions/serviceActions';
 import { theme } from '../../core/theme';
 import * as ROUTES from '../../constants/routes';
 import ServiceCard from '../../components/ServiceCard';
+import { cos } from 'react-native-reanimated';
 
 function HomeScreen(props) {
     const navigation = useNavigation();
@@ -24,10 +25,11 @@ function HomeScreen(props) {
 
     const onChangeSearch = query => setSearchQuery(query);
     const renderFooter = () => (props.isLoading) ? <ActivityIndicator /> : null;
+
     const filterServices = () => {
         const formattedQuery = searchQuery.toLowerCase();
         const services = props.services;
-        setFilteredData(services.filter(service => service.firstname.includes(formattedQuery) || service.lastname.includes(formattedQuery)));
+        setFilteredData(services.filter(service => service.firstname.toLowerCase().startsWith(formattedQuery) || service.lastname.toLowerCase().startsWith(formattedQuery)));
     }
 
     return (
@@ -55,11 +57,11 @@ function HomeScreen(props) {
                     data={filteredData}
                     keyExtractor={(item) => item.uid}
                     renderItem={
-                        ({ item }) => <ServiceCard onPress={() => navigation.navigate(ROUTES.SERVICE, { details: item })} firstname={item.firstname} lastname={item.lastname} jobs={item.jobcount} level={item.level} rating={item.rating} />
+                        ({ item }) => <ServiceCard onPress={() => navigation.navigate(ROUTES.SERVICE, { details: item })} firstname={item.firstname} lastname={item.lastname} jobs={item.jobcount} level={item.level} rating={item.rating} avatar={item.avatar} />
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
-                        if (props.isRefreshing == false) props.fetchMoreServices(props.filters, props.services[props.services.length - 1].uid)
+                        if (props.isRefreshing == false) props.fetchMoreServices(props.filters, props.services[props.services.length - 1].level)
                     }}
                     onEndReachedThreshold={0.5}
                     refreshing={props.isRefreshing}

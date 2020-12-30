@@ -12,7 +12,7 @@ export const fetchBookings = (filter, details) => dispatch => {
         bookings = bookings.where('status', '==', filter);
     }
 
-    bookings.orderBy(firestore.FieldPath.documentId())
+    bookings.orderBy('fromDate', 'desc')
         .limit(10)
         .get()
         .then(querySnapshot => {
@@ -39,7 +39,7 @@ export const fetchMoreBookings = (filter, details, lastVisible) => dispatch => {
         bookings = bookings.where('status', '==', filter);
     }
 
-    bookings.orderBy(firestore.FieldPath.documentId())
+    bookings.orderBy('fromDate', 'desc')
         .startAfter(lastVisible)
         .limit(20)
         .get()

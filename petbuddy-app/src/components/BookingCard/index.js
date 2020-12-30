@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import { Text } from 'react-native-paper';
+import moment from 'moment';
 import { theme } from '../../core/theme';
 import * as GLOBAL from '../../constants/global';
 
@@ -19,7 +20,7 @@ function BookingCard(props) {
                         <Text style={{ color: theme.colors.onPrimary }}>{status.label}</Text>
                     </View>
                     <View style={{ flex: 1, alignItems: 'center', paddingRight: 10 }}>
-                        <Text>{props.fromDate}</Text>
+                        <Text>{moment(props.fromDate.toDate()).format('YYYY-MM-DD')}</Text>
                     </View>
                 </View>
             </TouchableHighlight>

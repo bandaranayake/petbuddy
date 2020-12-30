@@ -15,7 +15,7 @@ export const fetchServices = (filters) => dispatch => {
     }
 
     profiles.where('role', '==', PETSITTER)
-        .orderBy(firestore.FieldPath.documentId())
+        .orderBy('level', 'desc')
         .limit(10)
         .get()
         .then(querySnapshot => {
@@ -44,7 +44,7 @@ export const fetchMoreServices = (filters, lastVisible) => dispatch => {
     }
 
     profiles.where('role', '==', PETSITTER)
-        .orderBy(firestore.FieldPath.documentId())
+        .orderBy('level', 'desc')
         .startAfter(lastVisible)
         .limit(10)
         .get()
