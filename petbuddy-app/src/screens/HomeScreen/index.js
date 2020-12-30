@@ -8,7 +8,6 @@ import { fetchServices, fetchMoreServices } from '../../actions/serviceActions';
 import { theme } from '../../core/theme';
 import * as ROUTES from '../../constants/routes';
 import ServiceCard from '../../components/ServiceCard';
-import { cos } from 'react-native-reanimated';
 
 function HomeScreen(props) {
     const navigation = useNavigation();
@@ -61,7 +60,7 @@ function HomeScreen(props) {
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
-                        if (props.isRefreshing == false) props.fetchMoreServices(props.filters, props.services[props.services.length - 1].level)
+                        if (props.isRefreshing == false) props.fetchMoreServices(props.filters, props.services[props.services.length - 1].uid)
                     }}
                     onEndReachedThreshold={0.5}
                     refreshing={props.isRefreshing}

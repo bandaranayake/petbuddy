@@ -30,7 +30,7 @@ function BookingScreen(props) {
         const messagesListener = firestore()
             .collection(COLLECTIONS.BOOKINGS)
             .where(props.details.role, '==', props.details.uid)
-            .orderBy(firestore.FieldPath.documentId())
+            .orderBy('fromDate', 'desc')
             .onSnapshot(snapshot => {
                 let c = [];
                 snapshot.forEach(doc => {
