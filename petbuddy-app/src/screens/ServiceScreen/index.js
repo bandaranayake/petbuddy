@@ -4,6 +4,7 @@ import { ActivityIndicator, Avatar, Checkbox, Divider, List, Text, Title, Paragr
 import firestore from '@react-native-firebase/firestore';
 import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
+import * as COLLECTIONS from '../../constants/collections';
 import * as ROLES from '../../constants/roles';
 import * as GLOBAL from '../../constants/global';
 import * as ROUTES from '../../constants/routes';
@@ -21,7 +22,7 @@ function ServiceScreen(props) {
         setIsLoading(true);
 
         firestore()
-            .collection('services')
+            .collection(COLLECTIONS.SERVICES)
             .doc(basicDetails.uid)
             .get()
             .then(doc => {

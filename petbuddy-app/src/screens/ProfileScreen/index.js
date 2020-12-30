@@ -13,8 +13,6 @@ import Rating from '../../components/Rating';
 
 function ProfileScreen(props) {
     const navigation = useNavigation();
-    console.log(props.profile);
-    console.log(props.current);
 
     const renderBasicDetails = () => {
         if (props.current === ROLES.PETSITTER) {

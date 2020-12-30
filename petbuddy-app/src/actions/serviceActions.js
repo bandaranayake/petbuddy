@@ -1,11 +1,12 @@
 import firestore from '@react-native-firebase/firestore';
 import { LOADING_SERVICES, REFRESHING_SERVICES, FETCH_SERVICES, FETCH_MORE_SERVICES, SET_FILTERS } from './types';
 import { PETSITTER } from '../constants/roles';
+import * as COLLECTIONS from '../constants/collections';
 
 export const fetchServices = (filters) => dispatch => {
     dispatch({ type: LOADING_SERVICES });
 
-    let profiles = firestore().collection('profiles');
+    let profiles = firestore().collection(COLLECTIONS.PROFILES);
 
     if (filters != null) {
         if (filters.city != null) profiles = profiles.where('city', '==', filters.city);
@@ -34,7 +35,7 @@ export const fetchServices = (filters) => dispatch => {
 export const fetchMoreServices = (filters, lastVisible) => dispatch => {
     dispatch({ type: REFRESHING_SERVICES });
 
-    let profiles = firestore().collection('profiles');
+    let profiles = firestore().collection(COLLECTIONS.PROFILES);
 
     if (filters != null) {
         if (filters.city != null) profiles = profiles.where('city', '==', filters.city);

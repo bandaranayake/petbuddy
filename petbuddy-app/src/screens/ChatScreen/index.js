@@ -9,6 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 import { theme } from '../../core/theme';
 import * as ROLES from '../../constants/roles';
 import * as GLOBAL from '../../constants/global';
+import * as COLLECTIONS from '../../constants/collections';
 import ChatBubble from '../../components/ChatBubble';
 import PetCard from '../../components/PetCard';
 
@@ -21,9 +22,9 @@ function ChatScreen(props) {
 
     useEffect(() => {
         const messagesListener = firestore()
-            .collection('bookings')
+            .collection(COLLECTIONS.BOOKINGS)
             .doc(bookingid)
-            .collection('messages')
+            .collection(COLLECTIONS.MESSAGES)
             .orderBy('timestamp')
             .onSnapshot(snapshot => {
                 if (!snapshot.metadata.hasPendingWrites) {
@@ -78,9 +79,9 @@ function ChatScreen(props) {
             };
 
             firestore()
-                .collection('bookings')
+                .collection(COLLECTIONS.BOOKINGS)
                 .doc(bookingid)
-                .collection('messages')
+                .collection(COLLECTIONS.MESSAGES)
                 .add(message)
                 .then(setMessageText(''));
         }
@@ -88,7 +89,7 @@ function ChatScreen(props) {
 
     const updateStatus = (newStatus) => {
         firestore()
-            .collection('bookings')
+            .collection(COLLECTIONS.BOOKINGS)
             .doc(bookingid)
             .update({ status: newStatus });
     }

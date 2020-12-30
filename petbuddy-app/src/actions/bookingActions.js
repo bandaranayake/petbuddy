@@ -1,11 +1,12 @@
 import firestore from '@react-native-firebase/firestore';
 import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS, FETCH_UPDATED_BOOKINGS } from './types';
+import * as COLLECTIONS from '../constants/collections';
 
 export const fetchBookings = (filter, details) => dispatch => {
     dispatch({ type: LOADING_BOOKINGS });
 
     let bookings = firestore()
-        .collection('bookings')
+        .collection(COLLECTIONS.BOOKINGS)
         .where(details.role, '==', details.uid);
 
     if (filter !== null) {
@@ -32,7 +33,7 @@ export const fetchMoreBookings = (filter, details, lastVisible) => dispatch => {
     dispatch({ type: REFRESHING_BOOKINGS });
 
     let bookings = firestore()
-        .collection('bookings')
+        .collection(COLLECTIONS.BOOKINGS)
         .where(details.role, '==', details.uid);
 
     if (filter !== null) {

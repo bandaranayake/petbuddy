@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { fetchBookings, fetchMoreBookings, updateBookings } from '../../actions/bookingActions';
 import { theme } from '../../core/theme';
+import * as COLLECTIONS from '../../constants/collections';
 import * as GLOBAL from '../../constants/global';
 import * as ROUTES from '../../constants/routes';
 import Dropdown from '../../components/Dropdown';
@@ -27,7 +28,7 @@ function BookingScreen(props) {
 
     useEffect(() => {
         const messagesListener = firestore()
-            .collection('bookings')
+            .collection(COLLECTIONS.BOOKINGS)
             .where(props.details.role, '==', props.details.uid)
             .orderBy(firestore.FieldPath.documentId())
             .onSnapshot(snapshot => {

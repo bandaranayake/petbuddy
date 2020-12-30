@@ -1,11 +1,12 @@
 import firestore from '@react-native-firebase/firestore';
 import { LOADING_PROFILE, CLEAR_PROFILE, FETCH_PROFILE, SWITCH_PROFILE } from './types';
+import * as COLLECTIONS from '../constants/collections';
 
 export const fetchProfile = (uid) => dispatch => {
     dispatch({ type: LOADING_PROFILE });
 
     firestore()
-        .collection('profiles')
+        .collection(COLLECTIONS.PROFILES)
         .doc(uid)
         .get()
         .then(doc => {
