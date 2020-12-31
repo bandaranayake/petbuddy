@@ -16,7 +16,7 @@ function BookingScreen(props) {
     const navigation = useNavigation();
     const [filter, _setFilter] = useState(null);
 
-    const filterRef = React.useRef(filter);
+    const filterRef = useRef(filter);
     const setFilter = data => {
         filterRef.current = data;
         _setFilter(data);

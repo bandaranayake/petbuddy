@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, IconButton, Text, TextInput } from 'react-native-paper';
 import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { updateStatus } from '../../actions/bookingActions';
 import firestore from '@react-native-firebase/firestore';
@@ -57,14 +58,14 @@ function ChatScreen(props) {
     const renderActionButtons = () => {
         if (props.profile.role === ROLES.PETOWNER && details.status === 1) {
             return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
-                <Button mode="contained" color='#3BB273' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(4)}>Complete Order</Button>
-                <Button mode="contained" color='#E1BC29' dark={true} style={{ marginLeft: 2 }} onPress={() => updateStatus(3)}>Cancel Order</Button>
+                <Button mode='contained' color='#3BB273' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(4)}>Complete Order</Button>
+                <Button mode='contained' color='#E1BC29' dark={true} style={{ marginLeft: 2 }} onPress={() => updateStatus(3)}>Cancel Order</Button>
             </View>
         }
         else if (props.profile.role === ROLES.PETSITTER && details.status === 0) {
             return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
-                <Button mode="contained" color='#4D9DE0' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(1)}>Accept Order</Button>
-                <Button mode="contained" color='#E15554' style={{ marginLeft: 2 }} onPress={() => updateStatus(2)}>Reject Order</Button>
+                <Button mode='contained' color='#4D9DE0' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(1)}>Accept Order</Button>
+                <Button mode='contained' color='#E15554' style={{ marginLeft: 2 }} onPress={() => updateStatus(2)}>Reject Order</Button>
             </View>
         }
         return null;
@@ -122,12 +123,12 @@ function ChatScreen(props) {
                     <View style={styles.col}>
                         <Icon1 name='calendar-today' size={20} color='black' style={styles.icon} />
                         <Text>From: </Text>
-                        <Text>{details.fromDate}</Text>
+                        <Text>{(details.fromDate != undefined) ? moment(details.fromDate.toDate()).format('YYYY-MM-DD') : null}</Text>
                     </View>
                     <View style={styles.col}>
                         <Icon1 name='calendar-today' size={20} color='black' style={styles.icon} />
                         <Text>To: </Text>
-                        <Text>{details.toDate}</Text>
+                        <Text>{(details.toDate != undefined) ? moment(details.toDate.toDate()).format('YYYY-MM-DD') : null}</Text>
                     </View>
                 </View>
                 <View style={styles.row}>
