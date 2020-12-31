@@ -4,7 +4,9 @@ import * as ROLES from '../constants/roles';
 const initailState = {
     isLoading: false,
     details: null,
+    pets: [],
     currentProfile: null,
+    token: null,
 }
 
 export default function (state = initailState, action) {
@@ -19,13 +21,18 @@ export default function (state = initailState, action) {
             return {
                 ...state,
                 isLoading: false,
-                details: action.payload,
                 currentProfile: ROLES.PETOWNER,
+                details: action.payload.details,
+                pets: action.payload.pets,
+                token: action.payload.token,
             };
         case CLEAR_PROFILE:
             return {
                 ...state,
                 details: null,
+                pets: [],
+                currentProfile: null,
+                token: null,
             };
         case SWITCH_PROFILE:
             return {

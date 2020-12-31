@@ -1,22 +1,29 @@
-import firestore from '@react-native-firebase/firestore';
+import axios from 'axios';
 import { LOADING_PROFILE, CLEAR_PROFILE, FETCH_PROFILE, SWITCH_PROFILE } from './types';
-import * as COLLECTIONS from '../constants/collections';
+import { BASE_URL } from '../utils/firebase';
 
-export const fetchProfile = (uid) => dispatch => {
+export const fetchProfile = (uid, token) => dispatch => {
     dispatch({ type: LOADING_PROFILE });
 
-    firestore()
-        .collection(COLLECTIONS.PROFILES)
-        .doc(uid)
-        .get()
-        .then(doc => {
-            if (doc.exists) {
+    axios.post(BASE_URL + 'api/profile', { 'uid': uid },
+        {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'text/plain'
+            }
+        })
+        .then((res) => {
+            if (res.status === 200) {
+                let pets = res.data.pets;
+                delete res.data.pets;
+
                 dispatch({
                     type: FETCH_PROFILE,
-                    payload: { uid: uid, ...doc.data() }
-                })
+                    payload: { details: res.data, pets: pets, token: token }
+                });
             }
-        });
+        })
+        .catch((error) => { });
 }
 
 export const clearProfile = () => dispatch => {
