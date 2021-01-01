@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button as PaperButton, Dialog, Divider, Portal, Title, TextInput } from 'react-native-paper';
-import RNPickerSelect from 'react-native-picker-select';
+import { Button as PaperButton, Dialog, Portal, Title, TextInput } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { theme } from '../../core/theme';
@@ -12,6 +11,7 @@ import * as COLLECTIONS from '../../constants/collections';
 import * as GLOBAL from '../../constants/global';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
+import DropdownCustom from '../../components/DropdownCustom';
 
 function Signup2Screen(props) {
     const [details, setDetails] = useState({
@@ -95,18 +95,7 @@ function Signup2Screen(props) {
                 <TextInput mode='flat' label='First Name' placeholder='Your first name' style={styles.input} onChangeText={(text) => setDetails({ ...details, fname: text.trim() })} />
                 <TextInput mode='flat' label='Last Name' placeholder='Your last name' style={styles.input} onChangeText={(text) => setDetails({ ...details, lname: text.trim() })} />
                 <TextInput mode='flat' label='Phone Number' placeholder='Your phone number' style={styles.input} onChangeText={(text) => setDetails({ ...details, phone: text.trim() })} />
-                <View style={{ marginTop: 30 }}>
-                    {(details.city != null) ? <Text style={{ fontSize: 12, marginLeft: 10, color: theme.colors.placeholder }}>Current City</Text> : null}
-                    <RNPickerSelect
-                        placeholder={{ label: 'Current City', value: null }}
-                        onValueChange={(value) => setDetails({ ...details, city: value })}
-                        style={{ ...pickerSelectStyles }}
-                        useNativeAndroidPickerStyle={false}
-                        hideIcon={true}
-                        items={GLOBAL.DISTRICTS}
-                    />
-                    <Divider style={{ height: 1, backgroundColor: theme.colors.secondary }} />
-                </View>
+                <DropdownCustom title='Current City' items={GLOBAL.DISTRICTS} style={{ marginTop: 30 }} onValueChange={(value) => setDetails({ ...details, city: value })} />
                 <Button mode='contained' style={{ marginTop: 25 }} onPress={() => Signup()}>Sign Up</Button>
             </View>
             <Portal>
@@ -123,21 +112,6 @@ function Signup2Screen(props) {
         </Background >
     );
 }
-
-const pickerSelectStyles = StyleSheet.create({
-    inputAndroid: {
-        height: 40,
-        fontSize: 16,
-        fontWeight: '600',
-        padding: 10,
-        marginBottom: 3,
-        backgroundColor: theme.colors.background,
-        color: theme.colors.onBackground,
-    },
-    placeholder: {
-        color: theme.colors.placeholder,
-    },
-});
 
 const styles = StyleSheet.create({
     title: {
