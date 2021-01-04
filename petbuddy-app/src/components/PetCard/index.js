@@ -27,11 +27,9 @@ function PetCard(props) {
 
     return (
         <View style={{ flexDirection: 'column', alignItems: (props.side === 'left') ? 'flex-start' : 'flex-end' }}>
-            <View style={styles.container}>
-                <View style={styles.innerContainer}>
-                    {props.side === 'left' ? renderDetails(props.type, props.name, props.gender, props.birthday) : renderAvatar('right')}
-                    {props.side === 'left' ? renderAvatar('left') : renderDetails(props.type, props.name, props.gender, props.birthday)}
-                </View>
+            <View style={styles.innerContainer}>
+                {props.side === 'left' ? renderDetails(props.type, props.name, props.gender, props.birthday) : renderAvatar('right')}
+                {props.side === 'left' ? renderAvatar('left') : renderDetails(props.type, props.name, props.gender, props.birthday)}
             </View>
         </View>
     );
