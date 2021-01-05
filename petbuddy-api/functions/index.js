@@ -4,6 +4,7 @@ const cors = require("cors");
 const authMiddleware = require("./auth-middleware");
 const firebase = require("./firebase/admin");
 const COLLECTIONS = require('./constant/collections');
+const ROLES = require('./constant/roles');
 
 const app = express();
 const db = firebase.firestore();
@@ -14,11 +15,7 @@ app.use("/", authMiddleware);
 
 app.post("/api/profile", (request, response) => {
     try {
-        console.log(request.body);
-
         let uid = JSON.parse(request.body).uid;
-
-        console.log(uid);
 
         Promise.all([fetchProfiles(uid), fetchPets(uid)])
             .then((values) => {
@@ -41,6 +38,54 @@ app.post("/api/profile", (request, response) => {
                 data.pets = pets;
 
                 return response.status(200).json(data);
+            })
+            .catch(() => response.status(500));
+
+    } catch (error) {
+        console.log(error);
+        return response.status(400).send();
+    }
+});
+
+app.post("/api/petsitter", (request, response) => {
+    try {
+        const data = JSON.parse(request.body);
+        const uid = data.uid;
+        const preferences = data.preferences;
+        const petTypes = data.pettypes;
+        const services = data.services;
+        const fees = data.fees;
+        const about = data.about;
+
+        let _petTypes = [];
+        let _services = {};
+        let _fees = {};
+
+        services.forEach((service, i) => _services[i] = service);
+
+        petTypes.forEach((petType, i) => {
+            if (petType === true) {
+                _petTypes.push(i);
+            }
+        });
+
+        fees.forEach((fee, i) => {
+            if (services[i] === true) {
+                _fees[i] = fee;
+            }
+        });
+
+        var batch = db.batch();
+
+        var profilesRef = db.collection(COLLECTIONS.PROFILES).doc(uid);
+        batch.update(profilesRef, { rating: 0, jobcount: 0, level: 0, services: _services, pets: _petTypes, role: ROLES.PETSITTER });
+
+        var servicesRef = db.collection(COLLECTIONS.SERVICES).doc(uid);
+        batch.set(servicesRef, { about: about, preferences: preferences, services: _fees }, { merge: true });
+
+        batch.commit()
+            .then(() => {
+                return response.status(200).send();
             })
             .catch(() => response.status(500));
 

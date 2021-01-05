@@ -15,6 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 function BookingScreen(props) {
     const navigation = useNavigation();
     const [filter, _setFilter] = useState(null);
+    const [hasLoaded, sethasLoaded] = useState(false);
 
     const filterRef = useRef(filter);
     const setFilter = data => {
@@ -23,13 +24,21 @@ function BookingScreen(props) {
     };
 
     useEffect(() => {
-        props.fetchBookings(filter, props.details);
+        if (hasLoaded) {
+            props.fetchBookings(filter, props.current, props.details.uid);
+        }
+    }, [props.current])
+
+    useEffect(() => {
+        if (hasLoaded) {
+            props.fetchBookings(filter, props.current, props.details.uid);
+        }
     }, [filter])
 
     useEffect(() => {
         const messagesListener = firestore()
             .collection(COLLECTIONS.BOOKINGS)
-            .where(props.details.role, '==', props.details.uid)
+            .where(props.current, '==', props.details.uid)
             .orderBy('fromDate', 'desc')
             .onSnapshot(snapshot => {
                 let c = [];
@@ -46,6 +55,7 @@ function BookingScreen(props) {
                 }
             })
 
+        sethasLoaded(true);
         return () => messagesListener();
     }, [])
 
@@ -69,7 +79,7 @@ function BookingScreen(props) {
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
-                        if (props.isRefreshing == false) props.fetchMoreBookings(filter, props.details, props.bookings[props.bookings.length - 1].fromDate)
+                        if (props.isRefreshing == false) props.fetchMoreBookings(filter, props.current, props.details.uid, props.bookings[props.bookings.length - 1].fromDate)
                     }}
                     onEndReachedThreshold={0.5}
                     refreshing={props.isRefreshing}
@@ -81,6 +91,7 @@ function BookingScreen(props) {
 
 const mapStateToProps = state => ({
     details: state.profile.details,
+    current: state.profile.currentProfile,
     bookings: state.bookings.items,
     isLoading: state.bookings.isLoading,
     isRefreshing: state.bookings.isRefreshing,
