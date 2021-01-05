@@ -5,7 +5,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { theme } from '../../core/theme';
 
 function DropdownCustom(props) {
-    const [selectedValue, setSelectedValue] = useState(null);
+    const [selectedValue, setSelectedValue] = useState(props.value);
 
     const onValueChange = (value) => {
         setSelectedValue(value);
@@ -23,6 +23,8 @@ function DropdownCustom(props) {
                 useNativeAndroidPickerStyle={false}
                 hideIcon={true}
                 items={props.items}
+                key={props.value}
+                value={props.value}
                 onValueChange={(value) => onValueChange(value)}
             />
             <Divider style={styles.divider} />

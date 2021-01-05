@@ -21,7 +21,7 @@ function Calendar(props) {
         markedDates[date.dateString] = { selected: true, selectedColor: theme.colors.primary };
         setSelectedDate(markedDates);
         setTextColor(theme.colors.onSurface);
-        setDisplayText(serviceDate.format("YYYY.MM.DD"));
+        setDisplayText(serviceDate.format('YYYY.MM.DD'));
         props.onValueChange(date);
     };
 
