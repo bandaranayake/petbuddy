@@ -17,10 +17,11 @@ app.post("/api/profile", (request, response) => {
     try {
         let uid = JSON.parse(request.body).uid;
 
-        Promise.all([fetchProfiles(uid), fetchPets(uid)])
+        Promise.all([fetchProfiles(uid), fetchPets(uid), fetchService(uid)])
             .then((values) => {
                 let data = {};
                 let pets = [];
+                let services = {};
 
                 if (values[0].exists) {
                     data = values[0].data();
@@ -34,8 +35,13 @@ app.post("/api/profile", (request, response) => {
                     pets.push(pet.data());
                 });
 
+                if (values[2].exists) {
+                    services = values[2].data();
+                }
+
                 data.uid = uid
-                data.pets = pets;
+                data.ownedPets = pets;
+                data.petsitter = services;
 
                 return response.status(200).json(data);
             })
@@ -105,6 +111,12 @@ const fetchPets = (uid) => {
     return db.collection(COLLECTIONS.PROFILES)
         .doc(uid)
         .collection(COLLECTIONS.PETS)
+        .get();
+}
+
+const fetchService = (uid) => {
+    return db.collection(COLLECTIONS.SERVICES)
+        .doc(uid)
         .get();
 }
 

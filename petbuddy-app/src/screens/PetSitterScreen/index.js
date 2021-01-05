@@ -13,7 +13,7 @@ function PetSitterScreen(props) {
     const [preferences, setPreferences] = useState([false, false, false, false]);
     const [petTypes, setPetTypes] = useState([false, false, false, false, false]);
     const [servicesCbx, setServicesCbx] = useState([false, false, false, false, false]);
-    const [fees, setFees] = useState([0, 0, 0, 0, 0]);
+    const [fees, setFees] = useState(['0', '0', '0', '0', '0']);
     const [about, setAbout] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -44,7 +44,6 @@ function PetSitterScreen(props) {
         }
         else {
             let tmp = '';
-            let _fees = [...fees];
 
             servicesCbx.forEach((service, i) => {
                 if (service) {
@@ -52,9 +51,6 @@ function PetSitterScreen(props) {
 
                     if (isNaN(parsed) || parsed < 0) {
                         tmp += 'Invalid charge for the service: ' + GLOBAL.SERVICES[i].label + '\n';
-                    }
-                    else {
-                        _fees[i] = parsed;
                     }
                 }
             });
@@ -71,7 +67,7 @@ function PetSitterScreen(props) {
                     'preferences': preferences,
                     'services': servicesCbx,
                     'pettypes': petTypes,
-                    'fees': _fees,
+                    'fees': fees,
                     'about': about,
                 },
                     {
@@ -140,7 +136,7 @@ function PetSitterScreen(props) {
                 <Checkbox.Item label={service.label} color={theme.colors.primary} labelStyle={{ color: theme.colors.text }} status={(servicesCbx[i]) ? 'checked' : 'unchecked'} onPress={() => toggleServices(i)} />
                 {
                     (servicesCbx[i]) ?
-                        <TextInput mode='flat' label={service.basis} placeholder={service.label} style={{ backgroundColor: theme.colors.background }} value={fees[i].toString()} onChangeText={(value) => onValueChange(value, i)} />
+                        <TextInput mode='flat' label={service.basis} placeholder={service.label} style={{ backgroundColor: theme.colors.background }} value={fees[i]} onChangeText={(value) => onValueChange(value, i)} />
                         : null
                 }
             </View>

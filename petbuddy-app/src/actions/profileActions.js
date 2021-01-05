@@ -14,8 +14,8 @@ export const fetchProfile = (uid, token) => dispatch => {
         })
         .then((res) => {
             if (res.status === 200) {
-                let pets = res.data.pets;
-                delete res.data.pets;
+                let pets = res.data.ownedPets;
+                delete res.data.ownedPets;
 
                 dispatch({
                     type: FETCH_PROFILE,
