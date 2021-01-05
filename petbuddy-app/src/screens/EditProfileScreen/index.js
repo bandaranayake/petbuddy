@@ -1,23 +1,153 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { Avatar, Checkbox, Divider, Title, TextInput } from 'react-native-paper';
+import { Button as PaperButton, Avatar, Checkbox, Divider, Dialog, Portal, Text, Title, TextInput } from 'react-native-paper';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import { fetchProfile } from '../../actions/profileActions';
 import { theme } from '../../core/theme';
+import { ValidatePhone } from '../../utils/validation';
 import * as GLOBAL from '../../constants/global';
+import * as ROLES from '../../constants/roles';
+import * as ROUTES from '../../constants/routes';
+import { BASE_URL } from '../../utils/firebase';
 import Button from '../../components/Button';
 import DropdownCustom from '../../components/DropdownCustom';
 
 function EditProfileScreen(props) {
-    const [details, setDetails] = useState({
-        fname: '',
-        lname: '',
-        phone: '',
-        city: null,
-    });
+    const petsitter = props.profile.petsitter;
 
-    const [preferences, setPreferences] = useState([false, false, false, false]);
-    const [petTypes, setPetTypes] = useState([false, false, false, false, false]);
-    const [servicesCbx, setServicesCbx] = useState([false, false, false, false, false]);
-    const [fees, setFees] = useState(['0', '0', '0', '0', '0']);
+    const [details, setDetails] = useState({
+        fname: props.profile.firstname,
+        lname: props.profile.lastname,
+        phone: props.profile.phone,
+        city: props.profile.city,
+    });
+    const [preferences, setPreferences] = useState([]);
+    const [petTypes, setPetTypes] = useState([]);
+    const [servicesCbx, setServicesCbx] = useState([]);
+    const [fees, setFees] = useState([]);
+    const [about, setAbout] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [visible, setVisible] = useState(false);
+
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
+
+    useEffect(() => {
+        if (props.profile.role === ROLES.PETSITTER) {
+            let _petsTypes = [false, false, false, false, false];
+            let _fees = ['0', '0', '0', '0', '0'];
+            let _servicesCbx = [];
+
+            props.profile.pets.forEach((index) => _petsTypes[index] = true);
+
+            Object.keys(petsitter.services).forEach(key => {
+                let _key = parseInt(key, 10);
+
+                _fees[_key] = petsitter.services[key];
+                _servicesCbx[_key] = true;
+            });
+
+            setAbout(petsitter.about);
+            setPreferences(petsitter.preferences);
+            setFees(_fees);
+            setPetTypes(_petsTypes);
+            setServicesCbx(_servicesCbx);
+        }
+    }, [])
+
+    function UpdateDetails() {
+        let typeCount = 0;
+        let servicesCount = 0;
+
+        petTypes.forEach(e => typeCount = (e) ? typeCount + 1 : typeCount);
+        servicesCbx.forEach(e => servicesCount = (e) ? servicesCount + 1 : servicesCount);
+
+        if (details.fname.length < 1) {
+            setError('The first name field cannot be empty.');
+            showDialog();
+        }
+        else if (!details.fname.match(/^[a-zA-Z]+$/)) {
+            setError('The first name can only contain letters.');
+            showDialog();
+        }
+        else if (details.lname.length < 1) {
+            setError('The last name field cannot be empty.');
+            showDialog();
+        }
+        else if (!details.lname.match(/^[a-zA-Z]+$/)) {
+            setError('The last name can only contain letters.');
+            showDialog();
+        }
+        else if (!ValidatePhone(details.phone.trim())) {
+            setError('Invalid phone number. Please provide a valid phone number.');
+            showDialog();
+        }
+        else if (details.city == null) {
+            setError('Please select your current city.');
+            showDialog();
+        }
+        else if (about.length < 1) {
+            setError('The about field cannot be empty.');
+            showDialog();
+        }
+        else if (typeCount < 1) {
+            setError('You need to select at least one Pet type.');
+            showDialog();
+        }
+        else if (servicesCount < 1) {
+            setError('You need to select at least one Service offering.');
+            showDialog();
+        }
+        else {
+            let tmp = '';
+
+            servicesCbx.forEach((service, i) => {
+                if (service) {
+                    const parsed = parseInt(fees[i], 10);
+
+                    if (isNaN(parsed) || parsed < 0) {
+                        tmp += 'Invalid charge for the service: ' + GLOBAL.SERVICES[i].label + '\n';
+                    }
+                }
+            });
+
+            if (tmp.length > 0) {
+                setError(tmp);
+                showDialog();
+            }
+            else {
+                setIsLoading(true);
+
+                axios.post(BASE_URL + 'api/petsitter', {
+                    'uid': props.profile.uid,
+                    'preferences': preferences,
+                    'services': servicesCbx,
+                    'pettypes': petTypes,
+                    'fees': fees,
+                    'about': about,
+                },
+                    {
+                        headers: {
+                            'Authorization': 'Bearer ' + props.token,
+                            'Content-Type': 'text/plain'
+                        }
+                    })
+                    .then((res) => {
+                        if (res.status === 200) {
+                            props.fetchProfile(props.profile.uid, props.token);
+                        }
+                        else {
+                            setError('Something went wrong. Please try again later.');
+                            showDialog();
+                        }
+                        isLoading(false);
+                    })
+                    .catch((error) => { });
+            }
+        }
+    }
 
     const togglePreferences = (key) => {
         let cloned = [...preferences];
@@ -80,27 +210,47 @@ function EditProfileScreen(props) {
             <Divider />
             <View style={{ paddingVertical: 20 }}>
                 <Title style={styles.title}>Basic Details</Title>
-                <TextInput mode='flat' label='First Name' placeholder='Your first name' style={styles.input} onChangeText={(text) => setDetails({ ...details, fname: text.trim() })} />
-                <TextInput mode='flat' label='Last Name' placeholder='Your last name' style={styles.input} onChangeText={(text) => setDetails({ ...details, lname: text.trim() })} />
-                <TextInput mode='flat' label='Phone Number' placeholder='Your phone number' style={styles.input} onChangeText={(text) => setDetails({ ...details, phone: text.trim() })} />
-                <DropdownCustom title='Current City' items={GLOBAL.DISTRICTS} style={{ marginTop: 14 }} onValueChange={(value) => setDetails({ ...details, city: value })} />
+                <TextInput mode='flat' label='First Name' placeholder='Your first name' style={styles.input} value={details.fname} onChangeText={(text) => setDetails({ ...details, fname: text.trim() })} />
+                <TextInput mode='flat' label='Last Name' placeholder='Your last name' style={styles.input} value={details.lname} onChangeText={(text) => setDetails({ ...details, lname: text.trim() })} />
+                <TextInput mode='flat' label='Phone Number' placeholder='Your phone number' style={styles.input} value={details.phone} onChangeText={(text) => setDetails({ ...details, phone: text.trim() })} />
+                <DropdownCustom title='Current City' items={GLOBAL.DISTRICTS} style={{ marginTop: 14 }} value={details.city} onValueChange={(value) => setDetails({ ...details, city: value })} />
             </View>
-            <View style={{ paddingVertical: 20 }}>
-                <Title style={styles.title}>Pet Sitter</Title>
-                <Title style={{ marginTop: 20, marginBottom: 5 }}>About</Title>
-                <TextInput mode='flat' label='About Me' placeholder='Short description about yourself' multiline style={styles.input} />
-                <Title style={{ marginTop: 20 }}>Preferences</Title>
-                {renderPreferences()}
-                <Title style={{ marginTop: 20 }}>Supported Pet Types</Title>
-                {renderPetTypes()}
-                <Title style={{ marginTop: 20 }}>Services</Title>
-                {renderServices()}
-                <Button mode='contained' style={{ marginTop: 25, marginBottom: 5 }} >Update Details</Button>
-                <Button mode='contained' style={{ marginVertical: 5 }} >Advanced Options</Button>
-            </View>
+            {
+                (props.profile.role === ROLES.PETSITTER) ?
+                    <View style={{ paddingVertical: 20 }}>
+                        <Title style={styles.title}>Pet Sitter</Title>
+                        <Title style={{ marginTop: 20, marginBottom: 5 }}>About</Title>
+                        <TextInput mode='flat' label='About Me' placeholder='Short description about yourself' value={about} onChangeText={(text) => setAbout(text.trim())} multiline style={styles.input} />
+                        <Title style={{ marginTop: 20 }}>Preferences</Title>
+                        {renderPreferences()}
+                        <Title style={{ marginTop: 20 }}>Supported Pet Types</Title>
+                        {renderPetTypes()}
+                        <Title style={{ marginTop: 20 }}>Services</Title>
+                        {renderServices()}
+                    </View>
+                    : null
+            }
+            <Button mode='contained' style={{ marginTop: 25, marginBottom: 5 }} onPress={() => UpdateDetails()} >Update Details</Button>
+            <Button mode='contained' style={{ marginVertical: 5 }} onPress={() => props.navigation.navigate(ROUTES.PETS)}>Advanced Options</Button>
+            <Portal>
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Title>Registration Error</Dialog.Title>
+                    <Dialog.Content>
+                        <Text>{error}</Text>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <PaperButton onPress={hideDialog}>Ok</PaperButton>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
         </ScrollView >
     );
 }
+
+const mapStateToProps = state => ({
+    profile: state.profile.details,
+    token: state.profile.token,
+});
 
 const styles = StyleSheet.create({
     title: {
@@ -123,4 +273,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default EditProfileScreen;
+export default connect(mapStateToProps, { fetchProfile })(EditProfileScreen);
