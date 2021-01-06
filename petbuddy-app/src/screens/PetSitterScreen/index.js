@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Button as PaperButton, Checkbox, Dialog, Portal, Text, Title, TextInput } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { fetchProfile } from '../../actions/profileActions';
 import axios from 'axios';
+import { fetchProfile } from '../../actions/profileActions';
 import { theme } from '../../core/theme';
 import * as GLOBAL from '../../constants/global';
 import { BASE_URL } from '../../utils/firebase';
@@ -12,11 +12,10 @@ import Button from '../../components/Button';
 function PetSitterScreen(props) {
     const [preferences, setPreferences] = useState([false, false, false, false]);
     const [petTypes, setPetTypes] = useState([false, false, false, false, false]);
-    const [servicesCbx, setServicesCbx] = useState([false, false, false, false, false]);
-    const [fees, setFees] = useState(['0', '0', '0', '0', '0']);
+    const [servicesCbx, setServicesCbx] = useState([false, false, false, false]);
+    const [fees, setFees] = useState(['0', '0', '0', '0']);
     const [about, setAbout] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
     const [error, setError] = useState('');
     const [visible, setVisible] = useState(false);
 
@@ -62,7 +61,7 @@ function PetSitterScreen(props) {
             else {
                 setIsLoading(true);
 
-                axios.post(BASE_URL + 'api/petsitter', {
+                axios.post(BASE_URL + 'api/petsitter/register', {
                     'uid': props.profile.uid,
                     'preferences': preferences,
                     'services': servicesCbx,

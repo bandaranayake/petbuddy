@@ -37,7 +37,7 @@ function EditProfileScreen(props) {
     useEffect(() => {
         if (props.profile.role === ROLES.PETSITTER) {
             let _petsTypes = [false, false, false, false, false];
-            let _fees = ['0', '0', '0', '0', '0'];
+            let _fees = ['0', '0', '0', '0'];
             let _servicesCbx = [];
 
             props.profile.pets.forEach((index) => _petsTypes[index] = true);
@@ -46,7 +46,7 @@ function EditProfileScreen(props) {
                 let _key = parseInt(key, 10);
 
                 _fees[_key] = petsitter.services[key];
-                _servicesCbx[_key] = true;
+                _servicesCbx[_key] = props.profile.services[_key];
             });
 
             setAbout(petsitter.about);
@@ -88,15 +88,15 @@ function EditProfileScreen(props) {
             setError('Please select your current city.');
             showDialog();
         }
-        else if (about.length < 1) {
+        else if (props.profile.role === ROLES.PETSITTER && about.length < 1) {
             setError('The about field cannot be empty.');
             showDialog();
         }
-        else if (typeCount < 1) {
+        else if (props.profile.role === ROLES.PETSITTER && typeCount < 1) {
             setError('You need to select at least one Pet type.');
             showDialog();
         }
-        else if (servicesCount < 1) {
+        else if (props.profile.role === ROLES.PETSITTER && servicesCount < 1) {
             setError('You need to select at least one Service offering.');
             showDialog();
         }
@@ -120,14 +120,23 @@ function EditProfileScreen(props) {
             else {
                 setIsLoading(true);
 
-                axios.post(BASE_URL + 'api/petsitter', {
-                    'uid': props.profile.uid,
-                    'preferences': preferences,
-                    'services': servicesCbx,
-                    'pettypes': petTypes,
-                    'fees': fees,
-                    'about': about,
-                },
+                let data = {};
+                data['uid'] = props.profile.uid;
+                data['details'] = details;
+
+                if (props.profile.role === ROLES.PETSITTER) {
+                    data['preferences'] = preferences;
+                    data['services'] = servicesCbx;
+                    data['pettypes'] = petTypes;
+                    data['fees'] = fees;
+                    data['about'] = about;
+                    data['role'] = ROLES.PETSITTER;
+                }
+                else {
+                    data['role'] = ROLES.PETOWNER;
+                }
+
+                axios.post(BASE_URL + 'api/profile/update', data,
                     {
                         headers: {
                             'Authorization': 'Bearer ' + props.token,

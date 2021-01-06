@@ -31,8 +31,9 @@ app.post("/api/profile", (request, response) => {
                 }
 
                 values[1].forEach(pet => {
-                    pet.data().id = pet.id;
-                    pets.push(pet.data());
+                    let _pet = Object.assign({}, pet.data());
+                    _pet.id = pet.id;
+                    pets.push(_pet);
                 });
 
                 if (values[2].exists) {
@@ -53,7 +54,7 @@ app.post("/api/profile", (request, response) => {
     }
 });
 
-app.post("/api/petsitter", (request, response) => {
+app.post("/api/petsitter/register", (request, response) => {
     try {
         const data = JSON.parse(request.body);
         const uid = data.uid;
@@ -94,6 +95,71 @@ app.post("/api/petsitter", (request, response) => {
                 return response.status(200).send();
             })
             .catch(() => response.status(500));
+
+    } catch (error) {
+        console.log(error);
+        return response.status(400).send();
+    }
+});
+
+app.post("/api/profile/update", (request, response) => {
+    try {
+        const data = JSON.parse(request.body);
+        const uid = data.uid;
+        const role = data.role;
+        const details = data.details;
+
+        if (role === ROLES.PETOWNER) {
+            db.collection(COLLECTIONS.PROFILES)
+                .doc(uid)
+                .update({ firstname: details.fname, lastname: details.lname, phone: details.phone, city: details.city })
+                .then(() => {
+                    return response.status(200).send();
+                })
+                .catch(() => response.status(500));
+        }
+        else {
+            const preferences = data.preferences;
+            const petTypes = data.pettypes;
+            const services = data.services;
+            const fees = data.fees;
+            const about = data.about;
+
+            let _petTypes = [];
+            let _services = {};
+            let _fees = {};
+
+            services.forEach((service, i) => _services[i] = service);
+
+            petTypes.forEach((petType, i) => {
+                if (petType === true) {
+                    _petTypes.push(i);
+                }
+            });
+
+            fees.forEach((fee, i) => {
+                if (services[i] === true) {
+                    _fees[i] = fee;
+                }
+            });
+
+            var batch = db.batch();
+
+            var profilesRef = db.collection(COLLECTIONS.PROFILES).doc(uid);
+            batch.update(profilesRef, {
+                firstname: details.fname, lastname: details.lname, phone: details.phone, city: details.city,
+                services: _services, pets: _petTypes
+            });
+
+            var servicesRef = db.collection(COLLECTIONS.SERVICES).doc(uid);
+            batch.set(servicesRef, { about: about, preferences: preferences, services: _fees }, { merge: true });
+
+            batch.commit()
+                .then(() => {
+                    return response.status(200).send();
+                })
+                .catch(() => response.status(500));
+        }
 
     } catch (error) {
         console.log(error);
