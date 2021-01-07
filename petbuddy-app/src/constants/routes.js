@@ -11,4 +11,5 @@ export const CHAT = 'Chat';
 export const MAKE_BOOKING = 'MakeBooking';
 export const SETTINGS = 'Settings';
 export const PROFILE = 'Profile';
+export const PETS = 'Pets';
 export const REGISTER_PETSITTER = 'RegisterPetsitter';
