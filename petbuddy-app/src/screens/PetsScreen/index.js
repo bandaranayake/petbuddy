@@ -1,17 +1,111 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { Avatar, TextInput } from 'react-native-paper';
+import { Avatar, Button as PaperButton, Dialog, FAB, Portal, Text, TextInput } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { addPet, deletePet, updatePet } from '../../actions/profileActions';
+import firestore from '@react-native-firebase/firestore';
 import { theme } from '../../core/theme';
+import * as COLLECTIONS from '../../constants/collections';
 import * as GLOBAL from '../../constants/global';
 import Button from '../../components/Button';
 import DropdownCustom from '../../components/DropdownCustom';
 import Calendar from '../../components/Calendar';
 
 function PetScreen(props) {
-    const [pets, setPets] = useState([{}, {}, {}]);
+    const [pets, setPets] = useState(props.pets);
+    const [error, setError] = useState('');
+    const [visible, setVisible] = useState(false);
 
-    const removePet = (key) => {
-        let cloned = pets.filter((_, index) => index !== key);
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
+
+    function update(key) {
+        const pet = pets[key];
+
+        if (pet.name == undefined || pet.name < 1) {
+            setError('The name field cannot be empty.');
+            showDialog();
+        }
+        else if (pet.birthday == undefined) {
+            setError('You need to select the birthday.');
+            showDialog();
+        }
+        else if (pet.gender == undefined) {
+            setError('You need to select the gender.');
+            showDialog();
+        }
+        else if (pet.type == undefined) {
+            setError('You need to select the pet type.');
+            showDialog();
+        }
+        else {
+            if (pet.id == undefined) {
+                firestore()
+                    .collection(COLLECTIONS.PROFILES)
+                    .doc(props.details.uid)
+                    .collection(COLLECTIONS.PETS)
+                    .add({
+                        name: pet.name,
+                        birthday: pet.birthday,
+                        gender: pet.gender,
+                        type: pet.type,
+                    })
+                    .then(docRef => {
+                        props.addPet(props.pets, pet, docRef.id);
+                    }).catch((error) => {
+                        setError('Something went wrong. Please try again later.');
+                        showDialog();
+                    });
+            }
+            else {
+                firestore()
+                    .collection(COLLECTIONS.PROFILES)
+                    .doc(props.details.uid)
+                    .collection(COLLECTIONS.PETS)
+                    .doc(pet.id)
+                    .update({
+                        name: pet.name,
+                        birthday: pet.birthday,
+                        gender: pet.gender,
+                        type: pet.type,
+                    })
+                    .then(() => {
+                        props.updatePet(props.pets, pet)
+                    }).catch((error) => {
+                        setError('Something went wrong. Please try again later.');
+                        showDialog();
+                    });
+            }
+        }
+    }
+
+    function removePet(key) {
+        let id = pets[key].id;
+
+        if (id == undefined) {
+            let cloned = pets.filter((_, index) => index !== key);
+            setPets(cloned);
+        }
+        else {
+            firestore()
+                .collection(COLLECTIONS.PROFILES)
+                .doc(props.details.uid)
+                .collection(COLLECTIONS.PETS)
+                .doc(id)
+                .delete()
+                .then(() => {
+                    props.deletePet(props.pets, key);
+                    setPets(pets.filter((_, index) => index !== key));
+                }).catch((error) => {
+                    setError('Something went wrong. Please try again later.');
+                    showDialog();
+                });
+        }
+    }
+
+    function addPet() {
+        let cloned = [...pets];
+        cloned.push({});
         setPets(cloned);
     }
 
@@ -27,12 +121,12 @@ function PetScreen(props) {
                 <View style={{ alignItems: 'center' }}>
                     <Avatar.Text size={100} label='CW' />
                 </View>
-                <View >
-                    <TextInput mode='flat' label='Name' placeholder='Your pet name' style={styles.input} onChangeText={(text) => setDetails(i, 'name', text.trim())} />
-                    <Calendar placeholder='Birthday' style={{ marginBottom: 15 }} onValueChange={(value) => setDetails(i, 'birthday', value)} />
-                    <DropdownCustom title='Pet Type' items={GLOBAL.PETS} style={{ marginBottom: 15 }} onValueChange={(value) => setDetails(i, 'type', value)} />
-                    <DropdownCustom title='Gender' items={GLOBAL.GENDER} style={{ marginBottom: 15 }} onValueChange={(value) => setDetails(i, 'gender', value)} />
-                    <Button mode='contained' style={{ marginVertical: 5 }}>Update Details</Button>
+                <View>
+                    <TextInput mode='flat' label='Name' placeholder='Your pet name' style={styles.input} value={pet.name} onChangeText={(text) => setDetails(i, 'name', text.trim())} />
+                    <Calendar placeholder='Birthday' style={{ marginBottom: 15 }} value={pet.birthday} onValueChange={(value) => setDetails(i, 'birthday', value.dateString)} />
+                    <DropdownCustom title='Pet Type' items={GLOBAL.PETS} style={{ marginBottom: 15 }} value={pet.type} onValueChange={(value) => setDetails(i, 'type', value)} />
+                    <DropdownCustom title='Gender' items={GLOBAL.GENDER} style={{ marginBottom: 15 }} value={pet.gender} onValueChange={(value) => setDetails(i, 'gender', value)} />
+                    <Button mode='contained' style={{ marginVertical: 5 }} onPress={() => update(i)}>Update Details</Button>
                     <Button mode='contained' style={{ marginVertical: 5 }} onPress={() => removePet(i)}>Delete Pet</Button>
                 </View>
             </View>
@@ -40,13 +134,36 @@ function PetScreen(props) {
     }
 
     return (
-        <ScrollView>
-            <View style={{ paddingVertical: 10 }}>
-                {renderPets()}
-            </View>
-        </ScrollView>
+        <View style={{ flex: 1 }}>
+            <ScrollView>
+                <View style={{ paddingVertical: 10 }}>
+                    {renderPets()}
+                </View>
+            </ScrollView>
+            <FAB
+                style={styles.fab}
+                icon='plus'
+                onPress={() => addPet()}
+            />
+            <Portal>
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Title>Registration Error</Dialog.Title>
+                    <Dialog.Content>
+                        <Text>{error}</Text>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <PaperButton onPress={hideDialog}>Ok</PaperButton>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
+        </View>
     );
 }
+
+const mapStateToProps = state => ({
+    pets: state.profile.pets,
+    details: state.profile.details,
+});
 
 const styles = StyleSheet.create({
     card: {
@@ -62,6 +179,13 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.background,
         marginBottom: 15,
     },
+    fab: {
+        position: 'absolute',
+        margin: 20,
+        right: 0,
+        bottom: 0,
+        backgroundColor: theme.colors.primary,
+    },
 });
 
-export default PetScreen;
+export default connect(mapStateToProps, { addPet, deletePet, updatePet })(PetScreen);

@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { LOADING_PROFILE, CLEAR_PROFILE, FETCH_PROFILE, SWITCH_PROFILE } from './types';
+import firestore from '@react-native-firebase/firestore';
+import { LOADING_PROFILE, CLEAR_PROFILE, FETCH_PROFILE, SWITCH_PROFILE, ADD_PET, DELETE_PET, UPDATE_PET } from './types';
+import * as COLLECTIONS from '../constants/collections';
 import { BASE_URL } from '../utils/firebase';
 
 export const fetchProfile = (uid, token) => dispatch => {
@@ -24,6 +26,34 @@ export const fetchProfile = (uid, token) => dispatch => {
             }
         })
         .catch((error) => { });
+}
+
+export const updatePet = (pets, updatedPet) => dispatch => {
+    let i = pets.findIndex(pet => pet.id === updatePet.id);
+    pets[i] = updatedPet;
+
+    dispatch({
+        type: UPDATE_PET,
+        payload: pets
+    });
+}
+
+export const addPet = (pets, pet, id) => dispatch => {
+    pet.id = id;
+    pets.push(pet);
+
+    dispatch({
+        type: ADD_PET,
+        payload: pets
+    });
+}
+
+export const deletePet = (pets, key) => dispatch => {
+    let _pets = pets.filter((_, index) => index !== key);
+    dispatch({
+        type: DELETE_PET,
+        payload: _pets
+    });
 }
 
 export const clearProfile = () => dispatch => {
