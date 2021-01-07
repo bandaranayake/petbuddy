@@ -1,27 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { Button, Divider, Dialog, Portal, Text } from 'react-native-paper';
 import { Calendar as RNCalendar } from 'react-native-calendars';
-import moment from 'moment';
 import { theme } from '../../core/theme';
 
 function Calendar(props) {
     const [visible, setVisible] = useState(false);
     const [textColor, setTextColor] = useState(theme.colors.placeholder);
-    const [displayText, setDisplayText] = useState(props.placeholder);
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [displayText, setDisplayText] = useState('');
+    const [selectedDate, setSelectedDate] = useState({});
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
 
+    useEffect(() => {
+        let markedDates = {};
+        markedDates[props.value] = { selected: true, selectedColor: theme.colors.primary };
+        setSelectedDate(markedDates);
+
+        if (props.value == undefined) {
+            setTextColor(theme.colors.placeholder);
+            setDisplayText(props.placeholder);
+        }
+        else {
+            setTextColor(theme.colors.onSurface);
+            setDisplayText(props.value);
+        }
+    }, [])
+
     const onDateChanged = (date) => {
         let markedDates = {};
-        let serviceDate = moment(date.dateString);
-
         markedDates[date.dateString] = { selected: true, selectedColor: theme.colors.primary };
         setSelectedDate(markedDates);
         setTextColor(theme.colors.onSurface);
-        setDisplayText(serviceDate.format('YYYY.MM.DD'));
+        setDisplayText(date.dateString);
         props.onValueChange(date);
     };
 
