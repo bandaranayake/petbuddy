@@ -1,7 +1,5 @@
 import axios from 'axios';
-import firestore from '@react-native-firebase/firestore';
 import { LOADING_PROFILE, CLEAR_PROFILE, FETCH_PROFILE, SWITCH_PROFILE, ADD_PET, DELETE_PET, UPDATE_PET } from './types';
-import * as COLLECTIONS from '../constants/collections';
 import { BASE_URL } from '../utils/firebase';
 
 export const fetchProfile = (uid, token) => dispatch => {

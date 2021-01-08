@@ -29,7 +29,7 @@ function ServiceScreen(props) {
                 if (doc.exists) {
                     setAbout(doc.data().about);
                     setPreferences(doc.data().preferences);
-                    setServices(doc.data().fees);
+                    setServices(doc.data().services);
                 }
             })
             .then(
@@ -50,8 +50,7 @@ function ServiceScreen(props) {
                 description={services[key] + ' LKR per day'}
                 left={props => <List.Icon {...props} icon={element.icon} />}
             />)
-        }
-        );
+        });
 
         return items;
     }
@@ -111,7 +110,7 @@ function ServiceScreen(props) {
                         <View style={{ paddingHorizontal: 44, paddingTop: 10 }}>
                             {
                                 (props.currentProfile === ROLES.PETOWNER) ?
-                                    <Button mode='contained' style={styles.button} onPress={() => props.navigation.navigate(ROUTES.MAKE_BOOKING, { services: services, uid: basicDetails.uid })}>Book</Button>
+                                    <Button mode='contained' style={styles.button} onPress={() => props.navigation.navigate(ROUTES.MAKE_BOOKING, { services: services, petSitter: basicDetails })}>Book</Button>
                                     : null
                             }
                         </View>
@@ -123,9 +122,7 @@ function ServiceScreen(props) {
 
 const mapStateToProps = state => ({
     currentProfile: state.profile.currentProfile,
-    pets: state.pets.details,
 });
-
 
 const styles = StyleSheet.create({
     container: {

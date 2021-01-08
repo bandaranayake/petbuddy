@@ -83,9 +83,13 @@ function PetSitterScreen(props) {
                             setError('Something went wrong. Please try again later.');
                             showDialog();
                         }
-                        isLoading(false);
+                        setIsLoading(false);
                     })
-                    .catch((error) => { });
+                    .catch((error) => {
+                        setIsLoading(false);
+                        setError('Something went wrong. Please try again later.');
+                        showDialog();
+                    });
             }
         }
     }
@@ -153,7 +157,7 @@ function PetSitterScreen(props) {
                 {renderPetTypes()}
                 <Title style={{ marginTop: 20 }}>Services</Title>
                 {renderServices()}
-                <Button mode='contained' style={{ marginTop: 25 }} onPress={() => RegisterPetSitter()}>Register</Button>
+                <Button mode='contained' style={{ marginTop: 25 }} loading={isLoading} onPress={() => { if (!isLoading) RegisterPetSitter() }}>Register</Button>
             </View>
             <Portal>
                 <Dialog visible={visible} onDismiss={hideDialog}>
