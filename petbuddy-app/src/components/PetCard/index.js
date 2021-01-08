@@ -12,7 +12,7 @@ function PetCard(props) {
                 <Text>Type: {GLOBAL.FindLabel(type, GLOBAL.PETS)}</Text>
                 <Text>Name: {name}</Text>
                 <Text>Gender: {GLOBAL.FindLabel(gender, GLOBAL.GENDER)}</Text>
-                <Text>Age: {moment().diff(birthday.toDate(), 'years')}</Text>
+                <Text>Age: {moment().diff(moment(birthday), 'years')}</Text>
             </View>
         );
     }
