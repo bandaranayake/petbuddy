@@ -5,6 +5,7 @@ const authMiddleware = require("./auth-middleware");
 const firebase = require("./firebase/admin");
 const COLLECTIONS = require('./constant/collections');
 const ROLES = require('./constant/roles');
+const STATUS = require('./constant/status');
 
 const app = express();
 const db = firebase.firestore();
@@ -161,6 +162,65 @@ app.post("/api/profile/update", (request, response) => {
                 .catch(() => response.status(500));
         }
 
+    } catch (error) {
+        console.log(error);
+        return response.status(400).send();
+    }
+});
+
+app.post("/api/booking", (request, response) => {
+    try {
+        const data = JSON.parse(request.body);
+        const pets = data.pets;
+
+        var statDocRef = db.collection(COLLECTIONS.BOOKINGS).doc('stat');
+
+        db.runTransaction(transaction =>
+            transaction.get(statDocRef)
+                .then(statDoc => {
+                    if (!statDoc.exists) throw new Error('Stat document does not exist');
+
+                    let newCount = statDoc.data().count + 1;
+                    var bookingsRef = db
+                        .collection(COLLECTIONS.BOOKINGS)
+                        .doc(newCount.toString());
+                    var messagesRef = db
+                        .collection(COLLECTIONS.BOOKINGS)
+                        .doc(newCount.toString())
+                        .collection(COLLECTIONS.MESSAGES);
+
+                    transaction.update(statDocRef, { count: newCount });
+
+                    transaction.create(bookingsRef, {
+                        service: data.service,
+                        fromDate: data.fromDate,
+                        toDate: data.toDate,
+                        status: STATUS.UPCOMING.value,
+                        fee: data.fee,
+                        petSitterName: data.petSitterName,
+                        petOwnerName: data.petOwnerName,
+                        PETSITTER: data.PETSITTER,
+                        PETOWNER: data.PETOWNER
+                    });
+
+                    pets.forEach((pet) => {
+                        transaction.create(messagesRef.doc(), {
+                            name: pet.name,
+                            type: pet.type,
+                            gender: pet.gender,
+                            birthday: pet.birthday,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                            sender: data.PETOWNER
+                        });
+                    });
+
+                    return null;
+                })
+                .then(() => response.status(200).send())
+                .catch(error => {
+                    console.log(error);
+                    response.status(500)
+                }))
     } catch (error) {
         console.log(error);
         return response.status(400).send();
