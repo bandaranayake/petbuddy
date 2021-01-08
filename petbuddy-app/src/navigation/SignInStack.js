@@ -8,6 +8,7 @@ import ChatScreen from '../screens/ChatScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import MainScreen from '../screens/MainScreen';
 import MakeBookingScreen from '../screens/MakeBookingScreen';
+import PetsScreen from '../screens/PetsScreen';
 import PetSitterScreen from '../screens/PetSitterScreen';
 import ServiceScreen from '../screens/ServiceScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -30,6 +31,7 @@ function SignInStack() {
                 <Stack.Screen name={ROUTES.SERVICE} component={ServiceScreen} />
                 <Stack.Screen name={ROUTES.SETTINGS} component={SettingsScreen} />
                 <Stack.Screen name={ROUTES.PROFILE} component={EditProfileScreen} />
+                <Stack.Screen name={ROUTES.PETS} component={PetsScreen} />
                 <Stack.Screen name={ROUTES.REGISTER_PETSITTER} component={PetSitterScreen} />
             </Stack.Navigator>
         </NavigationContainer>

@@ -1,8 +1,10 @@
 export const PETS = [{ value: 0, label: 'Dogs', icon: 'dog' }, { value: 1, label: 'Cats', icon: 'cat' },
 { value: 2, label: 'Rabbits', icon: 'rabbit' }, { value: 3, label: 'Birds', icon: 'owl' }, { value: 4, label: 'Other', icon: 'paw' }];
 
-export const SERVICES = [{ value: 0, label: 'House sitting', icon: 'home-outline' }, { value: 1, label: 'Pet boarding', icon: 'home-city-outline' },
-{ value: 2, label: 'Dog walking', icon: 'dog-service' }, { value: 3, label: 'Pet grooming', icon: 'shower' }];
+export const SERVICES = [{ value: 0, label: 'House sitting', basis: 'Charge per day', icon: 'home-outline' },
+{ value: 1, label: 'Pet boarding', basis: 'Charge per day', icon: 'home-city-outline' },
+{ value: 2, label: 'Dog walking', basis: 'Charge per hour', icon: 'dog-service' },
+{ value: 3, label: 'Pet grooming', basis: 'Charge per visit', icon: 'shower' }];
 
 export const PREFERENCES = [{ value: 0, label: 'Lives in an apartment' }, { value: 1, label: 'Have kids' },
 { value: 2, label: 'Own a cat' }, { value: 3, label: 'Own a dog' }];
@@ -21,8 +23,10 @@ export const DISTRICTS = [{ value: 0, label: 'Ampara' }, { value: 1, label: 'Anu
 export const STATUS = [{ label: 'Upcoming', value: 0, bg: '#7768AE' }, { label: 'Approved', value: 1, bg: '#4D9DE0' },
 { label: 'Rejected', value: 2, bg: '#E15554' }, { label: 'Cancelled', value: 3, bg: '#E1BC29' }, { label: 'Completed', value: 4, bg: '#3BB273' }];
 
+export const GENDER = [{ label: 'Not Specified', value: 0 }, { label: 'Male', value: 1 }, { label: 'Female', value: 2 }];
+
 export const FindElement = (value, array) => {
-    return array.find(e => e.value === value);
+    return array.find(e => e.value == value);
 }
 
 export const FindLabel = (value, array) => {

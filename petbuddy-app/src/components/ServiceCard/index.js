@@ -11,7 +11,7 @@ function ServiceCard(props) {
             <TouchableHighlight onPress={props.onPress} underlayColor={theme.colors.background}>
                 <View style={styles.container}>
                     <View style={{ flex: 1, alignItems: 'center' }}>
-                        <Avatar.Text size={60} label='CW' />
+                        <Avatar.Image size={60} source={{ uri: props.avatar }} />
                     </View>
                     <View style={{ flex: 3, alignItems: 'flex-start', marginLeft: 15 }}>
                         <Text style={{ marginBottom: 2, fontSize: 15, fontWeight: 'bold' }}>{props.firstname + ' ' + props.lastname}</Text >

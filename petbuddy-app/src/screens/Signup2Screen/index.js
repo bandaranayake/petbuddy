@@ -5,17 +5,20 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { theme } from '../../core/theme';
 import { ValidatePhone } from '../../utils/validation';
+import * as ROLES from '../../constants/roles';
 import * as ROUTES from '../../constants/routes';
 import * as COLLECTIONS from '../../constants/collections';
+import * as GLOBAL from '../../constants/global';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
+import DropdownCustom from '../../components/DropdownCustom';
 
 function Signup2Screen(props) {
     const [details, setDetails] = useState({
         fname: '',
         lname: '',
-        username: '',
         phone: '',
+        city: null,
     });
     const [error, setError] = useState('');
     const [visible, setVisible] = useState(false);
@@ -40,40 +43,27 @@ function Signup2Screen(props) {
             setError('The last name can only contain letters.');
             showDialog();
         }
-        else if (details.username.length < 1) {
-            setError('The username field cannot be empty.');
-            showDialog();
-        }
-        else if (!details.username.match(/^[a-zA-Z0-9]+$/)) {
-            setError('Username can only contain alphanumeric characters (letters A-Z, numbers 0-9)');
-            showDialog();
-        }
-        else if (details.username.length < 4) {
-            setError('The username must be of minimum 4 characters length.');
-            showDialog();
-        }
         else if (!ValidatePhone(details.phone.trim())) {
             setError('Invalid phone number. Please provide a valid phone number.');
             showDialog();
         }
-        //check if username exists
+        else if (details.city == null) {
+            setError('Please select your current city.');
+            showDialog();
+        }
         else {
             auth()
                 .createUserWithEmailAndPassword(props.route.params.email, props.route.params.password)
                 .then((user) => {
-                    //batch write username to username collection
                     firestore()
                         .collection(COLLECTIONS.PROFILES)
                         .doc(user.uid)
-                        .set({ //add avatar
+                        .set({
                             firstname: details.fname,
                             lastname: details.lname,
-                            username: details.username,
                             phone: details.phone,
-                            role: 'PETOWNER',
-                        })
-                        .then(() => {
-                            props.navigation.navigate(ROUTES.MAIN);
+                            city: details.city,
+                            role: ROLES.PETOWNER,
                         })
                         .catch((error) => {
                             setError('Something went wrong. Please try again later.');
@@ -104,9 +94,9 @@ function Signup2Screen(props) {
                 <Title style={styles.title}>Sign Up</Title>
                 <TextInput mode='flat' label='First Name' placeholder='Your first name' style={styles.input} onChangeText={(text) => setDetails({ ...details, fname: text.trim() })} />
                 <TextInput mode='flat' label='Last Name' placeholder='Your last name' style={styles.input} onChangeText={(text) => setDetails({ ...details, lname: text.trim() })} />
-                <TextInput mode='flat' label='Username' placeholder='Your username' style={styles.input} onChangeText={(text) => setDetails({ ...details, username: text.trim() })} />
                 <TextInput mode='flat' label='Phone Number' placeholder='Your phone number' style={styles.input} onChangeText={(text) => setDetails({ ...details, phone: text.trim() })} />
-                <Button mode='contained' style={styles.button} onPress={() => Signup()}>Sign Up</Button>
+                <DropdownCustom title='Current City' items={GLOBAL.DISTRICTS} style={{ marginTop: 30 }} onValueChange={(value) => setDetails({ ...details, city: value })} />
+                <Button mode='contained' style={{ marginTop: 25 }} onPress={() => Signup()}>Sign Up</Button>
             </View>
             <Portal>
                 <Dialog visible={visible} onDismiss={hideDialog}>
@@ -119,7 +109,7 @@ function Signup2Screen(props) {
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
-        </Background>
+        </Background >
     );
 }
 
@@ -132,9 +122,6 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: theme.colors.background,
         marginTop: 16,
-    },
-    button: {
-        marginTop: 25,
     },
 });
 

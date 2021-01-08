@@ -9,6 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 import { theme } from '../../core/theme';
 import * as ROLES from '../../constants/roles';
 import * as GLOBAL from '../../constants/global';
+import * as COLLECTIONS from '../../constants/collections';
 import ChatBubble from '../../components/ChatBubble';
 import PetCard from '../../components/PetCard';
 
@@ -21,9 +22,9 @@ function ChatScreen(props) {
 
     useEffect(() => {
         const messagesListener = firestore()
-            .collection('bookings')
+            .collection(COLLECTIONS.BOOKINGS)
             .doc(bookingid)
-            .collection('messages')
+            .collection(COLLECTIONS.MESSAGES)
             .orderBy('timestamp')
             .onSnapshot(snapshot => {
                 if (!snapshot.metadata.hasPendingWrites) {
@@ -54,16 +55,16 @@ function ChatScreen(props) {
     }
 
     const renderActionButtons = () => {
-        if (props.profile.role === ROLES.PETOWNER && details.status === 1) {
+        if (props.currentProfile === ROLES.PETOWNER && details.status === 1) {
             return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
-                <Button mode="contained" color='#3BB273' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(4)}>Complete Order</Button>
-                <Button mode="contained" color='#E1BC29' dark={true} style={{ marginLeft: 2 }} onPress={() => updateStatus(3)}>Cancel Order</Button>
+                <Button mode='contained' color='#3BB273' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(4)}>Complete Order</Button>
+                <Button mode='contained' color='#E1BC29' dark={true} style={{ marginLeft: 2 }} onPress={() => updateStatus(3)}>Cancel Order</Button>
             </View>
         }
-        else if (props.profile.role === ROLES.PETSITTER && details.status === 0) {
+        else if (props.currentProfile === ROLES.PETSITTER && details.status === 0) {
             return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
-                <Button mode="contained" color='#4D9DE0' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(1)}>Accept Order</Button>
-                <Button mode="contained" color='#E15554' style={{ marginLeft: 2 }} onPress={() => updateStatus(2)}>Reject Order</Button>
+                <Button mode='contained' color='#4D9DE0' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(1)}>Accept Order</Button>
+                <Button mode='contained' color='#E15554' style={{ marginLeft: 2 }} onPress={() => updateStatus(2)}>Reject Order</Button>
             </View>
         }
         return null;
@@ -78,9 +79,9 @@ function ChatScreen(props) {
             };
 
             firestore()
-                .collection('bookings')
+                .collection(COLLECTIONS.BOOKINGS)
                 .doc(bookingid)
-                .collection('messages')
+                .collection(COLLECTIONS.MESSAGES)
                 .add(message)
                 .then(setMessageText(''));
         }
@@ -88,7 +89,7 @@ function ChatScreen(props) {
 
     const updateStatus = (newStatus) => {
         firestore()
-            .collection('bookings')
+            .collection(COLLECTIONS.BOOKINGS)
             .doc(bookingid)
             .update({ status: newStatus });
     }
@@ -103,7 +104,7 @@ function ChatScreen(props) {
                         <Text>{GLOBAL.FindLabel(details.service, GLOBAL.SERVICES)}</Text>
                     </View>
                     {
-                        (props.profile.role === ROLES.PETOWNER) ?
+                        (props.currentProfile === ROLES.PETOWNER) ?
                             <View style={styles.col}>
                                 <Icon1 name='work' size={20} color='black' style={styles.icon} />
                                 <Text>Provider: </Text>
@@ -121,12 +122,12 @@ function ChatScreen(props) {
                     <View style={styles.col}>
                         <Icon1 name='calendar-today' size={20} color='black' style={styles.icon} />
                         <Text>From: </Text>
-                        <Text>{details.fromDate}</Text>
+                        <Text>{(details.fromDate != undefined) ? details.fromDate : null}</Text>
                     </View>
                     <View style={styles.col}>
                         <Icon1 name='calendar-today' size={20} color='black' style={styles.icon} />
                         <Text>To: </Text>
-                        <Text>{details.toDate}</Text>
+                        <Text>{(details.toDate != undefined) ? details.toDate : null}</Text>
                     </View>
                 </View>
                 <View style={styles.row}>
@@ -172,6 +173,7 @@ function ChatScreen(props) {
 
 const mapStateToProps = state => ({
     profile: state.profile.details,
+    currentProfile: state.profile.currentProfile,
     bookings: state.bookings.items,
 });
 

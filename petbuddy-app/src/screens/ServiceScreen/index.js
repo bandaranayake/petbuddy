@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { ActivityIndicator, Avatar, Checkbox, Divider, List, Text, Title, Paragraph } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
+import { connect } from 'react-redux';
 import { theme } from '../../core/theme';
+import * as COLLECTIONS from '../../constants/collections';
+import * as ROLES from '../../constants/roles';
 import * as GLOBAL from '../../constants/global';
 import * as ROUTES from '../../constants/routes';
 import Button from '../../components/Button';
@@ -12,21 +15,21 @@ function ServiceScreen(props) {
     const basicDetails = props.route.params.details;
     const [about, setAbout] = useState('');
     const [preferences, setPreferences] = useState([]);
-    const [services, setServices] = useState([]);
+    const [services, setServices] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
 
         firestore()
-            .collection('services')
+            .collection(COLLECTIONS.SERVICES)
             .doc(basicDetails.uid)
             .get()
             .then(doc => {
                 if (doc.exists) {
                     setAbout(doc.data().about);
                     setPreferences(doc.data().preferences);
-                    setServices(doc.data().fees);
+                    setServices(doc.data().services);
                 }
             })
             .then(
@@ -36,21 +39,20 @@ function ServiceScreen(props) {
     }, [props.route.params])
 
     const renderServices = () => {
-        return services.map((fee, i) => {
-            if (fee === -1) {
-                return null;
-            }
-            else {
-                let element = GLOBAL.FindElement(i, GLOBAL.SERVICES);
-                return (
-                    <List.Item
-                        key={i}
-                        title={element.label}
-                        description={fee + ' LKR per day'}
-                        left={props => <List.Icon {...props} icon={element.icon} />}
-                    />)
-            }
-        })
+        let items = [];
+
+        Object.keys(services).forEach(key => {
+            let element = GLOBAL.FindElement(key, GLOBAL.SERVICES);
+
+            items.push(<List.Item
+                key={key}
+                title={element.label}
+                description={services[key] + ' LKR per day'}
+                left={props => <List.Icon {...props} icon={element.icon} />}
+            />)
+        });
+
+        return items;
     }
 
     const renderPreferences = () => {
@@ -106,13 +108,21 @@ function ServiceScreen(props) {
                             {renderPetTypes()}
                         </View>
                         <View style={{ paddingHorizontal: 44, paddingTop: 10 }}>
-                            <Button mode='contained' style={styles.button} onPress={() => props.navigation.navigate(ROUTES.MAKE_BOOKING, { services: services, uid: basicDetails.uid })}>Book</Button>
+                            {
+                                (props.currentProfile === ROLES.PETOWNER) ?
+                                    <Button mode='contained' style={styles.button} onPress={() => props.navigation.navigate(ROUTES.MAKE_BOOKING, { services: services, petSitter: basicDetails })}>Book</Button>
+                                    : null
+                            }
                         </View>
                     </View>
             }
         </ScrollView >
     );
 }
+
+const mapStateToProps = state => ({
+    currentProfile: state.profile.currentProfile,
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -122,4 +132,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ServiceScreen;
+export default connect(mapStateToProps)(ServiceScreen);

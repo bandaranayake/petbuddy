@@ -3,15 +3,16 @@ import { StyleSheet, View } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
 import moment from 'moment';
 import { theme } from '../../core/theme';
+import * as GLOBAL from '../../constants/global';
 
 function PetCard(props) {
     const renderDetails = (type, name, gender, birthday) => {
         return (
             <View>
-                <Text>Type: {type}</Text>
+                <Text>Type: {GLOBAL.FindLabel(type, GLOBAL.PETS)}</Text>
                 <Text>Name: {name}</Text>
-                <Text>Gender: {gender}</Text>
-                <Text>Age: {moment().diff(birthday.toDate(), 'years')}</Text>
+                <Text>Gender: {GLOBAL.FindLabel(gender, GLOBAL.GENDER)}</Text>
+                <Text>Age: {moment().diff(moment(birthday), 'years')}</Text>
             </View>
         );
     }
@@ -26,11 +27,9 @@ function PetCard(props) {
 
     return (
         <View style={{ flexDirection: 'column', alignItems: (props.side === 'left') ? 'flex-start' : 'flex-end' }}>
-            <View style={styles.container}>
-                <View style={styles.innerContainer}>
-                    {props.side === 'left' ? renderDetails(props.type, props.name, props.gender, props.birthday) : renderAvatar('right')}
-                    {props.side === 'left' ? renderAvatar('left') : renderDetails(props.type, props.name, props.gender, props.birthday)}
-                </View>
+            <View style={styles.innerContainer}>
+                {props.side === 'left' ? renderDetails(props.type, props.name, props.gender, props.birthday) : renderAvatar('right')}
+                {props.side === 'left' ? renderAvatar('left') : renderDetails(props.type, props.name, props.gender, props.birthday)}
             </View>
         </View>
     );

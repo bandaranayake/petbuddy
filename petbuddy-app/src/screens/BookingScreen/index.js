@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { fetchBookings, fetchMoreBookings, updateBookings } from '../../actions/bookingActions';
 import { theme } from '../../core/theme';
+import * as COLLECTIONS from '../../constants/collections';
 import * as GLOBAL from '../../constants/global';
 import * as ROUTES from '../../constants/routes';
 import Dropdown from '../../components/Dropdown';
@@ -14,22 +15,31 @@ import firestore from '@react-native-firebase/firestore';
 function BookingScreen(props) {
     const navigation = useNavigation();
     const [filter, _setFilter] = useState(null);
+    const [hasLoaded, sethasLoaded] = useState(false);
 
-    const filterRef = React.useRef(filter);
+    const filterRef = useRef(filter);
     const setFilter = data => {
         filterRef.current = data;
         _setFilter(data);
     };
 
     useEffect(() => {
-        props.fetchBookings(filter, props.details);
+        if (hasLoaded) {
+            props.fetchBookings(filter, props.current, props.details.uid);
+        }
+    }, [props.current])
+
+    useEffect(() => {
+        if (hasLoaded) {
+            props.fetchBookings(filter, props.current, props.details.uid);
+        }
     }, [filter])
 
     useEffect(() => {
         const messagesListener = firestore()
-            .collection('bookings')
-            .where(props.details.role, '==', props.details.uid)
-            .orderBy(firestore.FieldPath.documentId())
+            .collection(COLLECTIONS.BOOKINGS)
+            .where(props.current, '==', props.details.uid)
+            .orderBy('fromDate', 'desc')
             .onSnapshot(snapshot => {
                 let c = [];
                 snapshot.forEach(doc => {
@@ -45,6 +55,7 @@ function BookingScreen(props) {
                 }
             })
 
+        sethasLoaded(true);
         return () => messagesListener();
     }, [])
 
@@ -68,7 +79,7 @@ function BookingScreen(props) {
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
-                        if (props.isRefreshing == false) props.fetchMoreBookings(filter, props.details, props.bookings[props.bookings.length - 1].id)
+                        if (props.isRefreshing == false) props.fetchMoreBookings(filter, props.current, props.details.uid, props.bookings[props.bookings.length - 1].fromDate)
                     }}
                     onEndReachedThreshold={0.5}
                     refreshing={props.isRefreshing}
@@ -80,6 +91,7 @@ function BookingScreen(props) {
 
 const mapStateToProps = state => ({
     details: state.profile.details,
+    current: state.profile.currentProfile,
     bookings: state.bookings.items,
     isLoading: state.bookings.isLoading,
     isRefreshing: state.bookings.isRefreshing,

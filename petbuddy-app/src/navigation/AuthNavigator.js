@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import { connect } from 'react-redux';
 import { clearProfile, fetchProfile } from '../actions/profileActions';
-import { clearPets, fetchPets } from '../actions/petActions';
 import SignInStack from './SignInStack';
 import SignOutStack from './SignOutStack';
 import LoadingScreen from '../screens/LoadingScreen';
@@ -12,12 +11,14 @@ function AuthNavigator(props) {
 
     function onAuthStateChanged(result) {
         if (result != null) {
-            props.fetchProfile(result.uid);
-            props.fetchPets(result.uid);
+            result.getIdToken().then(token => {
+                if (token) {
+                    props.fetchProfile(result.uid, token);
+                }
+            });
         }
         else {
             props.clearProfile();
-            props.clearPets();
         }
 
         if (initializing) setInitializing(false)
@@ -31,7 +32,7 @@ function AuthNavigator(props) {
     if (initializing || props.isLoading) {
         return (<LoadingScreen />);
     }
-    else if (props.profile != null && props.pets != null) {
+    else if (props.profile != null) {
         return (<SignInStack />);
     }
     else {
@@ -41,8 +42,7 @@ function AuthNavigator(props) {
 
 const mapStateToProps = state => ({
     profile: state.profile.details,
-    pets: state.pets.details,
-    isLoading: state.profile.isLoading || state.pets.isLoading,
+    isLoading: state.profile.isLoading,
 });
 
-export default connect(mapStateToProps, { clearProfile, fetchProfile, clearPets, fetchPets })(AuthNavigator);
+export default connect(mapStateToProps, { clearProfile, fetchProfile })(AuthNavigator);

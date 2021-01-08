@@ -1,18 +1,19 @@
 import firestore from '@react-native-firebase/firestore';
 import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS, FETCH_UPDATED_BOOKINGS } from './types';
+import * as COLLECTIONS from '../constants/collections';
 
-export const fetchBookings = (filter, details) => dispatch => {
+export const fetchBookings = (filter, role, uid) => dispatch => {
     dispatch({ type: LOADING_BOOKINGS });
 
     let bookings = firestore()
-        .collection('bookings')
-        .where(details.role, '==', details.uid);
+        .collection(COLLECTIONS.BOOKINGS)
+        .where(role, '==', uid);
 
     if (filter !== null) {
         bookings = bookings.where('status', '==', filter);
     }
 
-    bookings.orderBy(firestore.FieldPath.documentId())
+    bookings.orderBy('fromDate', 'desc')
         .limit(10)
         .get()
         .then(querySnapshot => {
@@ -28,18 +29,18 @@ export const fetchBookings = (filter, details) => dispatch => {
         });
 }
 
-export const fetchMoreBookings = (filter, details, lastVisible) => dispatch => {
+export const fetchMoreBookings = (filter, role, uid, lastVisible) => dispatch => {
     dispatch({ type: REFRESHING_BOOKINGS });
 
     let bookings = firestore()
-        .collection('bookings')
-        .where(details.role, '==', details.uid);
+        .collection(COLLECTIONS.BOOKINGS)
+        .where(role, '==', uid);
 
     if (filter !== null) {
         bookings = bookings.where('status', '==', filter);
     }
 
-    bookings.orderBy(firestore.FieldPath.documentId())
+    bookings.orderBy('fromDate', 'desc')
         .startAfter(lastVisible)
         .limit(20)
         .get()
