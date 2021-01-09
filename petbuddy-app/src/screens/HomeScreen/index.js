@@ -15,7 +15,7 @@ function HomeScreen(props) {
     const [filteredData, setFilteredData] = useState('');
 
     useEffect(() => {
-        props.fetchServices(props.filters);
+        props.fetchServices(props.profile.uid, props.filters);
     }, [props.filters])
 
     useEffect(() => {
@@ -23,7 +23,7 @@ function HomeScreen(props) {
     }, [props.services])
 
     const onChangeSearch = query => setSearchQuery(query);
-    const renderFooter = () => (props.isLoading) ? <ActivityIndicator /> : null;
+    const renderFooter = () => (props.isRefreshing) ? <ActivityIndicator /> : null;
 
     const filterServices = () => {
         const formattedQuery = searchQuery.toLowerCase();
@@ -60,7 +60,7 @@ function HomeScreen(props) {
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
-                        if (props.isRefreshing == false) props.fetchMoreServices(props.filters, props.services[props.services.length - 1].uid)
+                        if (props.isRefreshing == false) props.fetchMoreServices(props.profile.uid, props.filters, props.services[props.services.length - 1].uid)
                     }}
                     onEndReachedThreshold={0.5}
                     refreshing={props.isRefreshing}
@@ -75,6 +75,7 @@ const mapStateToProps = state => ({
     services: state.services.items,
     isLoading: state.services.isLoading,
     isRefreshing: state.services.isRefreshing,
+    profile: state.profile.details,
 });
 
 const styles = StyleSheet.create({
