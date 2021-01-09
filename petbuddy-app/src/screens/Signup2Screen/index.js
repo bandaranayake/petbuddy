@@ -57,7 +57,7 @@ function Signup2Screen(props) {
                 .then((user) => {
                     firestore()
                         .collection(COLLECTIONS.PROFILES)
-                        .doc(user.uid)
+                        .doc(user.user.uid)
                         .set({
                             firstname: details.fname,
                             lastname: details.lname,
@@ -73,11 +73,11 @@ function Signup2Screen(props) {
                 .catch(error => {
                     if (error.code === 'auth/email-already-in-use') {
                         setError('The provided email address is already in use. Please enter a different email address.');
-                        navigation.navigate(ROUTES.SIGNUP);
+                        props.navigation.navigate(ROUTES.SIGNUP);
                     }
                     else if (error.code === 'auth/invalid-email') {
                         setError('That provided email address is invalid. Please enter a valid email address.');
-                        navigation.navigate(ROUTES.SIGNUP);
+                        props.navigation.navigate(ROUTES.SIGNUP);
                     }
                     else {
                         setError('Something went wrong. Please try again later.');

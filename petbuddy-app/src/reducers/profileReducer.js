@@ -29,6 +29,7 @@ export default function (state = initailState, action) {
         case CLEAR_PROFILE:
             return {
                 ...state,
+                isLoading: false,
                 details: null,
                 pets: [],
                 currentProfile: null,
