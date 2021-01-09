@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { BottomNavigation } from 'react-native-paper';
 import HomeScreen from '../HomeScreen';
 import BookingScreen from '../BookingScreen';
@@ -6,12 +6,18 @@ import ProfileScreen from '../ProfileScreen';
 import BlockScreen from '../BlockScreen';
 
 function MainScreen(props) {
-    const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
         { key: 'home', title: 'Home', icon: 'home' },
         { key: 'bookings', title: 'Bookings', icon: 'calendar' },
         { key: 'profile', title: 'Profile', icon: 'account' },
     ]);
+
+    useEffect(() => {
+        if (props.route.params !== undefined && props.route.params.navigateTo !== undefined) {
+            setIndex(props.route.params.navigateTo);
+        }
+    }, [props.route.params])
 
     const renderScene = BottomNavigation.SceneMap(
         (props.auth) ?

@@ -23,7 +23,7 @@ function HomeScreen(props) {
     }, [props.services])
 
     const onChangeSearch = query => setSearchQuery(query);
-    const renderFooter = () => (props.isRefreshing) ? <ActivityIndicator /> : null;
+    const renderFooter = () => (props.isLoading) ? <ActivityIndicator /> : null;
 
     const filterServices = () => {
         const formattedQuery = searchQuery.toLowerCase();

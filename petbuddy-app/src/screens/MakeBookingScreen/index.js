@@ -91,7 +91,10 @@ function MakeBookingScreen(props) {
                     setIsLoading(false);
 
                     if (res.status === 200) {
-                        props.navigation.navigate(ROUTES.BOOKING);
+                        props.navigation.reset({
+                            index: 0,
+                            routes: [{ name: ROUTES.MAIN, params: { navigateTo: 1 } }],
+                        });
                     }
                     else {
                         setError('Something went wrong. Please try again later.');
