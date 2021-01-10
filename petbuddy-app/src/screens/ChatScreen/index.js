@@ -57,14 +57,14 @@ function ChatScreen(props) {
     const renderActionButtons = () => {
         if (props.currentProfile === ROLES.PETOWNER && details.status === 1) {
             return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
-                <Button mode='contained' color='#3BB273' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(4)}>Complete Order</Button>
-                <Button mode='contained' color='#E1BC29' dark={true} style={{ marginLeft: 2 }} onPress={() => updateStatus(3)}>Cancel Order</Button>
+                <Button mode='contained' color='#3BB273' dark={true} style={{ marginRight: 2 }} onPress={() => updateBookingStatus(4)}>Complete Order</Button>
+                <Button mode='contained' color='#E1BC29' dark={true} style={{ marginLeft: 2 }} onPress={() => updateBookingStatus(3)}>Cancel Order</Button>
             </View>
         }
         else if (props.currentProfile === ROLES.PETSITTER && details.status === 0) {
             return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
-                <Button mode='contained' color='#4D9DE0' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(1)}>Accept Order</Button>
-                <Button mode='contained' color='#E15554' style={{ marginLeft: 2 }} onPress={() => updateStatus(2)}>Reject Order</Button>
+                <Button mode='contained' color='#4D9DE0' dark={true} style={{ marginRight: 2 }} onPress={() => updateBookingStatus(1)}>Accept Order</Button>
+                <Button mode='contained' color='#E15554' style={{ marginLeft: 2 }} onPress={() => updateBookingStatus(2)}>Reject Order</Button>
             </View>
         }
         return null;
@@ -87,11 +87,9 @@ function ChatScreen(props) {
         }
     }
 
-    const updateStatus = (newStatus) => {
-        firestore()
-            .collection(COLLECTIONS.BOOKINGS)
-            .doc(bookingid)
-            .update({ status: newStatus });
+    const updateBookingStatus = (newStatus) => {
+        props.updateStatus(props.bookings, bookingid, newStatus);
+        setDetails({ ...details, status: newStatus });
     }
 
     return (

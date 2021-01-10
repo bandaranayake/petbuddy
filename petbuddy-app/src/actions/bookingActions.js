@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS, FETCH_UPDATED_BOOKINGS } from './types';
+import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS, FETCH_UPDATED_BOOKINGS, UPDATE_BOOKING_STATUS } from './types';
 import * as COLLECTIONS from '../constants/collections';
 
 export const fetchBookings = (filter, role, uid) => dispatch => {
@@ -62,4 +62,25 @@ export const updateBookings = (data) => dispatch => {
         type: FETCH_UPDATED_BOOKINGS,
         payload: data
     });
+}
+
+export const updateStatus = (bookings, bookingid, status) => dispatch => {
+    firestore()
+        .collection(COLLECTIONS.BOOKINGS)
+        .doc(bookingid)
+        .update({ status: status })
+        .then(() => {
+            let cloned = [...bookings];
+
+            let i = cloned.findIndex(item => item.id === bookingid);
+
+            if (i !== null) {
+                cloned[i].status = status;
+            }
+
+            dispatch({
+                type: UPDATE_BOOKING_STATUS,
+                payload: cloned
+            });
+        });
 }

@@ -15,7 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 function BookingScreen(props) {
     const navigation = useNavigation();
     const [filter, _setFilter] = useState(null);
-    const [hasLoaded, sethasLoaded] = useState(false);
+    const [hasLoaded, setHasLoaded] = useState(false);
 
     const filterRef = useRef(filter);
     const setFilter = data => {
@@ -55,7 +55,7 @@ function BookingScreen(props) {
                 }
             })
 
-        sethasLoaded(true);
+        setHasLoaded(true);
         return () => messagesListener();
     }, [])
 
