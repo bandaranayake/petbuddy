@@ -5,10 +5,10 @@ import moment from 'moment';
 import { theme } from '../../core/theme';
 
 function ChatBubble(props) {
-    const renderAvatar = (side) => {
+    const renderAvatar = (side, avatar) => {
         return (
             <View style={{ width: 50, marginRight: (side == 'left') ? 5 : 0, marginLeft: (side == 'left') ? 0 : 5 }} >
-                <Avatar.Text size={50} label='CW' />
+                <Avatar.Image size={50} source={{ uri: avatar }} />
             </View>
         );
     }
@@ -26,8 +26,8 @@ function ChatBubble(props) {
 
     return (
         <View style={styles.container}>
-            {props.side == 'left' ? renderAvatar('left') : renderMessage('right', props.message, props.timestamp)}
-            {props.side == 'left' ? renderMessage('left', props.message, props.timestamp) : renderAvatar('right')}
+            {props.side == 'left' ? renderAvatar('left', props.avatar) : renderMessage('right', props.message, props.timestamp)}
+            {props.side == 'left' ? renderMessage('left', props.message, props.timestamp) : renderAvatar('right', props.avatar)}
         </View>
     );
 }

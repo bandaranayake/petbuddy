@@ -1,4 +1,4 @@
-import { LOADING_PROFILE, FETCH_PROFILE, CLEAR_PROFILE, SWITCH_PROFILE, ADD_PET, DELETE_PET, UPDATE_PET } from '../actions/types';
+import { LOADING_PROFILE, FETCH_PROFILE, CLEAR_PROFILE, SWITCH_PROFILE, ADD_PET, DELETE_PET, UPDATE_PET, UPDATE_AVATAR } from '../actions/types';
 import * as ROLES from '../constants/roles';
 
 const initailState = {
@@ -54,6 +54,11 @@ export default function (state = initailState, action) {
             return {
                 ...state,
                 pets: action.payload,
+            };
+        case UPDATE_AVATAR:
+            return {
+                ...state,
+                details: action.payload,
             };
         default:
             return state;
