@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOADING_PROFILE, CLEAR_PROFILE, FETCH_PROFILE, SWITCH_PROFILE, ADD_PET, DELETE_PET, UPDATE_PET, UPDATE_AVATAR } from './types';
+import { LOADING_PROFILE, CLEAR_PROFILE, FETCH_PROFILE, SWITCH_PROFILE, ADD_PET, DELETE_PET, UPDATE_PET } from './types';
 import { BASE_URL } from '../utils/firebase';
 
 export const fetchProfile = (uid, token) => dispatch => {
@@ -62,12 +62,5 @@ export const switchProfile = (profile) => dispatch => {
     dispatch({
         type: SWITCH_PROFILE,
         payload: profile,
-    });
-}
-
-export const updateAvatar = (details, url) => dispatch => {
-    dispatch({
-        type: UPDATE_AVATAR,
-        payload: { ...details, avatar: url },
     });
 }

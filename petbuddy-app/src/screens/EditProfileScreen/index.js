@@ -6,7 +6,7 @@ import storage from '@react-native-firebase/storage';
 import { launchImageLibrary } from 'react-native-image-picker/src/index'
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { fetchProfile, updateAvatar } from '../../actions/profileActions';
+import { fetchProfile } from '../../actions/profileActions';
 import { theme } from '../../core/theme';
 import { ValidatePhone } from '../../utils/validation';
 import * as COLLECTIONS from '../../constants/collections';
@@ -16,7 +16,6 @@ import * as ROUTES from '../../constants/routes';
 import { BASE_URL } from '../../utils/firebase';
 import Button from '../../components/Button';
 import DropdownCustom from '../../components/DropdownCustom';
-import { cos } from 'react-native-reanimated';
 
 function EditProfileScreen(props) {
     const petsitter = props.profile.petsitter;
@@ -246,7 +245,6 @@ function EditProfileScreen(props) {
                                 .update({ avatar: url })
                                 .then(() => {
                                     setAvatarUpdating(false);
-                                    props.updateAvatar(details, url);
                                     props.fetchProfile(props.profile.uid, props.token);
                                 })
                         })
@@ -330,4 +328,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default connect(mapStateToProps, { fetchProfile, updateAvatar })(EditProfileScreen);
+export default connect(mapStateToProps, { fetchProfile })(EditProfileScreen);
