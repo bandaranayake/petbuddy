@@ -80,7 +80,7 @@ function MakeBookingScreen(props) {
             data[ROLES.PETSITTER] = petSitter.uid;
             data[ROLES.PETOWNER] = props.profile.uid;
 
-            axios.post(BASE_URL + 'api/booking', data,
+            axios.post(BASE_URL + 'api/booking/create', data,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.token,
