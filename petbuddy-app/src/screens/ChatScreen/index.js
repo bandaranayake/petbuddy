@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, IconButton, Text, TextInput } from 'react-native-paper';
+import { ActivityIndicator, Button, IconButton, Text, TextInput } from 'react-native-paper';
+import { Rating } from 'react-native-ratings';
 import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
-import { connect } from 'react-redux';
-import { updateStatus } from '../../actions/bookingActions';
 import firestore from '@react-native-firebase/firestore';
+import { connect } from 'react-redux';
+import { updateStatus, updateRating } from '../../actions/bookingActions';
 import { theme } from '../../core/theme';
 import * as ROLES from '../../constants/roles';
 import * as GLOBAL from '../../constants/global';
@@ -18,6 +19,7 @@ function ChatScreen(props) {
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState('');
     const [details, setDetails] = useState({ status: 0, service: 0 });
+    const [rating, setRating] = useState(0);
     const scrollViewRef = useRef();
 
     useEffect(() => {
@@ -40,35 +42,11 @@ function ChatScreen(props) {
 
     useEffect(() => {
         let i = props.bookings.findIndex(item => item.id === bookingid);
+
         if (i !== null) {
             setDetails(props.bookings[i]);
         }
     }, [props.bookings])
-
-    const renderMessages = () => {
-        return messages.map((item, i) =>
-            (item.type === undefined) ?
-                <ChatBubble key={i} timestamp={item.timestamp} message={item.message} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
-                :
-                <PetCard key={i} type={item.type} name={item.name} gender={item.gender} birthday={item.birthday} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
-        )
-    }
-
-    const renderActionButtons = () => {
-        if (props.currentProfile === ROLES.PETOWNER && details.status === 1) {
-            return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
-                <Button mode='contained' color='#3BB273' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(4)}>Complete Order</Button>
-                <Button mode='contained' color='#E1BC29' dark={true} style={{ marginLeft: 2 }} onPress={() => updateStatus(3)}>Cancel Order</Button>
-            </View>
-        }
-        else if (props.currentProfile === ROLES.PETSITTER && details.status === 0) {
-            return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
-                <Button mode='contained' color='#4D9DE0' dark={true} style={{ marginRight: 2 }} onPress={() => updateStatus(1)}>Accept Order</Button>
-                <Button mode='contained' color='#E15554' style={{ marginLeft: 2 }} onPress={() => updateStatus(2)}>Reject Order</Button>
-            </View>
-        }
-        return null;
-    }
 
     const sendMessage = () => {
         if (messageText.length > 0) {
@@ -87,11 +65,78 @@ function ChatScreen(props) {
         }
     }
 
-    const updateStatus = (newStatus) => {
-        firestore()
-            .collection(COLLECTIONS.BOOKINGS)
-            .doc(bookingid)
-            .update({ status: newStatus });
+    const updateBookingStatus = (newStatus) => {
+        props.updateStatus(props.bookings, bookingid, newStatus);
+        setDetails({ ...details, status: newStatus });
+    }
+
+    const renderMessages = () => {
+        return messages.map((item, i) =>
+            (item.type === undefined) ?
+                <ChatBubble key={i} timestamp={item.timestamp} message={item.message} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
+                :
+                <PetCard key={i} type={item.type} avatar={item.avatar} name={item.name} gender={item.gender} birthday={item.birthday} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
+        )
+    }
+
+    const renderActionButtons = () => {
+        if (props.currentProfile === ROLES.PETOWNER && details.status === 1) {
+            return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
+                <Button mode='contained' color='#3BB273' dark={true} style={{ marginRight: 2 }} onPress={() => updateBookingStatus(4)}>Complete Order</Button>
+                <Button mode='contained' color='#E1BC29' dark={true} style={{ marginLeft: 2 }} onPress={() => updateBookingStatus(3)}>Cancel Order</Button>
+            </View>
+        }
+        else if (props.currentProfile === ROLES.PETSITTER && details.status === 0) {
+            return <View style={{ paddingTop: 10, marginBottom: 5, marginHorizontal: 20, flexDirection: 'row', justifyContent: 'center' }}>
+                <Button mode='contained' color='#4D9DE0' dark={true} style={{ marginRight: 2 }} onPress={() => updateBookingStatus(1)}>Accept Order</Button>
+                <Button mode='contained' color='#E15554' style={{ marginLeft: 2 }} onPress={() => updateBookingStatus(2)}>Reject Order</Button>
+            </View>
+        }
+        return null;
+    }
+
+    const renderFooter = (status) => {
+        if (status === 2 || status === 3) {
+            return null;
+        }
+        else if (status === 4) {
+            let btn = (props.isRatingUpdating) ? <ActivityIndicator style={{ marginBottom: 5 }} /> : <Button onPress={() => props.updateRating(props.token, props.bookings, bookingid, details.PETSITTER, rating)}> Submit</Button>;
+
+            return (
+                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: theme.colors.background }}>
+                    <View style={{ flex: 1 }}>
+                        <Rating
+                            showRating
+                            ratingCount={5}
+                            startingValue={(details.rating !== undefined) ? details.rating : rating}
+                            fractions={0}
+                            imageSize={32}
+                            readonly={(details.rating !== undefined)}
+                            onFinishRating={(rating) => setRating(rating)}
+                            style={{ marginBottom: 10 }}
+                        />
+                        {(details.rating !== undefined) ? null : btn}
+                    </View>
+                </View >
+            )
+        }
+        else {
+            return (<View style={{ margin: 10 }}>
+                <View style={styles.subContainer}>
+                    <View style={{ flex: 1, marginRight: 5, }}>
+                        <TextInput placeholder='Type your message' style={{ height: 30, backgroundColor: theme.colors.background }} value={messageText} onChangeText={value => setMessageText(value)} />
+                    </View>
+                    <View style={{ width: 40 }}>
+                        <IconButton
+                            icon='send'
+                            size={25}
+                            color={theme.colors.primary}
+                            onPress={sendMessage}
+                        />
+                    </View>
+                </View>
+            </View>);
+        }
     }
 
     return (
@@ -149,31 +194,16 @@ function ChatScreen(props) {
                 onContentSizeChange={() => { scrollViewRef.current.scrollToEnd({ animated: true }) }}>
                 {renderMessages()}
             </ScrollView>
-            {
-                (details.status === 2 || details.status === 3 || details.status === 4) ? null :
-                    <View style={styles.footerContainer}>
-                        <View style={styles.subContainer}>
-                            <View style={{ flex: 1, marginRight: 5, }}>
-                                <TextInput placeholder='Type your message' style={{ height: 30, backgroundColor: theme.colors.background }} value={messageText} onChangeText={value => setMessageText(value)} />
-                            </View>
-                            <View style={{ width: 40 }}>
-                                <IconButton
-                                    icon='send'
-                                    size={25}
-                                    color={theme.colors.primary}
-                                    onPress={sendMessage}
-                                />
-                            </View>
-                        </View>
-                    </View>
-            }
+            {renderFooter(details.status)}
         </View >
     );
 }
 
 const mapStateToProps = state => ({
     profile: state.profile.details,
+    token: state.profile.token,
     currentProfile: state.profile.currentProfile,
+    isRatingUpdating: state.bookings.isRatingUpdating,
     bookings: state.bookings.items,
 });
 
@@ -196,10 +226,6 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         elevation: 5,
         backgroundColor: theme.colors.background,
-    },
-    footerContainer: {
-        marginTop: 3,
-        margin: 10,
     },
     subContainer: {
         flexDirection: 'row',
@@ -224,4 +250,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps, { updateStatus })(ChatScreen);
+export default connect(mapStateToProps, { updateStatus, updateRating })(ChatScreen);

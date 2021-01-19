@@ -17,10 +17,10 @@ function PetCard(props) {
         );
     }
 
-    const renderAvatar = (side) => {
+    const renderAvatar = (side, avatar) => {
         return (
             <View style={{ marginRight: (side === 'right') ? 15 : 0, marginLeft: (side === 'left') ? 15 : 0 }} >
-                <Avatar.Text size={80} label='CW' />
+                <Avatar.Image size={80} source={{ uri: avatar }} />
             </View>
         );
     }
@@ -28,8 +28,8 @@ function PetCard(props) {
     return (
         <View style={{ flexDirection: 'column', alignItems: (props.side === 'left') ? 'flex-start' : 'flex-end' }}>
             <View style={styles.innerContainer}>
-                {props.side === 'left' ? renderDetails(props.type, props.name, props.gender, props.birthday) : renderAvatar('right')}
-                {props.side === 'left' ? renderAvatar('left') : renderDetails(props.type, props.name, props.gender, props.birthday)}
+                {props.side === 'left' ? renderDetails(props.type, props.name, props.gender, props.birthday) : renderAvatar('right', props.avatar)}
+                {props.side === 'left' ? renderAvatar('left', props.avatar) : renderDetails(props.type, props.name, props.gender, props.birthday)}
             </View>
         </View>
     );

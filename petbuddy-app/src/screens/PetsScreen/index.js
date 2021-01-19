@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Avatar, Button as PaperButton, Dialog, FAB, Portal, Text, TextInput } from 'react-native-paper';
+import { launchImageLibrary } from 'react-native-image-picker/src/index'
 import { connect } from 'react-redux';
 import { addPet, deletePet, updatePet } from '../../actions/profileActions';
+import { fetchProfile } from '../../actions/profileActions';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 import { theme } from '../../core/theme';
 import * as COLLECTIONS from '../../constants/collections';
 import * as GLOBAL from '../../constants/global';
@@ -15,6 +18,17 @@ function PetScreen(props) {
     const [pets, setPets] = useState(props.pets);
     const [error, setError] = useState('');
     const [visible, setVisible] = useState(false);
+
+    const options = {
+        title: 'Select Image',
+        customButtons: [
+            { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
+        ],
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+    };
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
@@ -115,11 +129,39 @@ function PetScreen(props) {
         setPets(cloned);
     }
 
+    const selectAvatar = (i) => {
+        launchImageLibrary(options, (response) => {
+            if (!response.didCancel) {
+                let ref = storage().ref(props.details.uid + '/' + pets[i].id + '/avatar');
+
+                ref.putFile(response.uri)
+                    .then(() => {
+                        ref.getDownloadURL().then((url) => {
+
+                            firestore()
+                                .collection(COLLECTIONS.PROFILES)
+                                .doc(props.details.uid)
+                                .collection(COLLECTIONS.PETS)
+                                .doc(pets[i].id)
+                                .update({ avatar: url })
+                                .then(() => {
+                                    props.fetchProfile(props.details.uid, props.token);
+                                })
+                        })
+                    })
+            }
+        })
+    }
+
     const renderPets = () => {
         return pets.map((pet, i) =>
             <View key={i} style={styles.card}>
                 <View style={{ alignItems: 'center' }}>
-                    <Avatar.Text size={100} label='CW' />
+                    <TouchableOpacity onPress={() => selectAvatar(i)}>
+                        {
+                            <Avatar.Image size={120} source={{ uri: pet.avatar }} />
+                        }
+                    </TouchableOpacity>
                 </View>
                 <View>
                     <TextInput mode='flat' label='Name' placeholder='Your pet name' style={styles.input} value={pet.name} onChangeText={(text) => setDetails(i, 'name', text.trim())} />
@@ -188,4 +230,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default connect(mapStateToProps, { addPet, deletePet, updatePet })(PetScreen);
+export default connect(mapStateToProps, { addPet, deletePet, updatePet, fetchProfile })(PetScreen);

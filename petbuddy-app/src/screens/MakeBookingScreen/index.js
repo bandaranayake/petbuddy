@@ -80,7 +80,7 @@ function MakeBookingScreen(props) {
             data[ROLES.PETSITTER] = petSitter.uid;
             data[ROLES.PETOWNER] = props.profile.uid;
 
-            axios.post(BASE_URL + 'api/booking', data,
+            axios.post(BASE_URL + 'api/booking/create', data,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.token,
@@ -91,7 +91,10 @@ function MakeBookingScreen(props) {
                     setIsLoading(false);
 
                     if (res.status === 200) {
-                        props.navigation.navigate(ROUTES.BOOKING);
+                        props.navigation.reset({
+                            index: 0,
+                            routes: [{ name: ROUTES.MAIN, params: { navigateTo: 1 } }],
+                        });
                     }
                     else {
                         setError('Something went wrong. Please try again later.');

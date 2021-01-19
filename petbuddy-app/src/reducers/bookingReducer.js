@@ -1,9 +1,10 @@
-import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS, FETCH_UPDATED_BOOKINGS } from '../actions/types';
+import { LOADING_BOOKINGS, REFRESHING_BOOKINGS, FETCH_BOOKINGS, FETCH_MORE_BOOKINGS, FETCH_UPDATED_BOOKINGS, UPDATE_BOOKING_STATUS, UPDATE_RATING, UPDATING_RATING } from '../actions/types';
 
 const initailState = {
     items: [],
     isLoading: false,
     isRefreshing: false,
+    isRatingUpdating: false,
 }
 
 export default function (state = initailState, action) {
@@ -34,6 +35,22 @@ export default function (state = initailState, action) {
         case FETCH_UPDATED_BOOKINGS:
             return {
                 ...state,
+                items: action.payload,
+            };
+        case UPDATE_BOOKING_STATUS:
+            return {
+                ...state,
+                items: action.payload,
+            };
+        case UPDATING_RATING:
+            return {
+                ...state,
+                isRatingUpdating: true,
+            };
+        case UPDATE_RATING:
+            return {
+                ...state,
+                isRatingUpdating: false,
                 items: action.payload,
             };
         default:

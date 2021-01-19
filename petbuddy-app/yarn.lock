@@ -1195,6 +1195,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-10.1.1.tgz#98e34e741463876d16dd543e23fe13354cb38a8d"
   integrity sha512-WjKvly9Tm9PXQkCw5O9wlLhCJQ5SbttAfA72vLzBhxaTrAEKuaCds0YOsW69qXfef5SYU14uQ+v4ekYOjFOCUw==
 
+"@react-native-firebase/storage@^10.4.1":
+  version "10.4.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-10.4.1.tgz#f999656abaab9523b82ac77d12b43076d620ad78"
+  integrity sha512-EJm/leacBsNFdMDtglReIvnNNQLl75w4TtOq+DOxPWnMDlBQDVx1DZ2bJjexSQgFZmZG1QBnE6UH9PcriroNxg==
+
 "@react-navigation/core@^5.14.4":
   version "5.14.4"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.14.4.tgz#f63a2cd214bddbd25e1181f9335c32dfc3b6460f"
@@ -5922,6 +5927,11 @@ react-native-gesture-handler@^1.8.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-image-picker@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-3.1.3.tgz#88e747d010c4095febb0797d895b80c0c25b114f"
+  integrity sha512-3T4sVBBhGhNoVW7x7lqyxOENNUbBTu68yGTDQUWd8VQHA6EezAcV+4ixOxD2VyeLMDGj/Ar3O+siaC5F45Y7YA==
+
 react-native-iphone-x-helper@^1.3.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
@@ -5943,6 +5953,14 @@ react-native-picker-select@8.0.0:
   dependencies:
     "@react-native-community/picker" "^1.6.0"
     lodash.isequal "^4.5.0"
+
+react-native-ratings@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-7.3.0.tgz#32e11e4ed944ba8adbbc995d601df3f131619b6f"
+  integrity sha512-NCDIkmrVPnxPzP9zKdlcNpa2rPs3Hiv2qXsojUr3FpwbANWfgYE+jjGSSCBcS3vpXndTjhoaTGFDnybnUSFPFA==
+  dependencies:
+    lodash "^4.17.15"
+    prop-types "^15.7.2"
 
 react-native-reanimated@^1.13.1:
   version "1.13.2"

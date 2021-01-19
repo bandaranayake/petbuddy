@@ -75,7 +75,7 @@ function ServiceScreen(props) {
     return (
         <ScrollView style={styles.container}>
             <View style={{ marginTop: 30, alignItems: 'center' }}>
-                <Avatar.Text size={100} label='CW' />
+                <Avatar.Image size={100} source={{ uri: basicDetails.avatar }} />
                 <Title style={{ marginTop: 10 }}>{basicDetails.firstname + ' ' + basicDetails.lastname}</Title>
                 <Text style={{ marginTop: 15, fontWeight: 'bold', fontSize: 18 }}>{GLOBAL.FindLabel(basicDetails.level, GLOBAL.LEVELS)}</Text>
                 <Rating style={{ marginTop: 5 }} count={5} rating={basicDetails.rating} size={23} />

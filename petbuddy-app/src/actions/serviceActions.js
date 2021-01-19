@@ -3,7 +3,7 @@ import { LOADING_SERVICES, REFRESHING_SERVICES, FETCH_SERVICES, FETCH_MORE_SERVI
 import { PETSITTER } from '../constants/roles';
 import * as COLLECTIONS from '../constants/collections';
 
-export const fetchServices = (filters) => dispatch => {
+export const fetchServices = (uid, filters) => dispatch => {
     dispatch({ type: LOADING_SERVICES });
 
     let profiles = firestore().collection(COLLECTIONS.PROFILES);
@@ -20,7 +20,7 @@ export const fetchServices = (filters) => dispatch => {
         .limit(10)
         .get()
         .then(querySnapshot => {
-            let data = querySnapshot.docs.map(document => {
+            let data = querySnapshot.docs.filter(document => uid !== document.id).map(document => {
                 document.data().uid = document.id;
                 return document.data();
             })
@@ -32,7 +32,7 @@ export const fetchServices = (filters) => dispatch => {
         });
 }
 
-export const fetchMoreServices = (filters, lastVisible) => dispatch => {
+export const fetchMoreServices = (uid, filters, lastVisible) => dispatch => {
     dispatch({ type: REFRESHING_SERVICES });
 
     let profiles = firestore().collection(COLLECTIONS.PROFILES);
@@ -50,7 +50,7 @@ export const fetchMoreServices = (filters, lastVisible) => dispatch => {
         .limit(10)
         .get()
         .then(querySnapshot => {
-            let data = querySnapshot.docs.map(document => {
+            let data = querySnapshot.docs.filter(document => uid !== document.id).map(document => {
                 document.data().uid = document.id;
                 return document.data();
             })

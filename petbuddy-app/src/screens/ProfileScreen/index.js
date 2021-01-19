@@ -40,7 +40,7 @@ function ProfileScreen(props) {
     return (
         <View style={styles.container}>
             <View style={styles.subcontainer}>
-                <Avatar.Text size={100} label='CW' />
+                <Avatar.Image size={120} source={{ uri: props.profile.avatar }} />
                 <Title style={{ marginTop: 10 }}>{props.profile.firstname + ' ' + props.profile.lastname}</Title>
                 {renderBasicDetails()}
             </View>

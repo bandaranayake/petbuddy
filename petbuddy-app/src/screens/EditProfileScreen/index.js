@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { Button as PaperButton, Avatar, Checkbox, Divider, Dialog, Portal, Text, Title, TextInput } from 'react-native-paper';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Button as PaperButton, Avatar, Checkbox, Divider, Dialog, Portal, Text, Title, TextInput } from 'react-native-paper';
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
+import { launchImageLibrary } from 'react-native-image-picker/src/index'
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { fetchProfile } from '../../actions/profileActions';
 import { theme } from '../../core/theme';
 import { ValidatePhone } from '../../utils/validation';
+import * as COLLECTIONS from '../../constants/collections';
 import * as GLOBAL from '../../constants/global';
 import * as ROLES from '../../constants/roles';
 import * as ROUTES from '../../constants/routes';
@@ -15,21 +19,27 @@ import DropdownCustom from '../../components/DropdownCustom';
 
 function EditProfileScreen(props) {
     const petsitter = props.profile.petsitter;
-
-    const [details, setDetails] = useState({
-        fname: props.profile.firstname,
-        lname: props.profile.lastname,
-        phone: props.profile.phone,
-        city: props.profile.city,
-    });
+    const [details, setDetails] = useState({});
     const [preferences, setPreferences] = useState([]);
     const [petTypes, setPetTypes] = useState([]);
     const [servicesCbx, setServicesCbx] = useState([]);
     const [fees, setFees] = useState([]);
     const [about, setAbout] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [avatarUpdating, setAvatarUpdating] = useState(false);
     const [error, setError] = useState('');
     const [visible, setVisible] = useState(false);
+
+    const options = {
+        title: 'Select Image',
+        customButtons: [
+            { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
+        ],
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+    };
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
@@ -54,6 +64,13 @@ function EditProfileScreen(props) {
             setFees(_fees);
             setPetTypes(_petsTypes);
             setServicesCbx(_servicesCbx);
+            setDetails({
+                fname: props.profile.firstname,
+                lname: props.profile.lastname,
+                phone: props.profile.phone,
+                city: props.profile.city,
+                avatar: props.profile.avatar,
+            })
         }
     }, [])
 
@@ -211,10 +228,39 @@ function EditProfileScreen(props) {
         })
     }
 
+    const selectAvatar = () => {
+        launchImageLibrary(options, (response) => {
+            if (!response.didCancel) {
+                setAvatarUpdating(true);
+
+                let ref = storage().ref(props.profile.uid + '/avatar');
+
+                ref.putFile(response.uri)
+                    .then(() => {
+                        ref.getDownloadURL().then((url) => {
+
+                            firestore()
+                                .collection(COLLECTIONS.PROFILES)
+                                .doc(props.profile.uid)
+                                .update({ avatar: url })
+                                .then(() => {
+                                    setAvatarUpdating(false);
+                                    props.fetchProfile(props.profile.uid, props.token);
+                                })
+                        })
+                    })
+            }
+        })
+    }
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.subcontainer}>
-                <Avatar.Text size={120} label='CW' />
+                <TouchableOpacity onPress={() => selectAvatar()}>
+                    {
+                        (avatarUpdating) ? <ActivityIndicator /> : <Avatar.Image size={120} source={{ uri: details.avatar }} />
+                    }
+                </TouchableOpacity>
             </View>
             <Divider />
             <View style={{ paddingVertical: 20 }}>

@@ -1,8 +1,8 @@
 const functions = require('firebase-functions');
-const express = require("express");
-const cors = require("cors");
-const authMiddleware = require("./auth-middleware");
-const firebase = require("./firebase/admin");
+const express = require('express');
+const cors = require('cors');
+const authMiddleware = require('./auth-middleware');
+const firebase = require('./firebase/admin');
 const COLLECTIONS = require('./constant/collections');
 const ROLES = require('./constant/roles');
 const STATUS = require('./constant/status');
@@ -12,9 +12,9 @@ const db = firebase.firestore();
 
 app.use(cors());
 
-app.use("/", authMiddleware);
+app.use('/', authMiddleware);
 
-app.post("/api/profile", (request, response) => {
+app.post('/api/profile', (request, response) => {
     try {
         let uid = JSON.parse(request.body).uid;
 
@@ -55,7 +55,7 @@ app.post("/api/profile", (request, response) => {
     }
 });
 
-app.post("/api/petsitter/register", (request, response) => {
+app.post('/api/petsitter/register', (request, response) => {
     try {
         const data = JSON.parse(request.body);
         const uid = data.uid;
@@ -86,7 +86,7 @@ app.post("/api/petsitter/register", (request, response) => {
         var batch = db.batch();
 
         var profilesRef = db.collection(COLLECTIONS.PROFILES).doc(uid);
-        batch.update(profilesRef, { rating: 0, jobcount: 0, level: 0, services: _services, pets: _petTypes, role: ROLES.PETSITTER });
+        batch.update(profilesRef, { rating: 0, totalrating: 0, jobcount: 0, level: 0, services: _services, pets: _petTypes, role: ROLES.PETSITTER });
 
         var servicesRef = db.collection(COLLECTIONS.SERVICES).doc(uid);
         batch.set(servicesRef, { about: about, preferences: preferences, services: _fees }, { merge: true });
@@ -103,7 +103,7 @@ app.post("/api/petsitter/register", (request, response) => {
     }
 });
 
-app.post("/api/profile/update", (request, response) => {
+app.post('/api/profile/update', (request, response) => {
     try {
         const data = JSON.parse(request.body);
         const uid = data.uid;
@@ -168,7 +168,7 @@ app.post("/api/profile/update", (request, response) => {
     }
 });
 
-app.post("/api/booking", (request, response) => {
+app.post('/api/booking/create', (request, response) => {
     try {
         const data = JSON.parse(request.body);
         const pets = data.pets;
@@ -205,6 +205,7 @@ app.post("/api/booking", (request, response) => {
 
                     pets.forEach((pet) => {
                         transaction.create(messagesRef.doc(), {
+                            avatar: pet.avatar,
                             name: pet.name,
                             type: pet.type,
                             gender: pet.gender,
@@ -217,6 +218,40 @@ app.post("/api/booking", (request, response) => {
                     return null;
                 })
                 .then(() => response.status(200).send())
+                .catch(error => {
+                    console.log(error);
+                    response.status(500)
+                }))
+    } catch (error) {
+        console.log(error);
+        return response.status(400).send();
+    }
+});
+
+app.post('/api/booking/update', (request, response) => {
+    try {
+        const data = JSON.parse(request.body);
+
+        var profileRef = db.collection(COLLECTIONS.PROFILES).doc(data.uid);
+        var bookingRef = db.collection(COLLECTIONS.BOOKINGS).doc(data.bookingid);
+
+        db.runTransaction(transaction =>
+            transaction.get(profileRef)
+                .then(profile => {
+                    if (!profile.exists) throw new Error('Profile does not exist');
+
+                    let newTotalrating = profile.data().totalrating + data.rating;
+                    let newJobcount = profile.data().jobcount + 1;
+                    let newRating = Math.round(newTotalrating / newJobcount);
+
+                    transaction.update(profileRef, { totalrating: newTotalrating, rating: newRating, jobcount: newJobcount });
+                    transaction.update(bookingRef, { rating: data.rating });
+
+                    return null;
+                })
+                .then(() => {
+                    return response.status(200).send();
+                })
                 .catch(error => {
                     console.log(error);
                     response.status(500)
