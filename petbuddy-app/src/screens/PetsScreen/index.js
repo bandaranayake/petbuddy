@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar, Button as PaperButton, Dialog, FAB, Portal, Text, TextInput } from 'react-native-paper';
+import { Avatar, Button as PaperButton, Dialog, FAB, Portal, Snackbar, Text, TextInput } from 'react-native-paper';
 import { launchImageLibrary } from 'react-native-image-picker/src/index'
 import { connect } from 'react-redux';
 import { addPet, deletePet, updatePet } from '../../actions/profileActions';
@@ -17,7 +17,9 @@ import Calendar from '../../components/Calendar';
 function PetScreen(props) {
     const [pets, setPets] = useState(props.pets);
     const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
     const [visible, setVisible] = useState(false);
+    const [snackVisible, setSnackVisible] = React.useState(false);
 
     const options = {
         title: 'Select Image',
@@ -29,6 +31,9 @@ function PetScreen(props) {
             path: 'images',
         },
     };
+
+    const onToggleSnackBar = () => setSnackVisible(!snackVisible);
+    const onDismissSnackBar = () => setSnackVisible(false);
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
@@ -66,6 +71,8 @@ function PetScreen(props) {
                     })
                     .then(docRef => {
                         props.addPet(props.pets, pet, docRef.id);
+                        setMessage('New pet added');
+                        onToggleSnackBar();
                     }).catch((error) => {
                         setError('Something went wrong. Please try again later.');
                         showDialog();
@@ -85,6 +92,8 @@ function PetScreen(props) {
                     })
                     .then(() => {
                         props.updatePet(props.pets, pet)
+                        setMessage('Pet details updated');
+                        onToggleSnackBar();
                     }).catch((error) => {
                         setError('Something went wrong. Please try again later.');
                         showDialog();
@@ -110,6 +119,8 @@ function PetScreen(props) {
                 .then(() => {
                     props.deletePet(props.pets, key);
                     setPets(pets.filter((_, index) => index !== key));
+                    setMessage('Pet removed');
+                    onToggleSnackBar();
                 }).catch((error) => {
                     setError('Something went wrong. Please try again later.');
                     showDialog();
@@ -198,6 +209,11 @@ function PetScreen(props) {
                     </Dialog.Actions>
                 </Dialog>
             </Portal>
+            <Snackbar
+                visible={snackVisible}
+                onDismiss={onDismissSnackBar}>
+                {message}
+            </Snackbar>
         </View>
     );
 }

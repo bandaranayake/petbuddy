@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button as PaperButton, Dialog, Portal, Title, TextInput } from 'react-native-paper';
+import { Button as PaperButton, Dialog, Portal, Snackbar, Title, TextInput } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import { theme } from '../../core/theme';
 import Background from '../../components/Background';
@@ -11,6 +11,10 @@ function SettingsScreen() {
     const [cPassword, setCPassword] = useState('');
     const [message, setMessage] = useState('');
     const [visible, setVisible] = useState(false);
+    const [snackVisible, setSnackVisible] = React.useState(false);
+
+    const onToggleSnackBar = () => setSnackVisible(!snackVisible);
+    const onDismissSnackBar = () => setSnackVisible(false);
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
@@ -26,8 +30,8 @@ function SettingsScreen() {
         }
         else {
             auth().currentUser.updatePassword(password).then(() => {
-                setMessage('Password updated successfully.');
-                showDialog();
+                setMessage('Password updated successfully');
+                onToggleSnackBar();
             }).catch(err => {
                 setMessage('Something went wrong. Please try again later.');
                 showDialog();
@@ -36,25 +40,32 @@ function SettingsScreen() {
     }
 
     return (
-        <Background>
-            <View>
-                <Title style={styles.title}>Settings</Title>
-                <TextInput mode='flat' label='New Password' placeholder='Enter new password' style={styles.input} secureTextEntry secureTextEntry onChangeText={(text) => setPassword(text.trim())} />
-                <TextInput mode='flat' label='Confirm Password' placeholder='Confirm new password' style={styles.input} secureTextEntry secureTextEntry onChangeText={(text) => setCPassword(text.trim())} />
-                <Button mode='contained' style={{ marginTop: 25 }} onPress={() => updatePassword()}>Update Password</Button>
-            </View>
-            <Portal>
-                <Dialog visible={visible} onDismiss={hideDialog}>
-                    <Dialog.Title>Update Password</Dialog.Title>
-                    <Dialog.Content>
-                        <Text>{message}</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <PaperButton onPress={hideDialog}>Ok</PaperButton>
-                    </Dialog.Actions>
-                </Dialog>
-            </Portal>
-        </Background>
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+            <Background>
+                <View>
+                    <Title style={styles.title}>Settings</Title>
+                    <TextInput mode='flat' label='New Password' placeholder='Enter new password' style={styles.input} secureTextEntry secureTextEntry onChangeText={(text) => setPassword(text.trim())} />
+                    <TextInput mode='flat' label='Confirm Password' placeholder='Confirm new password' style={styles.input} secureTextEntry secureTextEntry onChangeText={(text) => setCPassword(text.trim())} />
+                    <Button mode='contained' style={{ marginTop: 25 }} onPress={() => updatePassword()}>Update Password</Button>
+                </View>
+                <Portal>
+                    <Dialog visible={visible} onDismiss={hideDialog}>
+                        <Dialog.Title>Update Password</Dialog.Title>
+                        <Dialog.Content>
+                            <Text>{message}</Text>
+                        </Dialog.Content>
+                        <Dialog.Actions>
+                            <PaperButton onPress={hideDialog}>Ok</PaperButton>
+                        </Dialog.Actions>
+                    </Dialog>
+                </Portal>
+            </Background>
+            <Snackbar
+                visible={snackVisible}
+                onDismiss={onDismissSnackBar}>
+                {message}
+            </Snackbar>
+        </View>
     );
 }
 
