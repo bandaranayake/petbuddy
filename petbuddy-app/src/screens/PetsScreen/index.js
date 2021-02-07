@@ -141,27 +141,33 @@ function PetScreen(props) {
     }
 
     const selectAvatar = (i) => {
-        launchImageLibrary(options, (response) => {
-            if (!response.didCancel) {
-                let ref = storage().ref(props.details.uid + '/' + pets[i].id + '/avatar');
+        if (pets[i].id == undefined) {
+            setError('You need to save the pet before updating the avatar. Press update to save the pet.');
+            showDialog();
+        }
+        else {
+            launchImageLibrary(options, (response) => {
+                if (!response.didCancel) {
+                    let ref = storage().ref(props.details.uid + '/' + pets[i].id + '/avatar');
 
-                ref.putFile(response.uri)
-                    .then(() => {
-                        ref.getDownloadURL().then((url) => {
+                    ref.putFile(response.uri)
+                        .then(() => {
+                            ref.getDownloadURL().then((url) => {
 
-                            firestore()
-                                .collection(COLLECTIONS.PROFILES)
-                                .doc(props.details.uid)
-                                .collection(COLLECTIONS.PETS)
-                                .doc(pets[i].id)
-                                .update({ avatar: url })
-                                .then(() => {
-                                    props.fetchProfile(props.details.uid, props.token);
-                                })
+                                firestore()
+                                    .collection(COLLECTIONS.PROFILES)
+                                    .doc(props.details.uid)
+                                    .collection(COLLECTIONS.PETS)
+                                    .doc(pets[i].id)
+                                    .update({ avatar: url })
+                                    .then(() => {
+                                        props.fetchProfile(props.details.uid, props.token);
+                                    })
+                            })
                         })
-                    })
-            }
-        })
+                }
+            })
+        }
     }
 
     const renderPets = () => {
@@ -200,7 +206,7 @@ function PetScreen(props) {
             />
             <Portal>
                 <Dialog visible={visible} onDismiss={hideDialog}>
-                    <Dialog.Title>Registration Error</Dialog.Title>
+                    <Dialog.Title>Update Pets</Dialog.Title>
                     <Dialog.Content>
                         <Text>{error}</Text>
                     </Dialog.Content>
@@ -221,6 +227,7 @@ function PetScreen(props) {
 const mapStateToProps = state => ({
     pets: state.profile.pets,
     details: state.profile.details,
+    token: state.profile.token,
 });
 
 const styles = StyleSheet.create({
