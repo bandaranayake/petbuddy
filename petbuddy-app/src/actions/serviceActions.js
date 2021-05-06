@@ -20,10 +20,14 @@ export const fetchServices = (uid, filters) => dispatch => {
         .limit(10)
         .get()
         .then(querySnapshot => {
-            let data = querySnapshot.docs.filter(document => uid !== document.id).map(document => {
+            let data = querySnapshot.docs.map(document => {
                 document.data().uid = document.id;
                 return document.data();
-            })
+            });
+
+            if (uid != null) {
+                data = data.filter(document => uid !== document.uid);
+            }
 
             dispatch({
                 type: FETCH_SERVICES,
@@ -50,10 +54,14 @@ export const fetchMoreServices = (uid, filters, lastVisible) => dispatch => {
         .limit(10)
         .get()
         .then(querySnapshot => {
-            let data = querySnapshot.docs.filter(document => uid !== document.id).map(document => {
+            let data = querySnapshot.docs.map(document => {
                 document.data().uid = document.id;
                 return document.data();
-            })
+            });
+
+            if (uid != null) {
+                data = data.filter(document => uid !== document.uid);
+            }
 
             dispatch({
                 type: FETCH_MORE_SERVICES,

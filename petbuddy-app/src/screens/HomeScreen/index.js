@@ -15,7 +15,12 @@ function HomeScreen(props) {
     const [filteredData, setFilteredData] = useState('');
 
     useEffect(() => {
-        props.fetchServices(props.profile.uid, props.filters);
+        if (props.profile == null) {
+            props.fetchServices(null, props.filters);
+        }
+        else {
+            props.fetchServices(props.profile.uid, props.filters);
+        }
     }, [props.filters])
 
     useEffect(() => {
@@ -60,7 +65,14 @@ function HomeScreen(props) {
                     }
                     ListFooterComponent={renderFooter}
                     onEndReached={() => {
-                        if (props.isRefreshing == false) props.fetchMoreServices(props.profile.uid, props.filters, props.services[props.services.length - 1].uid)
+                        if (props.isRefreshing == false) {
+                            if (props.profile == null) {
+                                props.fetchMoreServices(null, props.filters, props.services[props.services.length - 1].uid)
+                            }
+                            else {
+                                props.fetchMoreServices(props.profile.uid, props.filters, props.services[props.services.length - 1].uid)
+                            }
+                        }
                     }}
                     onEndReachedThreshold={0.5}
                     refreshing={props.isRefreshing}
