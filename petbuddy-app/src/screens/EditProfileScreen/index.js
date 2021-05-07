@@ -72,6 +72,15 @@ function EditProfileScreen(props) {
                 avatar: props.profile.avatar,
             })
         }
+        else {
+            setDetails({
+                fname: props.profile.firstname,
+                lname: props.profile.lastname,
+                phone: props.profile.phone,
+                city: props.profile.city,
+                avatar: props.profile.avatar,
+            })
+        }
     }, [])
 
     function UpdateDetails() {
@@ -289,7 +298,7 @@ function EditProfileScreen(props) {
             <Button mode='contained' style={{ marginVertical: 5 }} onPress={() => props.navigation.navigate(ROUTES.PETS)}>Advanced Options</Button>
             <Portal>
                 <Dialog visible={visible} onDismiss={hideDialog}>
-                    <Dialog.Title>Registration Error</Dialog.Title>
+                    <Dialog.Title>Update Profile</Dialog.Title>
                     <Dialog.Content>
                         <Text>{error}</Text>
                     </Dialog.Content>

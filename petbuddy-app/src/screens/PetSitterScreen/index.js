@@ -77,13 +77,14 @@ function PetSitterScreen(props) {
                     })
                     .then((res) => {
                         if (res.status === 200) {
+                            setIsLoading(false);
                             props.fetchProfile(props.profile.uid, props.token);
                         }
                         else {
+                            setIsLoading(false);
                             setError('Something went wrong. Please try again later.');
                             showDialog();
                         }
-                        setIsLoading(false);
                     })
                     .catch((error) => {
                         setIsLoading(false);

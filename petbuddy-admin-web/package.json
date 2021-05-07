@@ -14,10 +14,12 @@
     "react-dropdown-select": "^4.6.0",
     "react-icons": "^3.11.0",
     "react-pro-sidebar": "^0.4.4",
+    "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-stars": "^2.2.5",
-    "reactstrap": "^8.5.1"
+    "reactstrap": "^8.5.1",
+    "redux": "^4.0.5"
   },
   "scripts": {
     "start": "react-scripts start",

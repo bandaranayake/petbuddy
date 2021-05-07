@@ -1,13 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react';
 
-export class Dashbaord extends Component {
-    render() {
-        return (
-            <div>
+function Dashbaord() {
+    return (
+        <div>
 
-            </div>
-        )
-    }
+        </div>
+    );
 }
 
-export default Dashbaord
+export default Dashbaord;
