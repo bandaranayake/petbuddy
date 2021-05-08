@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink
-} from 'reactstrap';
-
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { auth } from '../../lib/firebase';
 import * as ROUTES from '../../constants/routes';
 
 function Navigation() {
@@ -38,6 +30,9 @@ function Navigation() {
                         </NavItem>
                         <NavItem>
                             <NavLink href={ROUTES.SETTINGS} className="ml-3 text-uppercase">Account Settings</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink href={ROUTES.HOME} onClick={() => auth.signOut()} className="ml-3 text-uppercase">Logout</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
