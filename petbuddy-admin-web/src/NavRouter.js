@@ -19,7 +19,7 @@ import Navbar from './components/Navbar';
 
 import * as ROUTES from './constants/routes';
 
-function NavRouter() {
+function NavRouter(props) {
     const wrapWithHeader = (View, props) => {
         return (
             (window.innerWidth < 768) ? (
@@ -28,30 +28,40 @@ function NavRouter() {
                     <View {...props} />
                 </div>
             ) : (
-                    <div className='app'>
-                        <Sidebar {...props} />
-                        <View {...props} />
-                    </div>
-                )
+                <div className='app'>
+                    <Sidebar {...props} />
+                    <View {...props} />
+                </div>
+            )
         );
     }
 
-    return (
-        <Router>
-            <Switch>
-                <Route exact path={ROUTES.HOME} component={LoginView} />
-                <Route exact path={ROUTES.RESET} component={ResetView} />
-                <Route exact path={ROUTES.DASHBOARD} render={(props) => wrapWithHeader(DashboardView, props)} />
-                <Route exact path={ROUTES.CUSTOMERS} render={(props) => wrapWithHeader(CustomersView, props)} />
-                <Route exact path={ROUTES.PETSITTERS} render={(props) => wrapWithHeader(PetSittersView, props)} />
-                <Route exact path={ROUTES.SERVICES} render={(props) => wrapWithHeader(ServicesView, props)} />
-                <Route exact path={ROUTES.BOOKINGS} render={(props) => wrapWithHeader(BookingsView, props)} />
-                <Route exact path={ROUTES.SETTINGS} render={(props) => wrapWithHeader(SettingsView, props)} />
-                <Route exact path={ROUTES.LOGOUT} render={(props) => wrapWithHeader(PetSittersView, props)} />
-                <Route exact path="*" component={ErrorPage} />
-            </Switch>
-        </Router>
-    );
+    if (props.isLoggedIn) {
+        return (
+            <Router>
+                <Switch>
+                    <Route exact path={ROUTES.DASHBOARD} render={(props) => wrapWithHeader(DashboardView, props)} />
+                    <Route exact path={ROUTES.CUSTOMERS} render={(props) => wrapWithHeader(CustomersView, props)} />
+                    <Route exact path={ROUTES.PETSITTERS} render={(props) => wrapWithHeader(PetSittersView, props)} />
+                    <Route exact path={ROUTES.SERVICES} render={(props) => wrapWithHeader(ServicesView, props)} />
+                    <Route exact path={ROUTES.BOOKINGS} render={(props) => wrapWithHeader(BookingsView, props)} />
+                    <Route exact path={ROUTES.SETTINGS} render={(props) => wrapWithHeader(SettingsView, props)} />
+                    <Route exact path="*" component={ErrorPage} />
+                </Switch>
+            </Router>
+        );
+    }
+    else {
+        return (
+            <Router>
+                <Switch>
+                    <Route exact path={ROUTES.HOME} component={LoginView} />
+                    <Route exact path={ROUTES.RESET} component={ResetView} />
+                    <Route exact path="*" component={ErrorPage} />
+                </Switch>
+            </Router>
+        );
+    }
 }
 
 export default NavRouter;
