@@ -23,9 +23,6 @@ function Navigation() {
                             <NavLink href={ROUTES.PETSITTERS} className="ml-3 text-uppercase">Pet Sitters</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href={ROUTES.SERVICES} className="ml-3 text-uppercase">Services</NavLink>
-                        </NavItem>
-                        <NavItem>
                             <NavLink href={ROUTES.BOOKINGS} className="ml-3 text-uppercase">Bookings</NavLink>
                         </NavItem>
                         <NavItem>
