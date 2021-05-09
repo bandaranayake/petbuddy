@@ -1,5 +1,5 @@
 import firebase, { firestore } from '../lib/firebase';
-import { LOADING_CUSTOMERS, REFRESHING_CUSTOMERS, FETCH_CUSTOMERS, FETCH_MORE_CUSTOMERS, DELETE_CUSTOMER } from './types';
+import { LOADING_CUSTOMERS, REFRESHING_CUSTOMERS, FETCH_CUSTOMERS, FETCH_MORE_CUSTOMERS } from './types';
 import { PETOWNER } from '../constants/roles';
 import * as COLLECTIONS from '../constants/collections';
 
