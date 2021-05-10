@@ -27,27 +27,25 @@ function CustomersView(props) {
 
     const renderRows = () => {
         return data.map((customer, i) =>
-            <tbody key={i}>
-                <tr>
-                    <td>{customer.firstname}</td>
-                    <td>{customer.lastname}</td>
-                    <td>{customer.city}</td>
-                    <td>{customer.phone}</td>
-                    <td>
-                        <Link to={`${ROUTES.CUSTOMERS}/${customer.uid}/pets`}>View</Link>
-                    </td>
-                    <td>
-                        <div style={{ textAlign: 'center' }}>
-                            <Link className="btn btn-primary btn-md table-actions-btn" to={`${ROUTES.CUSTOMERS}/${customer.uid}`}>
-                                <FaPencilAlt />
-                            </Link>
-                            <Button className="btn btn-danger btn-md table-actions-btn" onClick={() => handleDelete(customer.uid)}>
-                                <FaBan />
-                            </Button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>)
+            <tr key={i}>
+                <td>{customer.firstname}</td>
+                <td>{customer.lastname}</td>
+                <td>{customer.city}</td>
+                <td>{customer.phone}</td>
+                <td>
+                    <Link to={`${ROUTES.CUSTOMERS}/${customer.uid}/pets`}>View</Link>
+                </td>
+                <td>
+                    <div style={{ textAlign: 'center' }}>
+                        <Link className="btn btn-primary btn-md table-actions-btn" to={`${ROUTES.CUSTOMERS}/${customer.uid}`}>
+                            <FaPencilAlt />
+                        </Link>
+                        <Button className="btn btn-danger btn-md table-actions-btn" onClick={() => handleDelete(customer.uid)}>
+                            <FaBan />
+                        </Button>
+                    </div>
+                </td>
+            </tr>)
     }
 
     const LoadMoreCustomers = () => {
@@ -76,7 +74,9 @@ function CustomersView(props) {
                             <th width="15%">Actions</th>
                         </tr>
                     </thead>
-                    {renderRows()}
+                    <tbody>
+                        {renderRows()}
+                    </tbody>
                 </Table>
                 {props.isLoading ? <div className="w-100 d-flex justify-content-center"><Spinner color="secondary" /> </div> : null}
             </Row>

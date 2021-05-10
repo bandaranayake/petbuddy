@@ -125,7 +125,9 @@ function CustomerDetailsView(props) {
                             <th width="15%">Actions</th>
                         </tr>
                     </thead>
-                    {(pets != null) ? renderRows() : null}
+                    <tbody >
+                        {(pets != null) ? renderRows() : null}
+                    </tbody>
                 </Table>
             </Row>
         </Container>
@@ -133,24 +135,22 @@ function CustomerDetailsView(props) {
 
     const renderRows = () => {
         return pets.map((pet, i) =>
-            <tbody key={i}>
-                <tr>
-                    <td>{pet.name}</td>
-                    <td>{GLOBAL.FindLabel(pet.type, GLOBAL.PETS)}</td>
-                    <td>{GLOBAL.FindLabel(pet.gender, GLOBAL.GENDER)}</td>
-                    <td>{pet.birthday}</td>
-                    <td>
-                        <div style={{ textAlign: 'center' }}>
-                            <Link to={`${ROUTES.CUSTOMERS}/${id}/pets/${pet.id}`} className="btn btn-primary btn-md table-actions-btn">
-                                <FaPencilAlt />
-                            </Link>
-                            <Button className="btn btn-danger btn-md table-actions-btn" onClick={() => deletePet(pet.id)}>
-                                <FaBan />
-                            </Button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>)
+            <tr key={i}>
+                <td>{pet.name}</td>
+                <td>{GLOBAL.FindLabel(pet.type, GLOBAL.PETS)}</td>
+                <td>{GLOBAL.FindLabel(pet.gender, GLOBAL.GENDER)}</td>
+                <td>{pet.birthday}</td>
+                <td>
+                    <div style={{ textAlign: 'center' }}>
+                        <Link to={`${ROUTES.CUSTOMERS}/${id}/pets/${pet.id}`} className="btn btn-primary btn-md table-actions-btn">
+                            <FaPencilAlt />
+                        </Link>
+                        <Button className="btn btn-danger btn-md table-actions-btn" onClick={() => deletePet(pet.id)}>
+                            <FaBan />
+                        </Button>
+                    </div>
+                </td>
+            </tr>)
     }
 
     const deletePet = (pid) => {
