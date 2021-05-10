@@ -5,6 +5,7 @@ import { FaPencilAlt, FaBan } from 'react-icons/fa';
 import { Button, Spinner } from 'reactstrap';
 import { connect } from 'react-redux';
 import * as ROUTES from '../../constants/routes';
+import * as GLOBAL from '../../constants/global';
 import { fetchCustomers, fetchMoreCustomers } from '../../actions/customerActions';
 
 function CustomersView(props) {
@@ -30,7 +31,7 @@ function CustomersView(props) {
             <tr key={i}>
                 <td>{customer.firstname}</td>
                 <td>{customer.lastname}</td>
-                <td>{customer.city}</td>
+                <td>{GLOBAL.FindLabel(customer.city, GLOBAL.DISTRICTS)}</td>
                 <td>{customer.phone}</td>
                 <td>
                     <Link to={`${ROUTES.CUSTOMERS}/${customer.uid}/pets`}>View</Link>

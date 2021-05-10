@@ -26,10 +26,10 @@ export const STATUS = [{ label: 'Upcoming', value: 0, bg: '#7768AE' }, { label: 
 export const GENDER = [{ label: 'Not Specified', value: 0 }, { label: 'Male', value: 1 }, { label: 'Female', value: 2 }];
 
 export const FindElement = (value, array) => {
-    return array.find(e => e.value == value);
+    return array.find(e => e.value === value);
 }
 
 export const FindLabel = (value, array) => {
     let element = FindElement(value, array);
-    return (element != undefined && element != null) ? element.label : null;
+    return (element !== undefined && element !== null) ? element.label : null;
 }

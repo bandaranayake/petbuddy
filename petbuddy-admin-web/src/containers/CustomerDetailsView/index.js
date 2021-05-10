@@ -42,7 +42,7 @@ function CustomerDetailsView(props) {
             .then(querySnapshot => {
                 if (querySnapshot.exists) {
                     setData({ ...querySnapshot.data(), uid: querySnapshot.id })
-                    setDetails({ firstname: querySnapshot.data().firstname, lastname: querySnapshot.data().lastname, city: querySnapshot.data().city, phone: querySnapshot.data().phone });
+                    setDetails({ ...querySnapshot.data() });
                 }
                 setIsCLoading(false);
             })
@@ -103,7 +103,7 @@ function CustomerDetailsView(props) {
                             <FormGroup className="mt-3">
                                 <Label className="w-100 mb-2 text-danger">{error}</Label>
                                 <Button className="mr-1 my-1 custom-class" disabled={isUpdating} onClick={() => updateDetails()}>{isUpdating ? <span><Spinner size="sm" /> Updating...</span> : 'Update Account'}</Button>
-                                <Button className="my-1 custom-class">Delete Account</Button>
+                                <Button className="my-1 custom-class" onClick={() => handleDelete()}>Delete Account</Button>
                             </FormGroup>
                         </Form>
                     </div>
@@ -201,6 +201,10 @@ function CustomerDetailsView(props) {
                 })
                 .catch(() => setIsUpdating(false))
         }
+    }
+
+    const handleDelete = () => {
+
     }
 
     if (isCLoading || isPLoading) {
