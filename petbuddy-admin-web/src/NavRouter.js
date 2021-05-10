@@ -11,6 +11,7 @@ import PetDetailsView from './containers/PetDetailsView';
 import PetSittersView from './containers/PetSittersView';
 import ServicesView from './containers/ServicesView';
 import BookingsView from './containers/BookingsView';
+import BookingDetailsView from './containers/BookingDetailsView';
 import SettingsView from './containers/SettingsView';
 import ErrorPage from './containers/ErrorPage';
 import Sidebar from './components/Sidebar';
@@ -48,6 +49,7 @@ function NavRouter(props) {
                     <Route exact path={`${ROUTES.CUSTOMERS}/:id`} render={(props) => wrapWithHeader(CustomerDetailsView, props)} />
                     <Route exact path={`${ROUTES.CUSTOMERS}/:id/pets`} render={(props) => wrapWithHeader(PetsView, props)} />
                     <Route exact path={`${ROUTES.CUSTOMERS}/:id/pets/:pid`} render={(props) => wrapWithHeader(PetDetailsView, props)} />
+                    <Route exact path={`${ROUTES.BOOKINGS}/:id`} render={(props) => wrapWithHeader(BookingDetailsView, props)} />
                     <Route exact path="*" component={ErrorPage} />
                 </Switch>
             </Router>
