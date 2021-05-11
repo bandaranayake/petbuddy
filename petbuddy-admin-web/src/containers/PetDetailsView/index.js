@@ -9,8 +9,8 @@ import { IMAGE_AVATAR } from '../../assets/images';
 function PetDetailsView(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
-    const [data, setData] = useState(null);
     const [details, setDetails] = useState(null);
+    const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [id, setId] = useState(null);
     const [pid, setPid] = useState(null);
@@ -36,8 +36,8 @@ function PetDetailsView(props) {
                 .get()
                 .then(querySnapshot => {
                     if (querySnapshot.exists) {
-                        setData({ ...querySnapshot.data(), id: querySnapshot.id })
                         setDetails({ ...querySnapshot.data() });
+                        setName(querySnapshot.data().name);
                     }
                     setIsLoading(false);
                 })
@@ -58,7 +58,6 @@ function PetDetailsView(props) {
             .doc(pid)
             .delete()
             .then(() => {
-                setData(null);
                 setDetails(null);
             })
     }
@@ -88,10 +87,7 @@ function PetDetailsView(props) {
                 .collection(COLLECTIONS.PETS)
                 .doc(pid)
                 .update(details)
-                .then(() => {
-                    setData(details);
-                    setIsUpdating(false)
-                })
+                .then(() => setIsUpdating(false))
                 .catch(() => setIsUpdating(false))
         }
     }
@@ -99,7 +95,7 @@ function PetDetailsView(props) {
     if (isLoading) {
         return <main className="px-5"> <div className="h-100 d-flex justify-content-center align-items-center"><Spinner size="lg" /></div></main>
     }
-    else if (data == null) {
+    else if (details == null) {
         return <main className="px-5"> <div className="h-100 d-flex justify-content-center align-items-center"><span className="text-secondary">No data</span></div></main>
     }
     else {
@@ -109,8 +105,8 @@ function PetDetailsView(props) {
                     <div className="p-2">
                         <Row>
                             <div className="col-md-3 container-md text-center" style={{ minWidth: 160, maxWidth: 200 }}>
-                                <img src={data.avatar ? data.avatar : IMAGE_AVATAR} className="img-fluid rounded-circle border" alt="Avatar" />
-                                <h5 className="mt-1">{data.name}</h5>
+                                <img src={details.avatar ? details.avatar : IMAGE_AVATAR} className="img-fluid rounded-circle border" alt="Avatar" />
+                                <h5 className="mt-1">{name}</h5>
                             </div>
                             <div className="col-md-9 container-md">
                                 <Form>

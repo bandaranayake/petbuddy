@@ -9,7 +9,6 @@ import * as GLOBAL from '../../constants/global';
 function BookingDetailsView(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
-    const [data, setData] = useState(null);
     const [details, setDetails] = useState(null);
     const [error, setError] = useState('');
     const [id, setId] = useState(null);
@@ -29,7 +28,6 @@ function BookingDetailsView(props) {
                 .get()
                 .then(querySnapshot => {
                     if (querySnapshot.exists) {
-                        setData({ ...querySnapshot.data(), id: querySnapshot.id })
                         setDetails({ ...querySnapshot.data() });
                     }
                     setIsLoading(false);
@@ -48,7 +46,6 @@ function BookingDetailsView(props) {
             .doc(id)
             .delete()
             .then(() => {
-                setData(null);
                 setDetails(null);
             })
     }
@@ -70,10 +67,7 @@ function BookingDetailsView(props) {
                 .collection(COLLECTIONS.BOOKINGS)
                 .doc(id)
                 .update(details)
-                .then(() => {
-                    setData(details);
-                    setIsUpdating(false)
-                })
+                .then(() => setIsUpdating(false))
                 .catch(() => setIsUpdating(false))
         }
     }
@@ -81,7 +75,7 @@ function BookingDetailsView(props) {
     if (isLoading) {
         return <main className="px-5"> <div className="h-100 d-flex justify-content-center align-items-center"><Spinner size="lg" /></div></main>
     }
-    else if (data == null) {
+    else if (details == null) {
         return <main className="px-5"> <div className="h-100 d-flex justify-content-center align-items-center"><span className="text-secondary">No data</span></div></main>
     }
     else {

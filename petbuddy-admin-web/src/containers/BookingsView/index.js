@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Table, Row, Input } from 'reactstrap';
+import { Table, Row, Input, Button, Spinner } from 'reactstrap';
 import { FaPencilAlt, FaBan } from 'react-icons/fa';
-import { Button, Spinner } from 'reactstrap';
 import * as ROUTES from '../../constants/routes';
 import * as GLOBAL from '../../constants/global';
 import { fetchBookings, fetchMoreBookings, deleteBooking } from '../../actions/bookingActions';
@@ -20,7 +19,6 @@ function BookingsView(props) {
     useEffect(() => {
         setData(props.bookings);
     }, [props.bookings])
-
 
     const handleDelete = (id) => {
         props.deleteBooking(id);

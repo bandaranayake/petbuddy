@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Table, Input } from 'reactstrap';
+import { Row, Table, Input, Button, Spinner } from 'reactstrap';
 import { FaPencilAlt, FaBan } from 'react-icons/fa';
-import { Button, Spinner } from 'reactstrap';
 import { connect } from 'react-redux';
 import * as ROUTES from '../../constants/routes';
 import * as GLOBAL from '../../constants/global';
@@ -20,7 +19,6 @@ function CustomersView(props) {
     useEffect(() => {
         setData(props.customers);
     }, [props.customers])
-
 
     const handleDelete = (uid) => {
 

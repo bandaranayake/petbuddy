@@ -15,9 +15,10 @@ function CustomerDetailsView(props) {
     const [isPLoading, setIsPLoading] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const [id, setId] = useState(null);
-    const [data, setData] = useState(null);
     const [pets, setPets] = useState(null);
     const [details, setDetails] = useState(null);
+    const [fname, setFname] = useState('');
+    const [lname, setLname] = useState('');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -41,8 +42,9 @@ function CustomerDetailsView(props) {
             .get()
             .then(querySnapshot => {
                 if (querySnapshot.exists) {
-                    setData({ ...querySnapshot.data(), uid: querySnapshot.id })
                     setDetails({ ...querySnapshot.data() });
+                    setFname(querySnapshot.data().firstname);
+                    setLname(querySnapshot.data().lastname);
                 }
                 setIsCLoading(false);
             })
@@ -73,8 +75,8 @@ function CustomerDetailsView(props) {
             <div className="p-2">
                 <Row>
                     <div className="col-md-3 container-md text-center" style={{ minWidthidth: 160, maxWidth: 200 }}>
-                        <img src={data.avatar ? data.avatar : IMAGE_AVATAR} className="img-fluid rounded-circle border" alt="Avatar" />
-                        <h5 className="mt-1">{data.firstname + ' ' + data.lastname}</h5>
+                        <img src={details.avatar ? details.avatar : IMAGE_AVATAR} className="img-fluid rounded-circle border" alt="Avatar" />
+                        <h5 className="mt-1">{fname + ' ' + lname}</h5>
                     </div>
                     <div className="col-md-9 container-md">
                         <Form>
@@ -195,10 +197,7 @@ function CustomerDetailsView(props) {
             firestore.collection(COLLECTIONS.PROFILES)
                 .doc(id)
                 .update(details)
-                .then(() => {
-                    setData(details);
-                    setIsUpdating(false)
-                })
+                .then(() => setIsUpdating(false))
                 .catch(() => setIsUpdating(false))
         }
     }
@@ -210,7 +209,7 @@ function CustomerDetailsView(props) {
     if (isCLoading || isPLoading) {
         return <main className="px-5"> <div className="h-100 d-flex justify-content-center align-items-center"><Spinner size="lg" /></div></main>
     }
-    else if (data == null) {
+    else if (details == null) {
         return <main className="px-5"> <div className="h-100 d-flex justify-content-center align-items-center"><span className="text-secondary">No data</span></div></main>
     }
     else {
