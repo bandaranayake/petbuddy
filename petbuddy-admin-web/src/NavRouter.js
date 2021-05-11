@@ -9,6 +9,7 @@ import CustomerDetailsView from './containers/CustomerDetailsView';
 import PetsView from './containers/PetsView';
 import PetDetailsView from './containers/PetDetailsView';
 import PetSittersView from './containers/PetSittersView';
+import PetSitterDetailsView from './containers/PetSitterDetailsView';
 import ServicesView from './containers/ServicesView';
 import BookingsView from './containers/BookingsView';
 import BookingDetailsView from './containers/BookingDetailsView';
@@ -50,6 +51,7 @@ function NavRouter(props) {
                     <Route exact path={`${ROUTES.CUSTOMERS}/:id/pets`} render={(props) => wrapWithHeader(PetsView, props)} />
                     <Route exact path={`${ROUTES.CUSTOMERS}/:id/pets/:pid`} render={(props) => wrapWithHeader(PetDetailsView, props)} />
                     <Route exact path={`${ROUTES.BOOKINGS}/:id`} render={(props) => wrapWithHeader(BookingDetailsView, props)} />
+                    <Route exact path={`${ROUTES.PETSITTERS}/:id`} render={(props) => wrapWithHeader(PetSitterDetailsView, props)} />
                     <Route exact path="*" component={ErrorPage} />
                 </Switch>
             </Router>
