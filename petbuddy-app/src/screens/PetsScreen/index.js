@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar, Button as PaperButton, Dialog, FAB, Portal, Snackbar, Text, TextInput } from 'react-native-paper';
+import { Avatar, ActivityIndicator, Button as PaperButton, Dialog, FAB, Portal, Snackbar, Text, TextInput } from 'react-native-paper';
 import { launchImageLibrary } from 'react-native-image-picker/src/index'
 import { connect } from 'react-redux';
 import { addPet, deletePet, updatePet } from '../../actions/profileActions';
@@ -18,6 +18,8 @@ function PetScreen(props) {
     const [pets, setPets] = useState(props.pets);
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [defaultAvatar, setDefaultAvatar] = useState(null);
     const [visible, setVisible] = useState(false);
     const [snackVisible, setSnackVisible] = React.useState(false);
 
@@ -31,6 +33,17 @@ function PetScreen(props) {
             path: 'images',
         },
     };
+
+    useEffect(() => {
+        setIsLoading(true);
+
+        storage().ref('default/avatar/pet')
+            .getDownloadURL()
+            .then(url => {
+                setDefaultAvatar(url);
+                setIsLoading(false);
+            })
+    }, [])
 
     const onToggleSnackBar = () => setSnackVisible(!snackVisible);
     const onDismissSnackBar = () => setSnackVisible(false);
@@ -68,6 +81,7 @@ function PetScreen(props) {
                         birthday: pet.birthday,
                         gender: pet.gender,
                         type: pet.type,
+                        avatar: pet.avatar
                     })
                     .then(docRef => {
                         props.addPet(props.pets, pet, docRef.id);
@@ -130,7 +144,7 @@ function PetScreen(props) {
 
     function addPet() {
         let cloned = [...pets];
-        cloned.push({});
+        cloned.push({ avatar: defaultAvatar });
         setPets(cloned);
     }
 
@@ -192,36 +206,41 @@ function PetScreen(props) {
         )
     }
 
-    return (
-        <View style={{ flex: 1 }}>
-            <ScrollView>
-                <View style={{ paddingVertical: 10 }}>
-                    {renderPets()}
-                </View>
-            </ScrollView>
-            <FAB
-                style={styles.fab}
-                icon='plus'
-                onPress={() => addPet()}
-            />
-            <Portal>
-                <Dialog visible={visible} onDismiss={hideDialog}>
-                    <Dialog.Title>Update Pets</Dialog.Title>
-                    <Dialog.Content>
-                        <Text>{error}</Text>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <PaperButton onPress={hideDialog}>Ok</PaperButton>
-                    </Dialog.Actions>
-                </Dialog>
-            </Portal>
-            <Snackbar
-                visible={snackVisible}
-                onDismiss={onDismissSnackBar}>
-                {message}
-            </Snackbar>
-        </View>
-    );
+    if (isLoading) {
+        return <ActivityIndicator style={{ marginTop: 10 }} />
+    }
+    else {
+        return (
+            <View style={{ flex: 1 }}>
+                <ScrollView>
+                    <View style={{ paddingVertical: 10 }}>
+                        {renderPets()}
+                    </View>
+                </ScrollView>
+                <FAB
+                    style={styles.fab}
+                    icon='plus'
+                    onPress={() => addPet()}
+                />
+                <Portal>
+                    <Dialog visible={visible} onDismiss={hideDialog}>
+                        <Dialog.Title>Update Pets</Dialog.Title>
+                        <Dialog.Content>
+                            <Text>{error}</Text>
+                        </Dialog.Content>
+                        <Dialog.Actions>
+                            <PaperButton onPress={hideDialog}>Ok</PaperButton>
+                        </Dialog.Actions>
+                    </Dialog>
+                </Portal>
+                <Snackbar
+                    visible={snackVisible}
+                    onDismiss={onDismissSnackBar}>
+                    {message}
+                </Snackbar>
+            </View>
+        );
+    }
 }
 
 const mapStateToProps = state => ({
