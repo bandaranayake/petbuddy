@@ -20,10 +20,14 @@ export const fetchServices = (uid, filters) => dispatch => {
         .limit(10)
         .get()
         .then(querySnapshot => {
-            let data = querySnapshot.docs.filter(document => uid !== document.id).map(document => {
+            let data = querySnapshot.docs.map(document => {
                 document.data().uid = document.id;
                 return document.data();
-            })
+            });
+
+            if (uid != null) {
+                data = data.filter(document => uid !== document.uid);
+            }
 
             dispatch({
                 type: FETCH_SERVICES,
@@ -39,7 +43,7 @@ export const fetchMoreServices = (uid, filters, lastVisible) => dispatch => {
 
     if (filters != null) {
         if (filters.city != null) profiles = profiles.where('city', '==', filters.city);
-        if (filters.service != null) profiles = profiles.where('services', 'array-contains', filters.service);
+        if (filters.service != null) profiles = profiles.where('services.' + filters.service, '==', true);
         if (filters.level != null) profiles = profiles.where('level', '==', filters.level);
         if (filters.pet != null) profiles = profiles.where('pets', 'array-contains', filters.pet);
     }
@@ -50,10 +54,14 @@ export const fetchMoreServices = (uid, filters, lastVisible) => dispatch => {
         .limit(10)
         .get()
         .then(querySnapshot => {
-            let data = querySnapshot.docs.filter(document => uid !== document.id).map(document => {
+            let data = querySnapshot.docs.map(document => {
                 document.data().uid = document.id;
                 return document.data();
-            })
+            });
+
+            if (uid != null) {
+                data = data.filter(document => uid !== document.uid);
+            }
 
             dispatch({
                 type: FETCH_MORE_SERVICES,

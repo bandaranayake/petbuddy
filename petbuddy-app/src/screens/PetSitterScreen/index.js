@@ -151,7 +151,7 @@ function PetSitterScreen(props) {
         <ScrollView style={styles.container}>
             <View style={{ paddingVertical: 20 }}>
                 <Title style={{ marginVertical: 5 }}>About</Title>
-                <TextInput mode='flat' label='About Me' placeholder='Short description about yourself' value={about} onChangeText={(text) => setAbout(text.trim())} multiline style={styles.input} />
+                <TextInput mode='flat' label='About Me' placeholder='Short description about yourself' value={about} onChangeText={(text) => setAbout(text)} multiline style={styles.input} />
                 <Title style={{ marginTop: 20 }}>Preferences</Title>
                 {renderPreferences()}
                 <Title style={{ marginTop: 20 }}>Supported Pet Types</Title>
