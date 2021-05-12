@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ProSidebar,
-  Menu,
-  MenuItem,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarContent,
-} from 'react-pro-sidebar';
+import { ProSidebar, Menu, MenuItem, SidebarHeader, SidebarFooter, SidebarContent } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
-import { FaTachometerAlt, FaBone, FaRegCalendarAlt, FaCog, FaUser, FaUserNurse } from 'react-icons/fa';
-import { FiLogOut } from "react-icons/fi";
+import { FaTachometerAlt, FaRegCalendarAlt, FaCog, FaUser, FaUserNurse } from 'react-icons/fa';
+import { FiLogOut } from 'react-icons/fi';
+import { auth } from '../../lib/firebase';
 import * as ROUTES from '../../constants/routes';
 
 function Sidebar(props) {
@@ -57,7 +51,6 @@ function Sidebar(props) {
           <MenuItem icon={<FaTachometerAlt />} active={activeTag === 2}>Dashboard<Link to={ROUTES.DASHBOARD}></Link></MenuItem>
           <MenuItem icon={<FaUser />} active={activeTag === 3}>Customers<Link to={ROUTES.CUSTOMERS}></Link></MenuItem>
           <MenuItem icon={<FaUserNurse />} active={activeTag === 4}>Pet Sitters<Link to={ROUTES.PETSITTERS}></Link></MenuItem>
-          <MenuItem icon={<FaBone />} active={activeTag === 5}>Services<Link to={ROUTES.SERVICES}></Link></MenuItem>
           <MenuItem icon={<FaRegCalendarAlt />} active={activeTag === 6}>Bookings<Link to={ROUTES.BOOKINGS}></Link></MenuItem>
         </Menu>
         <Menu iconShape="circle">
@@ -66,7 +59,7 @@ function Sidebar(props) {
       </SidebarContent>
       <SidebarFooter style={{ textAlign: 'center' }}>
         <div className="sidebar-btn-wrapper" style={{ padding: '25px' }}>
-          <Link to={ROUTES.LOGOUT} className="sidebar-btn"><FiLogOut /><span>Logout</span></Link>
+          <Link to={ROUTES.HOME} className="sidebar-btn" onClick={() => auth.signOut()}><FiLogOut /><span>Logout</span></Link>
         </div>
       </SidebarFooter>
     </ProSidebar>
