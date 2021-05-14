@@ -54,6 +54,7 @@ function ChatScreen(props) {
                 timestamp: firestore.FieldValue.serverTimestamp(),
                 message: messageText,
                 sender: props.profile.uid,
+                avatar: props.profile.avatar,
             };
 
             firestore()
@@ -73,7 +74,7 @@ function ChatScreen(props) {
     const renderMessages = () => {
         return messages.map((item, i) =>
             (item.type === undefined) ?
-                <ChatBubble key={i} timestamp={item.timestamp} message={item.message} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
+                <ChatBubble key={i} timestamp={item.timestamp} avatar={item.avatar} message={item.message} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
                 :
                 <PetCard key={i} type={item.type} avatar={item.avatar} name={item.name} gender={item.gender} birthday={item.birthday} side={(item.sender === props.profile.uid) ? 'right' : 'left'} />
         )
