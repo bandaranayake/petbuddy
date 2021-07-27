@@ -10,7 +10,6 @@ import PetsView from './containers/PetsView';
 import PetDetailsView from './containers/PetDetailsView';
 import PetSittersView from './containers/PetSittersView';
 import PetSitterDetailsView from './containers/PetSitterDetailsView';
-import ServicesView from './containers/ServicesView';
 import BookingsView from './containers/BookingsView';
 import BookingDetailsView from './containers/BookingDetailsView';
 import SettingsView from './containers/SettingsView';
@@ -44,7 +43,6 @@ function NavRouter(props) {
                     <Route exact path={ROUTES.DASHBOARD} render={(props) => wrapWithHeader(DashboardView, props)} />
                     <Route exact path={ROUTES.CUSTOMERS} render={(props) => wrapWithHeader(CustomersView, props)} />
                     <Route exact path={ROUTES.PETSITTERS} render={(props) => wrapWithHeader(PetSittersView, props)} />
-                    <Route exact path={ROUTES.SERVICES} render={(props) => wrapWithHeader(ServicesView, props)} />
                     <Route exact path={ROUTES.BOOKINGS} render={(props) => wrapWithHeader(BookingsView, props)} />
                     <Route exact path={ROUTES.SETTINGS} render={(props) => wrapWithHeader(SettingsView, props)} />
                     <Route exact path={`${ROUTES.CUSTOMERS}/:id`} render={(props) => wrapWithHeader(CustomerDetailsView, props)} />

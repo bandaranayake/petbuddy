@@ -18,12 +18,10 @@ function Sidebar(props) {
       setActiveTag(3);
     } else if (pathName === ROUTES.PETSITTERS) {
       setActiveTag(4);
-    } else if (pathName === ROUTES.SERVICES) {
-      setActiveTag(5);
     } else if (pathName === ROUTES.BOOKINGS) {
-      setActiveTag(6);
+      setActiveTag(5);
     } else if (pathName === ROUTES.SETTINGS) {
-      setActiveTag(7);
+      setActiveTag(6);
     }
 
   }, [props.location.pathname])
@@ -44,7 +42,7 @@ function Sidebar(props) {
           }}
         >
           Pet Buddy Dashboard
-          </div>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <Menu iconShape="circle">
