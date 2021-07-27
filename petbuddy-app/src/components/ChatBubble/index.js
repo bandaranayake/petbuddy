@@ -18,7 +18,7 @@ function ChatBubble(props) {
             <View style={{ flex: 1, alignItems: (side == 'left') ? 'flex-start' : 'flex-end' }} >
                 <View style={styles.chatBubble}>
                     <Text>{message}</Text>
-                    <Text style={styles.text}>{moment(timestamp.toDate()).format('YYYY-DD-MM h:mm A')}</Text>
+                    <Text style={styles.text}>{moment(timestamp.toDate()).format('YYYY-MM-DD h:mm A')}</Text>
                 </View>
             </View>
         );
