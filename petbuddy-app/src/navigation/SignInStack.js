@@ -20,19 +20,19 @@ const Stack = createStackNavigator()
 function SignInStack() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={ROUTES.MAIN} headerMode='none'>
-                <Stack.Screen name={ROUTES.FILTER} component={FilterScreen} />
-                <Stack.Screen name={ROUTES.BOOKING} component={BookingScreen} />
-                <Stack.Screen name={ROUTES.CHAT} component={ChatScreen} />
-                <Stack.Screen name={ROUTES.MAIN}>
+            <Stack.Navigator initialRouteName={ROUTES.MAIN}>
+                <Stack.Screen name={ROUTES.FILTER} component={FilterScreen} options={{ title: 'Filter' }} />
+                <Stack.Screen name={ROUTES.BOOKING} component={BookingScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.CHAT} component={ChatScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.MAIN} options={{ headerShown: false }}>
                     {props => (<MainScreen {...props} auth={true} />)}
                 </Stack.Screen>
-                <Stack.Screen name={ROUTES.MAKE_BOOKING} component={MakeBookingScreen} />
-                <Stack.Screen name={ROUTES.SERVICE} component={ServiceScreen} />
-                <Stack.Screen name={ROUTES.SETTINGS} component={SettingsScreen} />
-                <Stack.Screen name={ROUTES.PROFILE} component={EditProfileScreen} />
-                <Stack.Screen name={ROUTES.PETS} component={PetsScreen} />
-                <Stack.Screen name={ROUTES.REGISTER_PETSITTER} component={PetSitterScreen} />
+                <Stack.Screen name={ROUTES.MAKE_BOOKING} component={MakeBookingScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.SERVICE} component={ServiceScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.SETTINGS} component={SettingsScreen} options={{ title: 'Settings' }} />
+                <Stack.Screen name={ROUTES.PROFILE} component={EditProfileScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.PETS} component={PetsScreen} options={{ title: 'Pets' }} />
+                <Stack.Screen name={ROUTES.REGISTER_PETSITTER} component={PetSitterScreen} options={{ title: 'Register' }} />
             </Stack.Navigator>
         </NavigationContainer>
     )

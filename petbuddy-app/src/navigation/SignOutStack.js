@@ -18,17 +18,17 @@ const Stack = createStackNavigator()
 function SignOutStack() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={ROUTES.LANDING} headerMode='none'>
-                <Stack.Screen name={ROUTES.FILTER} component={FilterScreen} />
-                <Stack.Screen name={ROUTES.LANDING} component={LandingScreen} />
-                <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} />
-                <Stack.Screen name={ROUTES.MAIN}>
+            <Stack.Navigator initialRouteName={ROUTES.LANDING}>
+                <Stack.Screen name={ROUTES.FILTER} component={FilterScreen} options={{ title: 'Filter' }} />
+                <Stack.Screen name={ROUTES.LANDING} component={LandingScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.MAIN} options={{ headerShown: false }}>
                     {props => (<MainScreen {...props} auth={false} />)}
                 </Stack.Screen>
-                <Stack.Screen name={ROUTES.RESET} component={ResetScreen} />
-                <Stack.Screen name={ROUTES.SERVICE} component={ServiceScreen} />
-                <Stack.Screen name={ROUTES.SIGNUP} component={SignupScreen} />
-                <Stack.Screen name={ROUTES.SIGNUP2} component={Signup2Screen} />
+                <Stack.Screen name={ROUTES.RESET} component={ResetScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.SERVICE} component={ServiceScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.SIGNUP} component={SignupScreen} options={{ headerShown: false }} />
+                <Stack.Screen name={ROUTES.SIGNUP2} component={Signup2Screen} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     )
