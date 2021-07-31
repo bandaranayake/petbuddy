@@ -25,3 +25,5 @@ debug.log
 
 # API keys
 .env
+
+.firebaserc
