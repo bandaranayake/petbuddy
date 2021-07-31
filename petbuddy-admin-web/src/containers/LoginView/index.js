@@ -4,6 +4,7 @@ import { Button, Form, FormGroup, Input, Label, Spinner } from 'reactstrap';
 import * as ROUTES from '../../constants/routes';
 import { auth } from '../../lib/firebase';
 import { ValidateEmail } from '../../utils/validation';
+import { IMAGE_BACKGROUND } from '../../assets/images';
 
 function LoginView() {
     const [email, setEmail] = useState('');
@@ -44,7 +45,7 @@ function LoginView() {
     }
 
     return (
-        <div className='app outer-wrapper'>
+        <div className='app outer-wrapper' style={{ backgroundImage: "url(" + IMAGE_BACKGROUND + ")", backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
             <div className="center-container">
                 <Form className="bg-light p-5">
                     <h3 className="text-center">Login</h3>
