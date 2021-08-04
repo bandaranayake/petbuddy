@@ -18,7 +18,7 @@ docker build -t petbuddy-app .
 3. Create and start the container
 
 ```
-docker run -t petbuddy-app
+docker run -tp 8081:8081 petbuddy-app
 ```
 
 4. Build and run the app
@@ -45,6 +45,12 @@ adb connect <device-ip>:<port-number>
 
 ```
 yarn android
+```
+
+Change bundle location on the device to 
+
+```
+<host-ip>:8081
 ```
 
 ### Admin Dashboard
