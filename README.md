@@ -4,6 +4,23 @@
 
 # Pet Buddy
 
+## Table of Contents
+
+- [Summary](#summary)
+- [Screenshots](#screenshots)
+- [Getting Started](#getting-started)
+  * [Prerequisites](#prerequisites)
+  * [Installing](#installing)
+- [Deploying](#deploying)
+  * [Android Application](#android-application)
+  * [Admin Dashboard](#admin-dashboard)
+  * [Cloud Functions](#cloud-functions)
+- [Docker](#docker)
+  * [Android Application](#android-application)
+  * [Admin Dashboard](#admin-dashboard)
+  * [Cloud Functions](#cloud-functions)
+- [Built With](#built-with)
+
 ## Summary
 <div align="justify">
 Pet Puddy is a cloud-based mobile application that will act as a platform for both pet owners and service providers. This allows pet owners to find pet sitters and other pet related services easily. A user is required to login or register an account as a pet owner or a service provider in order to gain access to all the features provided by this app. Pet owners can search and book any service listed by other users. Pet owners should provide the date and the information about the pet when making a booking. Information about pets can be stored so that it does not require to re-enter the details of each pet every time. The pet owner and the service provider can communicate using the built-in messaging feature easily. The system allows pet owners to rate service providers after they complete their service. This system provides unique features such as user levels. Service providers will be assigned a level based on the number of total jobs and the overall rating. By completing more jobs and getting better ratings will allow service providers to level up.
@@ -12,7 +29,7 @@ Administrators have a seperate web application which will allow them to manage t
 
 ## Screenshots
 
-<img src="screenshots/screenshot1.jpg" width="300"/> <img src="screenshots/screenshot2.jpg" width="300"/> <img src="screenshots/screenshot3.jpg" width="300"/>
+<img src="screenshots/screenshot1.jpg" width="300"/> <img src="screenshots/screenshot3.jpg" width="300"/> <img src="screenshots/screenshot2.jpg" width="300"/>
 
 [More screenshots](https://github.com/bandaranayake/petbuddy/wiki)
 
@@ -78,14 +95,11 @@ Install the latest versions of [Node.js](https://github.com/nodejs/node), [React
     + Add Firebase Service Account details
 
 3. Install packages:
-
-    **Using npm**
     ```
+    # Using npm
     npm install
-    ```
     
-    **Using yarn**
-    ```
+    # Using yarn
     yarn
     ```
 4. Run:
@@ -94,13 +108,11 @@ Install the latest versions of [Node.js](https://github.com/nodejs/node), [React
     
     **(i) via USB**
     
-    **Using npm**
     ```
+    # Using npm
     npm start
-    ```
     
-    **Using yarn**
-    ```
+    # Using yarn
     yarn start
     ```
     
@@ -110,13 +122,11 @@ Install the latest versions of [Node.js](https://github.com/nodejs/node), [React
     
     **Admin Dashboard**
     
-    **Using npm**
     ```
+    # Using npm
     npm start
-    ```
     
-    **Using yarn**
-    ```
+    # Using yarn
     yarn start
     ```
     
@@ -146,12 +156,11 @@ This project is hosted on firebase. React app should be build inorder to deploy.
 
 1. Build the App
 
-   **Using npm**
    ```
+   # Using npm
    npm run build
-   ```
-   **Using yarn**
-   ```
+   
+   # Using yarn
    yarn build
    ```
 
